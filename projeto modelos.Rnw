@@ -32,8 +32,8 @@
   \author{
     André Planhca, 105289 \\
     <Andre\_Plancha@iscte-iul.pt> \\
-    TODO AUTOR, NUMERO \\
-    <TODO EMAIL> \\
+    Tomás Ribeiro, 105220 \\
+    <tfroo1@iscte-iul.pt> \\
     TODO AUTOR, NUMERO \\
     <TODO EMAIL> \\
     TODO AUTOR, NUMERO \\
