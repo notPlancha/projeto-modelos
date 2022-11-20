@@ -30,7 +30,7 @@
 % Titulo {
   \title{TODO TITULO}
   \author{
-    André Planhca, 105289 \\
+    André Plancha, 105289 \\
     <Andre\_Plancha@iscte-iul.pt> \\
     Tomás Ribeiro, 105220 \\
     <tfroo1@iscte-iul.pt> \\

@@ -80,7 +80,7 @@
 % Titulo {
   \title{TODO TITULO}
   \author{
-    André Planhca, 105289 \\
+    André Plancha, 105289 \\
     <Andre\_Plancha@iscte-iul.pt> \\
     Tomás Ribeiro, 105220 \\
     <tfroo1@iscte-iul.pt> \\
@@ -127,10 +127,9 @@ Hello world
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{listings} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"listings.csv"}\hlstd{))}
-\hlkwd{data.frame}\hlstd{(}
-  \hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(listings),}
-  \hlstr{"type"} \hlstd{=} \hlkwd{sapply}\hlstd{(listings, class)}
-\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+\hlkwd{data.frame}\hlstd{(}\hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(listings),}
+    \hlkwc{type} \hlstd{=} \hlkwd{sapply}\hlstd{(listings, class))} \hlopt{%>%}
+    \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
@@ -182,9 +181,8 @@ license & character\\
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggplot}\hlstd{(listings,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{= price ))} \hlopt{+}
-  \hlkwd{geom_density}\hlstd{()} \hlopt{+}
-  \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1000}\hlstd{))}
+\hlkwd{ggplot}\hlstd{(listings,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price))} \hlopt{+} \hlkwd{geom_density}\hlstd{()} \hlopt{+}
+    \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1000}\hlstd{))}
 \end{alltt}
 \end{kframe}\begin{marginfigure}
 \includegraphics[width=\maxwidth]{figure/graphTest-1} \caption[ ]{ }\label{fig:graphTest}
