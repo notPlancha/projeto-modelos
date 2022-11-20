@@ -1,0 +1,24 @@
+to do inline code it's \Sexpr{} ( mini-code chunk)
+to do figures é \begin{figure} e o chunk, dps o caption e o label (e o end)
+https://rpubs.com/YaRrr/SweaveIntro
+TODOS:
+BiBTeX (check directly from style how they do it) - Remove if not necessary \bibliography{references.bib}
+Change version in the end
+Add title
+Add Authors
+dps tirar os warnings
+arranjar e fazer cover page´
+  Para o cover eu quero fazer tipo
+  1               autor1  autor2
+  2               autor3  autor4
+  3       
+  4          Titulo (talvez centrado)
+  5          Subtitulo se tiver
+  6
+  7       data                      versao
+  8
+  9           
+  10
+  ou alguma coisa so género
+Fazer o abstract (e por numa pagina sozinha)
+

@@ -1,0 +1,123 @@
+\documentclass[a4paper, justified]{tufte-handout}
+\geometry{
+  left=24.8mm, % left margin
+  textwidth=100mm, % main text block
+  marginparsep=3mm, % gutter between main text block and margin notes
+  marginparwidth=75mm % width of margin notes
+}
+% Packages {
+  \usepackage[portuguese]{babel}
+  % KableExtra {
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{wrapfig}
+    \usepackage{float}
+    \usepackage{colortbl}
+    \usepackage{pdflscape}
+    \usepackage{tabu}
+    \usepackage{threeparttable}
+    \usepackage{threeparttablex}
+    \usepackage[normalem]{ulem}
+    \usepackage{makecell}
+    \usepackage{xcolor}
+  % }
+% }
+
+
+
+% Titulo {
+  \title{TODO TITULO}
+  \author{
+    André Planhca, 105289 \\
+    <Andre\_Plancha@iscte-iul.pt> \\
+    TODO AUTOR, NUMERO \\
+    <TODO EMAIL> \\
+    TODO AUTOR, NUMERO \\
+    <TODO EMAIL> \\
+    TODO AUTOR, NUMERO \\
+    <TODO EMAIL>
+  }
+  \date{\Sexpr{format(Sys.Date(), format="%d/%m/%Y")} \\ Versão 0.0.1} % 
+% }
+
+% { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
+\renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
+\renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
+% }
+% {R code and table
+\newenvironment{RTable}[1]{\begin{margintable}\begin{center}\begin{tabular}{#1}}{\end{tabular}\end{center}\end{margintable}}
+% }
+
+\bibliography{references.bib}
+
+
+\begin{document}
+<<SETUP, echo=FALSE, warning=FALSE, message=FALSE>>=
+if (!require("pacman")) install.packages("pacman", repos = "https://cran.radicaldevelop.com/")
+pacman::p_load(
+  here, 
+  knitr, 
+  kableExtra,
+  gtsummary,
+  ggplot2
+)
+
+opts_chunk$set(
+  warning = TRUE, 
+  message = TRUE,
+  tidy.opts = list(width.cutoff = 40), 
+  tidy = TRUE,
+  fig.cap = " ",
+  fig.env = 'marginfigure',
+  fig.width = 4,
+  fig.height = 4
+)
+
+
+
+
+showT <- function(x, ...) {
+  kable(x, ...) %>% 
+    kable_styling(full_width = F, 
+                  position = "left",  
+                  font_size = 10, 
+                  latex_options = c("striped"),
+                  latex_table_env= "RTable") # TODO chaneg to new env
+}
+@
+
+% cover { 
+  \cleardoublepage
+  {
+  \sffamily
+  \begin{fullwidth}
+  \fontsize{18}{20}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\thanklessauthor}}%
+  \vspace{11.5pc}
+  \fontsize{36}{40}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\thanklesstitle}}%
+  \vfill
+  \fontsize{14}{16}\selectfont\par\noindent\allcaps{\thanklesspublisher}
+  \end{fullwidth}
+  }
+  \thispagestyle{empty}
+  \clearpage
+% }
+
+Hello world
+
+<<listings>>=
+listings <- read.csv(here("listings.csv"))
+data.frame(
+  row.names = colnames(listings),
+  "type" = sapply(listings, class)
+) %>% showT()
+@
+
+<<graphTest>>=
+ggplot(listings, aes(x= price )) +
+  geom_density() +
+  coord_cartesian(xlim = c(0, 1000))
+@
+
+\end{document}
