@@ -8,17 +8,18 @@ Add title
 Add Authors
 dps tirar os warnings
 arranjar e fazer cover page´
+Por cover minusculo tmb
   Para o cover eu quero fazer tipo
   1               autor1  autor2
   2               autor3  autor4
   3       
-  4          Titulo (talvez centrado)
-  5          Subtitulo se tiver
-  6
-  7       data                      versao
+  4          
+  5          Titulo (talvez centrado)
+  6          Subtitulo se tiver
+  7                           
   8
-  9           
+  9        data                   versao
   10
-  ou alguma coisa so género
+  ou alguma coisa do género
 Fazer o abstract (e por numa pagina sozinha)
 
