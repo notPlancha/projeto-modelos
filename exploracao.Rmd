@@ -1,0 +1,16 @@
+```{r}
+library(here)
+library(OpenStreetMap)
+data <- read.csv(here("listings.csv"))
+```
+
+
+```{r}
+OpenStreetMap::openmap(
+  c(max(data$latitude), min(data$longitude)), 
+  c(min(data$latitude), max(data$longitude)),
+  zoom = 10,
+  type ="bing"
+) %>% openproj() %>% autoplot.OpenStreetMap()
+```
+
