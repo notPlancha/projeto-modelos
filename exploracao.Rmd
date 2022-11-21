@@ -1,16 +1,21 @@
 ```{r}
-library(here)
-library(OpenStreetMap)
+library(pacman)
+p_load("here")
+p_load("rgeos")
+p_load("maptools")
+p_load("ggplot2")
+p_load("ggcounty") 
+
+#p_load_gh(
+#  "hrbrmstr/ggcounty"
+#)
+
 data <- read.csv(here("listings.csv"))
+maptools::gpclibPermitStatus()
 ```
 
 
 ```{r}
-OpenStreetMap::openmap(
-  c(max(data$latitude), min(data$longitude)), 
-  c(min(data$latitude), max(data$longitude)),
-  zoom = 10,
-  type ="bing"
-) %>% openproj() %>% autoplot.OpenStreetMap()
+ggcounty::ggcounty()
 ```
 
