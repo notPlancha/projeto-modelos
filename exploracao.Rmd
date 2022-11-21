@@ -1,21 +1,46 @@
 ```{r}
 library(pacman)
-p_load("here")
-p_load("rgeos")
-p_load("maptools")
-p_load("ggplot2")
-p_load("ggcounty") 
-
-#p_load_gh(
-#  "hrbrmstr/ggcounty"
-#)
-
-data <- read.csv(here("listings.csv"))
-maptools::gpclibPermitStatus()
+p_load(
+  here,
+  rgdal,
+  sf,
+  terra,
+  ggplot2,
+  tmap,
+  dplyr,
+  gridExtra
+)
+df <- read.csv(here("data", "listings.csv"))
 ```
-
 
 ```{r}
-ggcounty::ggcounty()
+shape <- st_read(here("data", "SF Find Neighborhoods"))
+tmap_mode("plot")
 ```
+
+```{r}
+shape_plot <- shape %>% ggplot()+ geom_sf()
+scatt<- shape_plot + 
+  geom_point(data=df, aes(y=latitude, x=longitude), alpha=0.5, color="red", size=0.1)
+```
+
+```{r}
+groups <- 30
+heat<- shape_plot + 
+  stat_bin2d(data= df, aes(x=longitude, y=latitude), alpha=0.7, bins = groups) +
+  scale_fill_viridis_c(option="C", trans="log") +
+  theme(legend.position = "none")
+grid.arrange(scatt, heat, ncol=2)
+```
+
+
+
+
+
+
+
+
+
+
+
 
