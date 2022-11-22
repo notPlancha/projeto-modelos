@@ -11,7 +11,8 @@ p_load(
   gridExtra,
   cowplot,
   ggforce,
-  concaveman
+  concaveman,
+  corrplot
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -25,9 +26,6 @@ tmap_mode("plot")
 shape_plot <- shape %>% ggplot()+ geom_sf()
 scatt<- shape_plot + 
   geom_point(data=df, aes(y=latitude, x=longitude), alpha=0.5, color="red", size=0.1)
-```
-
-```{r}
 groups <- 30
 heat<- shape_plot + 
   stat_bin2d(data= df, aes(x=longitude, y=latitude), alpha=0.7, bins = groups) +
@@ -48,9 +46,52 @@ grid.arrange(coloredScatt, coloredPolygn, ncol=2)
 ```
 
 ```{r}
-colors
+# price outliers
+lower_bound <- quantile(df$price, 0.025)
+upper_bound <- quantile(df$price, 0.975)
+df %>% filter(price < lower_bound) %>% arrange(price) %>% select(name, price, host_name)
+df %>% filter(price > upper_bound) %>% arrange(-price) %>% select(name, price, host_name) # tavlez separar aqueles luxuoses
+# há preços a 0
 ```
 
+
+```{r}
+pricePlot <- ggplot(data=df, aes(price))
+pricebox <- pricePlot + 
+  geom_boxplot() + 
+  coord_flip() +
+  xlim(0, 500) # hard to visualize
+pricebox
+```
+
+
+```{r}
+priceHistPer20 <- pricePlot + # nota-se uma subida a cada +- 50$
+  geom_histogram(binwidth=20, aes(y = ..density..)) +
+  xlim(0, upper_bound)
+priceHistPer50 <- pricePlot +
+  geom_histogram(binwidth=50, aes(y = ..density..)) +
+  geom_density(color="red") +
+  xlim(0, upper_bound)
+priceHistPer50
+grid.arrange(priceHistPer20, priceHistPer50, ncol=2) 
+```
+
+
+```{r}
+scattPriceMap <- shape_plot + 
+  geom_point(
+    data=df %>% filter(price < upper_bound),
+    aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.1
+  ) + scale_color_gradient(low="blue", high="red")
+scattPriceMap
+```
+
+
+
+```{r}
+corrplot(df %>% select_if(is.numeric) %>% cor(), method="pie")
+```
 
 
 
