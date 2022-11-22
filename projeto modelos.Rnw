@@ -34,8 +34,8 @@
     <Andre\_Plancha@iscte-iul.pt> \\
     Tomás Ribeiro, 105220 \\
     <tfroo1@iscte-iul.pt> \\
-    TODO AUTOR, NUMERO \\
-    <TODO EMAIL> \\
+    Afonso Silva, 105208 \\
+    <agsos@iscte-iul.pt> \\
     TODO AUTOR, NUMERO \\
     <TODO EMAIL>
   }
