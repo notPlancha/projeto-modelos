@@ -8,7 +8,10 @@ p_load(
   ggplot2,
   tmap,
   dplyr,
-  gridExtra
+  gridExtra,
+  cowplot,
+  ggforce,
+  concaveman
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -32,6 +35,48 @@ heat<- shape_plot +
   theme(legend.position = "none")
 grid.arrange(scatt, heat, ncol=2)
 ```
+
+
+```{r}
+coloredScatt <- shape_plot +
+  geom_point(data=df, aes(y=latitude, x=longitude, color=neighbourhood), alpha=0.5, size=0.1)+
+  theme(legend.position = "none")
+coloredPolygn <- shape_plot +
+  geom_mark_hull(data=df, aes(y=latitude, x=longitude, fill=neighbourhood), expand = 0, radius=0,alpha=0.7, size=0.1, level=0.2) + 
+  theme(legend.position = "none")
+grid.arrange(coloredScatt, coloredPolygn, ncol=2)
+```
+
+```{r}
+colors
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
