@@ -1,18 +1,4 @@
 ```{r}
-
-#install.packages("here")
-#install.packages("rgdal")
-#install.packages("sf")
-#install.packages("terra")
-#install.packages("ggplot2")
-#install.packages("tmap")
-#install.packages("dplyr")
-#install.packages("gridExtra")
-#install.packages("cowplot")
-#install.packages("ggforce")
-#install.packages("concaveman")
-#install.packages("pacman")
-
 library(pacman)
 p_load(
   here,
@@ -36,16 +22,32 @@ shape <- st_read(here("data", "SF Find Neighborhoods"))
 tmap_mode("plot")
 ```
 
+
 ```{r}
 shape_plot <- shape %>% ggplot()+ geom_sf()
 scatt<- shape_plot + 
   geom_point(data=df, aes(y=latitude, x=longitude), alpha=0.5, color="red", size=0.1)
 groups <- 30
-heat<- shape_plot + 
-  stat_bin2d(data= df, aes(x=longitude, y=latitude), alpha=0.7, bins = groups) +
+heatLog<- shape_plot + 
+  stat_bin2d(data= df, aes(x=longitude, y=latitude), alpha=0.7, bins = groups, interpolate= T) +
   scale_fill_viridis_c(option="C", trans="log") +
   theme(legend.position = "none")
-grid.arrange(scatt, heat, ncol=2)
+heat <- shape_plot + 
+  stat_bin2d(
+    data= df, 
+    aes(x=longitude, y=latitude), 
+    alpha=0.7, bins = groups, interpolate= T, linejoin="round"
+    ) +
+  scale_fill_viridis_c(option="C") +
+  theme(legend.position = "none")
+scatt
+grid.arrange(heat, heatLog, ncol=2)
+```
+```{r}
+df %>%
+  group_by(neighbourhood) %>%
+  summarise(n = n()) %>%
+  arrange(-n)
 ```
 
 
@@ -87,7 +89,6 @@ priceHistPer50 <- pricePlot +
   geom_histogram(binwidth=50, aes(y = ..density..)) +
   geom_density(color="red") +
   xlim(0, upper_bound)
-priceHistPer50
 grid.arrange(priceHistPer20, priceHistPer50, ncol=2) 
 ```
 
@@ -96,15 +97,56 @@ grid.arrange(priceHistPer20, priceHistPer50, ncol=2)
 scattPriceMap <- shape_plot + 
   geom_point(
     data=df %>% filter(price < upper_bound),
-    aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.1
-  ) + scale_color_gradient(low="blue", high="red")
+    aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
+  ) +
+  scale_color_gradient(low="blue", high="red")
+rasterPriceMap <- shape_plot +
+  stat_summary_2d(
+    data = df, 
+    aes(y=latitude, x=longitude, z=price), binwidth=0.005, alpha = 0.8
+    ) + 
+  scale_fill_viridis_c(option="C", trans="log10") #log(average price
+rasterLowerPriceMap <- shape_plot +
+  stat_summary_2d(
+    data = df %>% filter(price < upper_bound), 
+    aes(y=latitude, x=longitude, z=price), binwidth=0.005, alpha = 0.8
+    ) + 
+  scale_fill_viridis_c(option="D") #non luxury average price
+
+scattHighPriceMap <- shape_plot + 
+  geom_point(
+    data=df %>% filter(price >= upper_bound),
+    aes(y=latitude, x=longitude, color=price), alpha=0.5, size=2, 
+  ) +
+  scale_color_gradient(low="#FF731D", high="#2A3990")
 scattPriceMap
+rasterPriceMap
+rasterLowerPriceMap
+scattHighPriceMap
 ```
 
+
+```{r}
+cheaperPricesScatt <- shape_plot + 
+  geom_point(
+    data=df %>% filter(price <= mean(df$price)),
+    aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
+  ) +
+  scale_color_gradient(low="blue", high="red")
+MoreExpPricesScatt <- shape_plot + 
+  geom_point(
+    data=df %>% filter(price > mean(df$price) & price < upper_bound),
+    aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
+  ) +
+  scale_color_gradient(low="blue", high="red")
+cheaperPricesScatt
+MoreExpPricesScatt
+```
 
 
 ```{r}
 corrplot(df %>% select_if(is.numeric) %>% cor(), method="pie")
+mean(df$price)
 ```
 
 
