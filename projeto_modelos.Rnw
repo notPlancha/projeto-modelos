@@ -130,14 +130,26 @@ nrow(listings)
 
 A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}. 
 
-A base de dados contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
+A base de dados contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 <<listingsClasses>>=
 data.frame(
   row.names = colnames(listings),
   "type" = sapply(listings, class)
 ) %>% showT()
 @ 
-De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "dicionário de dados" que explica o significado de cada uma das variáveis
+De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "dicionário de dados"\cite{DicDadosAirBnb} que explica o significado de cada uma das variáveis:
+
+\begin{itemize}
+  \item \textbf{id}: Número que representa um identificador único do anúncio;
+  \item \textbf{name}: Título do anúncio;
+  \item \textbf{host\_id}: Identificador único da conta do hospedeiro;
+  \item \textbf{host\_name}: Nome da conta do hospedeiro;
+  \begin{itemize}
+    \item[] \textbf{host\_since}: Normalmente este campo inclui apenas o primeiro nome ou nome da instituição hospedeira
+  \end{itemize}
+  \item \textbf{neighbourhood\_group}: Este campo encontra-se vazio e não inclui descrição no dicionário;
+  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve districtos de São Francisco, como \Sexpr{paste(head(unique(listings$neighbourhood), 2), collapse = " e ")}. %TODO check this https://tldrify.com/19ov
+\end{itemize}
 
 \nobibliography{references.bib}
 \bibliographystyle{plainnat}

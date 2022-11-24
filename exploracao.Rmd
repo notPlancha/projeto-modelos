@@ -18,7 +18,7 @@ df <- read.csv(here("data", "listings.csv"))
 ```
 
 ```{r}
-shape <- st_read(here("data", "SF Find Neighborhoods"))
+shape <- st_read(here("data", "SF Planning Neighborhood Groups Map"))
 tmap_mode("plot")
 ```
 
@@ -44,11 +44,14 @@ scatt
 grid.arrange(heat, heatLog, ncol=2)
 ```
 ```{r}
-df %>%
+neighbourhoods <- df %>%
   group_by(neighbourhood) %>%
   summarise(n = n()) %>%
   arrange(-n)
+neighbourhoods
+neighbourhoods %>% nrow()
 ```
+
 
 
 ```{r}
@@ -153,11 +156,6 @@ mean(df$price)
 ```{r}
 md1 <- lm(reviews_per_month ~ number_of_reviews , df)
 md1
-```
-
-
-```{r}
-sessionInfo()
 ```
 
 
