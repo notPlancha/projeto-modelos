@@ -86,10 +86,10 @@
     <tfroo1@iscte-iul.pt> \\
     Afonso Silva, 105208 \\
     <agsos@iscte-iul.pt> \\
-    Primeiro e ultimo nome, NUMERO \\
+    TODO AUTOR, NUMERO \\
     <TODO EMAIL>
   }
-  \date{20/11/2022 \\ Versão 0.0.1} % 
+  \date{24/11/2022 \\ Versão 0.0.1} % 
 % }
 
 % { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
@@ -123,71 +123,43 @@
 
 Hello world
 
+Introdução
+
+O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no AIrbnb, com vista nesse objetivo foi nos disponibilizado uma base de dados que têm várias informações úteis para realizar esta tarefa.
+Usámos como suporte técnico a linguagem R através do uso de um computador pessoal quer para a limpeza de dados, o tratamento de dados, e as respetivas previsões efectuadas.
+
+Variaveis
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{listings} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"listings.csv"}\hlstd{))}
-\hlkwd{data.frame}\hlstd{(}\hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(listings),}
-    \hlkwc{type} \hlstd{=} \hlkwd{sapply}\hlstd{(listings, class))} \hlopt{%>%}
-    \hlkwd{showT}\hlstd{()}
 \end{alltt}
-\end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable}{l|l}
-\hline
-  & type\\
-\hline
-\cellcolor{gray!6}{id} & \cellcolor{gray!6}{numeric}\\
-\hline
-name & character\\
-\hline
-\cellcolor{gray!6}{host\_id} & \cellcolor{gray!6}{integer}\\
-\hline
-host\_name & character\\
-\hline
-\cellcolor{gray!6}{neighbourhood\_group} & \cellcolor{gray!6}{logical}\\
-\hline
-neighbourhood & character\\
-\hline
-\cellcolor{gray!6}{latitude} & \cellcolor{gray!6}{numeric}\\
-\hline
-longitude & numeric\\
-\hline
-\cellcolor{gray!6}{room\_type} & \cellcolor{gray!6}{character}\\
-\hline
-price & integer\\
-\hline
-\cellcolor{gray!6}{minimum\_nights} & \cellcolor{gray!6}{integer}\\
-\hline
-number\_of\_reviews & integer\\
-\hline
-\cellcolor{gray!6}{last\_review} & \cellcolor{gray!6}{character}\\
-\hline
-reviews\_per\_month & numeric\\
-\hline
-\cellcolor{gray!6}{calculated\_host\_listings\_count} & \cellcolor{gray!6}{integer}\\
-\hline
-availability\_365 & integer\\
-\hline
-\cellcolor{gray!6}{number\_of\_reviews\_ltm} & \cellcolor{gray!6}{integer}\\
-\hline
-license & character\\
-\hline
-\end{RTable}
-\endgroup{}
 
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in file(file, "{}rt"{}): cannot open file 'C:/Users/tomas/Documents/projeto-modelos/listings.csv': No such file or directory}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection}}\begin{alltt}
+\hlkwd{data.frame}\hlstd{(}
+  \hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(listings),}
+  \hlstr{"type"} \hlstd{=} \hlkwd{sapply}\hlstd{(listings, class)}
+\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(x): object 'listings' not found}}\end{kframe}
 \end{knitrout}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggplot}\hlstd{(listings,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price))} \hlopt{+} \hlkwd{geom_density}\hlstd{()} \hlopt{+}
-    \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1000}\hlstd{))}
+\hlkwd{ggplot}\hlstd{(listings,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{= price ))} \hlopt{+}
+  \hlkwd{geom_density}\hlstd{()} \hlopt{+}
+  \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1000}\hlstd{))}
 \end{alltt}
-\end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/graphTest-1} \caption[ ]{ }\label{fig:graphTest}
-\end{marginfigure}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ggplot(listings, aes(x = price)): object 'listings' not found}}\end{kframe}
 \end{knitrout}
 
 \end{document}

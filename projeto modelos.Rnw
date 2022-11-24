@@ -106,6 +106,13 @@ showT <- function(x, ...) {
 
 Hello world
 
+Introdução
+
+O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no AIrbnb, com vista nesse objetivo foi nos disponibilizado uma base de dados que têm várias informações úteis para realizar esta tarefa.
+Usámos como suporte técnico a linguagem R através do uso de um computador pessoal quer para a limpeza de dados, o tratamento de dados, e as respetivas previsões efectuadas.
+
+Variaveis
+
 <<listings>>=
 listings <- read.csv(here("listings.csv"))
 data.frame(
