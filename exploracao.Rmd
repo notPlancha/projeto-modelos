@@ -53,20 +53,19 @@ df %>%
 
 ```{r}
 coloredScatt <- shape_plot +
-  geom_point(data=df, aes(y=latitude, x=longitude, color=neighbourhood), alpha=0.5, size=0.1)+
-  theme(legend.position = "none")
+  geom_point(data=df, aes(y=latitude, x=longitude, color=neighbourhood), alpha=0.5, size=0.1)
 coloredPolygn <- shape_plot +
-  geom_mark_hull(data=df, aes(y=latitude, x=longitude, fill=neighbourhood), expand = 0, radius=0,alpha=0.7, size=0.1, level=0.2) + 
-  theme(legend.position = "none")
-grid.arrange(coloredScatt, coloredPolygn, ncol=2)
+  geom_mark_hull(data=df, aes(y=latitude, x=longitude, fill=neighbourhood), expand = 0, radius=0,alpha=0.7, size=0.1, level=0.2)
+coloredScatt
+coloredPolygn
 ```
 
 ```{r}
 # price outliers
 lower_bound <- quantile(df$price, 0.025)
 upper_bound <- quantile(df$price, 0.975)
-df %>% filter(price < lower_bound) %>% arrange(price) %>% select(name, price, host_name)
-df %>% filter(price > upper_bound) %>% arrange(-price) %>% select(name, price, host_name) # tavlez separar aqueles luxuoses
+df %>% filter(price < lower_bound) %>% arrange(price) %>% select(name, price, host_name, neighbourhood)
+df %>% filter(price > upper_bound) %>% arrange(-price) %>% select(name, price, host_name, neighbourhood) # talvez separar aqueles luxuosas
 # há preços a 0
 ```
 
@@ -75,10 +74,11 @@ df %>% filter(price > upper_bound) %>% arrange(-price) %>% select(name, price, h
 pricePlot <- ggplot(data=df, aes(price))
 pricebox <- pricePlot + 
   geom_boxplot() + 
-  coord_flip() +
-  xlim(0, 500) # hard to visualize
-pricebox
+  coord_flip()
+pricebox # hard to visualize without xlim, but it becomes easier to see the high outliers
+pricebox+ xlim(0, 500)
 ```
+
 
 
 ```{r}
@@ -120,9 +120,9 @@ scattHighPriceMap <- shape_plot +
   ) +
   scale_color_gradient(low="#FF731D", high="#2A3990")
 scattPriceMap
-rasterPriceMap
-rasterLowerPriceMap
 scattHighPriceMap
+rasterLowerPriceMap
+rasterPriceMap
 ```
 
 
