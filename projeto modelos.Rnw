@@ -22,6 +22,9 @@
     \usepackage[normalem]{ulem}
     \usepackage{makecell}
     \usepackage{xcolor}
+    \usepackage{comment}
+    \usepackage{lipsum}
+    %\usepackage{showframe}
   % }
 % }
 
@@ -50,7 +53,7 @@
 \newenvironment{RTable}[1]{\begin{margintable}\begin{center}\begin{tabular}{#1}}{\end{tabular}\end{center}\end{margintable}}
 % }
 
-\bibliography{references.bib}
+\nobibliography{references.bib}
 
 
 \begin{document}
@@ -103,28 +106,37 @@ showT <- function(x, ...) {
   \thispagestyle{empty}
   \clearpage
 % }
-
-Hello world
-
-Introdução
-
+% abstract
+  \newgeometry{left=30mm, right=107mm, textwidth=100mm}
+  \vspace*{1cm}
+  \begin{fullwidth}
+    \Large{
+      Hello 
+      \lipsum[2]
+      \vspace{5cm}
+      \lipsum[3]
+      \thispagestyle{empty}
+    }
+    \clearpage
+  \end{fullwidth}
+  \restoregeometry
+% }
+% descricao airbnb TODO
+% also o airbnb n vende quartos
 O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no AIrbnb, com vista nesse objetivo foi nos disponibilizado uma base de dados que têm várias informações úteis para realizar esta tarefa.
 Usámos como suporte técnico a linguagem R através do uso de um computador pessoal quer para a limpeza de dados, o tratamento de dados, e as respetivas previsões efectuadas.
 
-Variaveis
-
 <<listings>>=
-listings <- read.csv(here("listings.csv"))
+listings <- read.csv(here("data", "listings.csv"))
+nrow(listings)
+@
+
+A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, um projeto fundado por Murray Cox que contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e liçensa do alojamento.
+<<listingsClasses>>=
 data.frame(
   row.names = colnames(listings),
   "type" = sapply(listings, class)
 ) %>% showT()
-@
-
-<<graphTest>>=
-ggplot(listings, aes(x= price )) +
-  geom_density() +
-  coord_cartesian(xlim = c(0, 1000))
-@
-
+@ 
+De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "dicionário de dados" que explica o significado de cada uma das variáveis
 \end{document}
