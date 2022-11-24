@@ -53,9 +53,6 @@
 \newenvironment{RTable}[1]{\begin{margintable}\begin{center}\begin{tabular}{#1}}{\end{tabular}\end{center}\end{margintable}}
 % }
 
-\nobibliography{references.bib}
-
-
 \begin{document}
 <<SETUP, echo=FALSE, warning=FALSE, message=FALSE>>=
 if (!require("pacman")) install.packages("pacman", repos = "https://cran.radicaldevelop.com/")
@@ -131,7 +128,9 @@ listings <- read.csv(here("data", "listings.csv"))
 nrow(listings)
 @
 
-A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, um projeto fundado por Murray Cox que contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e liçensa do alojamento.
+A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}. 
+
+A base de dados contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 <<listingsClasses>>=
 data.frame(
   row.names = colnames(listings),
@@ -139,4 +138,7 @@ data.frame(
 ) %>% showT()
 @ 
 De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "dicionário de dados" que explica o significado de cada uma das variáveis
+
+\nobibliography{references.bib}
+\bibliographystyle{plainnat}
 \end{document}

@@ -102,8 +102,6 @@
 % {R code and table
 \newenvironment{RTable}[1]{\begin{margintable}\begin{center}\begin{tabular}{#1}}{\end{tabular}\end{center}\end{margintable}}
 % }
-
-\nobibliography{references.bib}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -155,7 +153,9 @@ Usámos como suporte técnico a linguagem R através do uso de um computador pes
 \end{kframe}
 \end{knitrout}
 
-A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, um projeto fundado por Murray Cox que contém 6629 entradas, e cada uma delas representa um registo de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e liçensa do alojamento.
+A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}. 
+
+A base de dados contém 6629 entradas, e cada uma delas representa um registo de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -210,4 +210,7 @@ license & character\\
 
 \end{knitrout}
 De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "dicionário de dados" que explica o significado de cada uma das variáveis
+
+\nobibliography{references.bib}
+\bibliographystyle{plainnat}
 \end{document}
