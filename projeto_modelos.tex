@@ -92,7 +92,7 @@
     TODO AUTOR, NUMERO \\
     <TODO EMAIL>
   }
-  \date{24/11/2022 \\ Versão 0.0.1} % 
+  \date{25/11/2022 \\ Versão 0.0.1} % 
 % }
 
 % { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
@@ -104,6 +104,7 @@
 % }
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
+
 
 
 % cover { 
@@ -156,12 +157,14 @@ Usámos como suporte técnico a linguagem R através do uso de um computador pes
 A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}. 
 
 A base de dados contém 6629 entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{data.frame}\hlstd{(}\hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(listings),}
-    \hlkwc{type} \hlstd{=} \hlkwd{sapply}\hlstd{(listings, class))} \hlopt{%>%}
-    \hlkwd{showT}\hlstd{()}
+\hlkwd{data.frame}\hlstd{(}
+  \hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(listings),}
+  \hlstr{"type"} \hlstd{=} \hlkwd{sapply}\hlstd{(listings, class)}
+\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begingroup\fontsize{10}{12}\selectfont
 

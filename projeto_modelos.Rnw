@@ -54,38 +54,12 @@
 % }
 
 \begin{document}
-<<SETUP, echo=FALSE, warning=FALSE, message=FALSE>>=
-if (!require("pacman")) install.packages("pacman", repos = "https://cran.radicaldevelop.com/")
-pacman::p_load(
-  here, 
-  knitr, 
-  kableExtra,
-  gtsummary,
-  ggplot2
-)
+<<getChunk, echo=FALSE, warning=FALSE, message=FALSE>>=
+if (!require("knitr")) install.packages("knitr", repos = "https://cran.radicaldevelop.com/")
+knitr::read_chunk("chunks.R")
 
-opts_chunk$set(
-  warning = TRUE, 
-  message = TRUE,
-  tidy.opts = list(width.cutoff = 40), 
-  tidy = TRUE,
-  fig.cap = " ",
-  fig.env = 'marginfigure',
-  fig.width = 4,
-  fig.height = 4
-)
+<<chunk-setup, echo=FALSE, warning=FALSE, message=FALSE>>=
 
-
-
-
-showT <- function(x, ...) {
-  kable(x, ...) %>% 
-    kable_styling(full_width = F, 
-                  position = "left",  
-                  font_size = 10, 
-                  latex_options = c("striped"),
-                  latex_table_env= "RTable") # TODO chaneg to new env
-}
 @
 
 % cover { 
@@ -123,19 +97,15 @@ showT <- function(x, ...) {
 O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no AIrbnb, com vista nesse objetivo foi nos disponibilizado uma base de dados que têm várias informações úteis para realizar esta tarefa.
 Usámos como suporte técnico a linguagem R através do uso de um computador pessoal quer para a limpeza de dados, o tratamento de dados, e as respetivas previsões efectuadas.
 
-<<listings>>=
-listings <- read.csv(here("data", "listings.csv"))
-nrow(listings)
+<<chunk-listings>>=
+
 @
 
 A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}. 
 
 A base de dados contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
-<<listingsClasses>>=
-data.frame(
-  row.names = colnames(listings),
-  "type" = sapply(listings, class)
-) %>% showT()
+
+<<chunk-listingsClasses>>=
 @ 
 De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "dicionário de dados"\cite{DicDadosAirBnb} que explica o significado de cada uma das variáveis:
 
