@@ -13,7 +13,8 @@ p_load(
   ggforce,
   concaveman,
   corrplot,
-  tidyr 
+  tidyr
+  car
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -207,6 +208,15 @@ mean(df$price)
 md1 <- lm(reviews_per_month ~ number_of_reviews , df)
 md1
 ```
+
+```{r}
+df2 <- df %>% select(latitude,longitude,price, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, number_of_reviews_ltm)
+
+scatterplotMatrix(df2, smooth = FALSE, main="Scatter Plot Matrix")
+
+```
+
+
 
 
 
