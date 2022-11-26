@@ -7,14 +7,18 @@ pacman::p_load(
   gtsummary,
   ggplot2
 )
-showT <- function(x, ...) {
+showT <- function(x, fullWidth = F, ...) {
   kable(x, ...) %>% 
-    kable_styling(full_width = F, 
-                  position = "left",  
-                  font_size = 10, 
-                  latex_options = c("striped"),
-                  latex_table_env= "RTable")
+    kable_styling(
+      full_width = F, 
+      position = "left",  
+      font_size = 10, 
+      latex_options = c("striped"),
+      latex_table_env= ifelse(fullWidth, "tabular", "RTable")
+      )
 }
+
+show
 opts_chunk$set(
   warning = TRUE, 
   message = TRUE,
@@ -35,3 +39,7 @@ data.frame(
   row.names = colnames(listings),
   "type" = sapply(listings, class)
 ) %>% showT()
+
+## ---- chunk-listingsHead ----
+listings %>% head(5) %>% showT(T)
+

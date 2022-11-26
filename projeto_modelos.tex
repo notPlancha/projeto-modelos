@@ -105,7 +105,21 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## standardGeneric for "show" defined from package "methods"
+## 
+## function (object) 
+## standardGeneric("show")
+## <bytecode: 0x000001a87009b490>
+## <environment: 0x000001a86ed20280>
+## Methods may be defined for arguments: object
+## Use  showMethods(show)  for currently available ones.
+## (This generic function excludes non-simple inheritance; see ?setIs)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 % cover { 
   \cleardoublepage
@@ -167,7 +181,7 @@ A base de dados contém 6629 entradas, e cada uma delas representa um registo de
 \end{alltt}
 \end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable}{l|l}
+\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright}X}
 \hline
   & type\\
 \hline
@@ -207,7 +221,7 @@ availability\_365 & integer\\
 \hline
 license & character\\
 \hline
-\end{RTable}
+\end{tabu}
 \endgroup{}
 
 \end{knitrout}
@@ -217,15 +231,50 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{id}: Número que representa um identificador único do anúncio;
   \item \textbf{name}: Título do anúncio;
   \item \textbf{host\_id}: Identificador único da conta do hospedeiro;
-  \item \textbf{host\_name}: Nome da conta do hospedeiro;
-  \begin{itemize}
-    \item[] \textbf{host\_since}: Normalmente este campo inclui apenas o primeiro nome ou nome da instituição hospedeira
-  \end{itemize}
+  \item \textbf{host\_name}: Nome da conta do hospedeiro \sidenote{Normalmente este campo inclui apenas o primeiro nome ou nome da instituição hospedeira};
   \item \textbf{neighbourhood\_group}: Este campo encontra-se vazio e não inclui descrição no dicionário;
-  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve bairros de São Francisco como definido pelo Departamento de Planejamento da cidade \sidenote{Os bairros de São Francisco não contém fronteiras oficiais e dependem da fonte(\href{sfplanning.org}{tldrify.com/19p8}), logo a definição das fronteiras definidas pelo Airbnb tiveram de ser determinadas. Mais à frente será demonstrado as fronteiras}.
+  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve bairros de São Francisco como definido pelo Departamento de Planejamento da cidade \sidenote{Os bairros de São Francisco não contém fronteiras oficiais e dependem da fonte (\url{tldrify.com/19p8}), logo a definição das fronteiras definidas pelo Airbnb tiveram de ser determinadas. Mais à frente será demonstrado as fronteiras};
   \item \textbf{latitude/longitude}: Coordenadas geográficas do alojamento;
-  \item \textbf{room\_type}: Tipo de alojamento, Entre "Quarto privado", "Quarto partilhado", "Quarto de hotel", e "Casa/Apartamento inteiro";
+  \item \textbf{room\_type}: Tipo de alojamento, entre "Quarto privado", "Quarto partilhado", "Quarto de hotel", e "Casa/Apartamento inteiro";
+  \item \textbf{price}: Preço do alojamento por noite em USD;
+  \item \textbf{minimum\_nights}: Número mínimo de noites que o hospedeiro exige para alugar o alojamento;
+  \item \textbf{number\_of\_reviews}: Número total de \textit{reviews} que o alojamento tem;
+  \item \textbf{last\_review}: Data da última \textit{review} que o alojamento recebeu;
+  \item \textbf{reviews\_per\_month}: Número médio de \textit{reviews} que o alojamento recebe por mês;
+  \item \textbf{calculated\_host\_listings\_count}: Número de alojamentos que o hospedeiro tem disponíveis em São Francisco;
+  \item \textbf{availability\_365}: Número de dias que o alojamento está disponível por ano.
+  \item \textbf{number\_of\_reviews\_ltm}: Número de \textit{reviews} que o alojamento recebeu nos últimos 12 meses;
+  \item \textbf{license}: A licença/autorização/número de registo do alojamento.
 \end{itemize}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{listings} \hlopt{%>%}
+    \hlkwd{head}\hlstd{(}\hlnum{5}\hlstd{)} \hlopt{%>%}
+    \hlkwd{showT}\hlstd{(T)}
+\end{alltt}
+\end{kframe}\begingroup\fontsize{10}{12}\selectfont
+
+\begin{tabu} to \linewidth {>{\raggedleft}X>{\raggedright}X>{\raggedleft}X>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedleft}X>{\raggedleft}X>{\raggedright}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedright}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedright}X}
+\hline
+id & name & host\_id & host\_name & neighbourhood\_group & neighbourhood & latitude & longitude & room\_type & price & minimum\_nights & number\_of\_reviews & last\_review & reviews\_per\_month & calculated\_host\_listings\_count & availability\_365 & number\_of\_reviews\_ltm & license\\
+\hline
+\cellcolor{gray!6}{958} & \cellcolor{gray!6}{Bright, Modern Garden Unit - 1BR/1BTH} & \cellcolor{gray!6}{1169} & \cellcolor{gray!6}{Holly} & \cellcolor{gray!6}{NA} & \cellcolor{gray!6}{Western Addition} & \cellcolor{gray!6}{37.77028} & \cellcolor{gray!6}{-122.4332} & \cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{180} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{358} & \cellcolor{gray!6}{2022-08-21} & \cellcolor{gray!6}{2.24} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{140} & \cellcolor{gray!6}{60} & \cellcolor{gray!6}{City Registration Pending}\\
+\hline
+5858 & Creative Sanctuary & 8904 & Philip And Tania & NA & Bernal Heights & 37.74474 & -122.4209 & Entire home/apt & 235 & 30 & 111 & 2017-08-06 & 0.68 & 1 & 365 & 0 & \\
+\hline
+\cellcolor{gray!6}{8014} & \cellcolor{gray!6}{room in FEMALE house WIFI market nearby} & \cellcolor{gray!6}{22402} & \cellcolor{gray!6}{Jia} & \cellcolor{gray!6}{NA} & \cellcolor{gray!6}{Outer Mission} & \cellcolor{gray!6}{37.73077} & \cellcolor{gray!6}{-122.4483} & \cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{61} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{86} & \cellcolor{gray!6}{2022-09-04} & \cellcolor{gray!6}{0.70} & \cellcolor{gray!6}{3} & \cellcolor{gray!6}{5} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{STR-0000974}\\
+\hline
+8142 & Friendly Room Apt. Style -UCSF/USF - San Francisco & 21994 & Aaron & NA & Haight Ashbury & 37.76555 & -122.4521 & Private room & 56 & 32 & 8 & 2018-09-12 & 0.08 & 12 & 297 & 0 & \\
+\hline
+\cellcolor{gray!6}{8339} & \cellcolor{gray!6}{Historic Alamo Square Victorian} & \cellcolor{gray!6}{24215} & \cellcolor{gray!6}{Rosy} & \cellcolor{gray!6}{NA} & \cellcolor{gray!6}{Western Addition} & \cellcolor{gray!6}{37.77564} & \cellcolor{gray!6}{-122.4364} & \cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{895} & \cellcolor{gray!6}{7} & \cellcolor{gray!6}{28} & \cellcolor{gray!6}{2019-06-28} & \cellcolor{gray!6}{0.18} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{351} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{STR-0000264}\\
+\hline
+\end{tabu}
+\endgroup{}
+
+\end{knitrout}
+
 
 \nobibliography{references.bib}
 \bibliographystyle{plainnat}
