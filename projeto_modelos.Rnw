@@ -39,8 +39,8 @@
     <tfroo1@iscte-iul.pt> \\
     Afonso Silva, 105208 \\
     <agsos@iscte-iul.pt> \\
-    TODO AUTOR, NUMERO \\
-    <TODO EMAIL>
+    Rui Chaves, 104914 \\
+    rfpcs1@iscte-iul.pt
   }
   \date{\Sexpr{format(Sys.Date(), format="%d/%m/%Y")} \\ Versão 0.0.1} % 
 % }
