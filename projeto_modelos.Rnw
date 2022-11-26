@@ -98,7 +98,6 @@ O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o pr
 Usámos como suporte técnico a linguagem R através do uso de um computador pessoal quer para a limpeza de dados, o tratamento de dados, e as respetivas previsões efectuadas.
 
 <<chunk-listings>>=
-
 @
 
 A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}. 
@@ -118,7 +117,9 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
     \item[] \textbf{host\_since}: Normalmente este campo inclui apenas o primeiro nome ou nome da instituição hospedeira
   \end{itemize}
   \item \textbf{neighbourhood\_group}: Este campo encontra-se vazio e não inclui descrição no dicionário;
-  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve districtos de São Francisco, como \Sexpr{paste(head(unique(listings$neighbourhood), 2), collapse = " e ")}. %TODO check this https://tldrify.com/19ov
+  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve bairros de São Francisco como definido pelo Departamento de Planejamento da cidade \sidenote{Os bairros de São Francisco não contém fronteiras oficiais e dependem da fonte(\href{sfplanning.org}{tldrify.com/19p8}), logo a definição das fronteiras definidas pelo Airbnb tiveram de ser determinadas. Mais à frente será demonstrado as fronteiras}.
+  \item \textbf{latitude/longitude}: Coordenadas geográficas do alojamento;
+  \item \textbf{room\_type}: Tipo de alojamento, Entre "Quarto privado", "Quarto partilhado", "Quarto de hotel", e "Casa/Apartamento inteiro";
 \end{itemize}
 
 \nobibliography{references.bib}

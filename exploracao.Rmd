@@ -12,7 +12,8 @@ p_load(
   cowplot,
   ggforce,
   concaveman,
-  corrplot
+  corrplot,
+  tidyr 
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -136,15 +137,64 @@ cheaperPricesScatt <- shape_plot +
     aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
   ) +
   scale_color_gradient(low="blue", high="red")
-MoreExpPricesScatt <- shape_plot + 
+MoreExpNotLuxPricesScatt <- shape_plot + 
   geom_point(
     data=df %>% filter(price > mean(df$price) & price < upper_bound),
     aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
   ) +
   scale_color_gradient(low="blue", high="red")
 cheaperPricesScatt
-MoreExpPricesScatt
+MoreExpNotLuxPricesScatt
 ```
+```{r}
+df %>%
+  group_by(room_type) %>% 
+  summarise(
+    n = n(), 
+    freq = n()/nrow(.),
+    averagePrice = mean(price), 
+    minPrice = min(price), 
+    maxPrice = max(price)
+  )
+df %>% 
+  group_by(neighbourhood) %>% 
+  summarise(
+    n = n(), 
+    freq = n()/nrow(.),
+    averagePrice = mean(price), 
+    minPrice = min(price), 
+    maxPrice = max(price)
+  ) %>% arrange(-n)
+df %>% 
+  group_by(neighbourhood, room_type) %>%
+  summarise(
+    n = n(), 
+    averagePrice = mean(price), 
+    minPrice = min(price), 
+    maxPrice = max(price)
+  ) %>% 
+  arrange(neighbourhood, room_type)
+df %>% 
+  group_by(neighbourhood, room_type) %>%
+  summarise(
+    n = n(), 
+    averagePrice = mean(price), 
+    minPrice = min(price), 
+    maxPrice = max(price)
+  ) %>% 
+  arrange(-averagePrice)
+df %>% 
+  group_by(neighbourhood, room_type) %>%
+  filter(price < upper_bound) %>%
+  summarise(
+    n = n(),
+    averagePrice = mean(price), 
+    minPrice = min(price), 
+    maxPrice = max(price)
+  ) %>% 
+  arrange(-averagePrice)
+```
+
 
 
 ```{r}

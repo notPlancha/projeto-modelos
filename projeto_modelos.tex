@@ -92,7 +92,7 @@
     TODO AUTOR, NUMERO \\
     <TODO EMAIL>
   }
-  \date{25/11/2022 \\ Versão 0.0.1} % 
+  \date{26/11/2022 \\ Versão 0.0.1} % 
 % }
 
 % { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
@@ -161,10 +161,9 @@ A base de dados contém 6629 entradas, e cada uma delas representa um registo de
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{data.frame}\hlstd{(}
-  \hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(listings),}
-  \hlstr{"type"} \hlstd{=} \hlkwd{sapply}\hlstd{(listings, class)}
-\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+\hlkwd{data.frame}\hlstd{(}\hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(listings),}
+    \hlkwc{type} \hlstd{=} \hlkwd{sapply}\hlstd{(listings, class))} \hlopt{%>%}
+    \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
@@ -223,7 +222,9 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
     \item[] \textbf{host\_since}: Normalmente este campo inclui apenas o primeiro nome ou nome da instituição hospedeira
   \end{itemize}
   \item \textbf{neighbourhood\_group}: Este campo encontra-se vazio e não inclui descrição no dicionário;
-  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve districtos de São Francisco, como Western Addition e Bernal Heights. %TODO check this https://tldrify.com/19ov
+  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve bairros de São Francisco como definido pelo Departamento de Planejamento da cidade \sidenote{Os bairros de São Francisco não contém fronteiras oficiais e dependem da fonte(\href{sfplanning.org}{tldrify.com/19p8}), logo a definição das fronteiras definidas pelo Airbnb tiveram de ser determinadas. Mais à frente será demonstrado as fronteiras}.
+  \item \textbf{latitude/longitude}: Coordenadas geográficas do alojamento;
+  \item \textbf{room\_type}: Tipo de alojamento, Entre "Quarto privado", "Quarto partilhado", "Quarto de hotel", e "Casa/Apartamento inteiro";
 \end{itemize}
 
 \nobibliography{references.bib}
