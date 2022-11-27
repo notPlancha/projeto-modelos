@@ -26,7 +26,7 @@
     \usepackage{lipsum}
     \usepackage{tabulary}
     \usepackage{tabularx}
-    %\usepackage{showframe}
+    % \usepackage{showframe}
   % }
 % }
 
@@ -62,7 +62,6 @@ if (!require("knitr")) install.packages("knitr", repos = "https://cran.radicalde
 knitr::read_chunk("chunks.R")
 
 <<chunk-setup, echo=FALSE, warning=FALSE, message=FALSE>>=
-
 @
 
 % cover { 
@@ -100,14 +99,14 @@ knitr::read_chunk("chunks.R")
 O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no AIrbnb, com vista nesse objetivo foi nos disponibilizado uma base de dados que têm várias informações úteis para realizar esta tarefa.
 Usámos como suporte técnico a linguagem R através do uso de um computador pessoal quer para a limpeza de dados, o tratamento de dados, e as respetivas previsões efectuadas.
 
-<<chunk-listings>>=
+<<chunk-dfLoad, results=FALSE>>=
 @
 
 A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
 
-A base de dados contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
+A base de dados contém \Sexpr{nrow(df)} entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 
-<<chunk-listingsClasses>>=
+<<chunk-dfClasses>>=
 @ 
 De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "dicionário de dados"\cite{DicDadosAirBnb} que explica o significado de cada uma das variáveis:
 
@@ -131,7 +130,28 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{license}: A licença/autorização/número de registo do alojamento.
 \end{itemize}
 
-<<chunk-listingsHead>>=
+<<chunk-dfHead>>=
+@
+Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede\sidenote{Estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.}, a disponibilidade do alojamento durante o ano, e a licença do alojamento. 
+
+Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade entre [distritos], mas que também existem muitos alojamentos no resto das cidades.  %TODO remove if not needed
+<<chunk-plotPlace>>=
+@
+Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas julgamos que não vá interferir com as nossas análises, devido ao correto agrupamento\sidenote{Demonstrado mais à frente.} e à proximidade da cidade. Embora a razão nos seja desconhecida, acreditamos que o próprio Airbnb agrupa desta forma esses locais devido à sua proximidade com a cidade. \\
+A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
+<<chunk-rasterPlaces>>= 
+
+<<chunk-rasterLegend>>=
+@
+O mapa claramente demonstra a concentração de alojamentos na zona clara, mas também consegue-se observar uma grande quantidade, embora mais dispersos, na zona central.
+<<chunk-freqTableNeighbs>>=
+@ 
+A tabela mostra que a maioria dos alojamentos listados estão localizados no distrito de \textit{Downtown/Civic Center} e \textit{Mission}.
+
+<<chunk-plotNeighbs>>=
+
+<<chunk-hullNeighbs>>=
+<<chunk-hullLegend>>=
 @
 
 \nobibliography{references.bib}

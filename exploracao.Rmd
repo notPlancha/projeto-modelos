@@ -40,8 +40,7 @@ heat <- shape_plot +
     aes(x=longitude, y=latitude), 
     alpha=0.7, bins = groups, interpolate= T, linejoin="round"
     ) +
-  scale_fill_viridis_c(option="C") +
-  theme(legend.position = "none")
+  scale_fill_viridis_c(option="C")
 scatt
 grid.arrange(heat, heatLog, ncol=2)
 ```
@@ -128,6 +127,7 @@ scattPriceMap
 scattHighPriceMap
 rasterLowerPriceMap
 rasterPriceMap
+df %>% arrange(latitude)
 ```
 
 
