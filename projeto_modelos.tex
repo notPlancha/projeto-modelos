@@ -148,20 +148,23 @@ Usámos como suporte técnico a linguagem R através do uso de um computador pes
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"listings.csv"}\hlstd{))}
-\hlstd{shape} \hlkwb{<-} \hlkwd{st_read}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"SF Planning Neighborhood Groups Map"}\hlstd{))}
+\hlstd{df} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,}
+    \hlstr{"listings.csv"}\hlstd{))}
+\hlstd{shape} \hlkwb{<-} \hlkwd{st_read}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,}
+    \hlstr{"SF Planning Neighborhood Groups Map"}\hlstd{))}
 \hlkwd{tmap_mode}\hlstd{(}\hlstr{"plot"}\hlstd{)}
 \end{alltt}
 
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# tmap mode set to plotting}}\begin{alltt}
 \hlstd{shape_plot} \hlkwb{<-} \hlstd{shape} \hlopt{%>%}
-    \hlkwd{ggplot}\hlstd{()} \hlopt{+} \hlkwd{geom_sf}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"bottom"}\hlstd{)}
+    \hlkwd{ggplot}\hlstd{()} \hlopt{+} \hlkwd{geom_sf}\hlstd{()} \hlopt{+}
+    \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"bottom"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
+A base de dados que nos foi disponibilizada vem do  projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
 
 A base de dados contém 6629 entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 
@@ -174,7 +177,7 @@ A base de dados contém 6629 entradas, e cada uma delas representa um registo de
 \end{alltt}
 \end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable}{l|c}
+\begin{RTable}{l|r}
 \hline
   & type\\
 \hline
@@ -243,8 +246,8 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# df %>% head(1) %>% t() %>%}
-\hlcom{# showT(T)}
+\hlcom{# df %>% head(1) %>% t()}
+\hlcom{# %>% showT(T)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -270,7 +273,8 @@ A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 \begin{alltt}
 \hlstd{rast} \hlkwb{<-} \hlstd{(shape_plot} \hlopt{+} \hlkwd{stat_bin2d}\hlstd{(}\hlkwc{data} \hlstd{= df,}
     \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= longitude,} \hlkwc{y} \hlstd{= latitude),}
-    \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{,} \hlkwc{bins} \hlstd{=} \hlnum{30}\hlstd{,} \hlkwc{linejoin} \hlstd{=} \hlstr{"round"}\hlstd{)} \hlopt{+}
+    \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{,} \hlkwc{bins} \hlstd{=} \hlnum{30}\hlstd{,}
+    \hlkwc{linejoin} \hlstd{=} \hlstr{"round"}\hlstd{)} \hlopt{+}
     \hlkwd{scale_fill_viridis_c}\hlstd{(}\hlkwc{option} \hlstd{=} \hlstr{"C"}\hlstd{))}
 \hlstd{rast}
 \end{alltt}
@@ -298,7 +302,7 @@ O mapa claramente demonstra a concentração de alojamentos na zona clara, mas t
 \end{alltt}
 \end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable}{c|c|c}
+\begin{RTable}{r|r|r}
 \hline
 neighbourhood & n & freq\\
 \hline
@@ -331,26 +335,115 @@ A tabela mostra que a maioria dos alojamentos listados estão localizados no dis
     \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,} \hlkwc{x} \hlstd{= longitude,}
         \hlkwc{color} \hlstd{= neighbourhood),}
     \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+}
-    \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
+    \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= (df} \hlopt{%>%}
+        \hlkwd{filter}\hlstd{(neighbourhood} \hlopt{==}
+            \hlstr{"Downtown/Civic Center"}\hlstd{)),}
+        \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,}
+            \hlkwc{x} \hlstd{= longitude),}
+        \hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{alpha} \hlstd{=} \hlnum{1}\hlstd{,}
+        \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{marginfigure}
 \includegraphics[width=\maxwidth]{figure/chunk-plotNeighbs-1} \end{marginfigure}
 
-\begin{kframe}\begin{alltt}
-\hlcom{## -- chunk-hullNeighbs}
-\hlstd{hull} \hlkwb{<-} \hlstd{shape_plot} \hlopt{+} \hlkwd{geom_mark_hull}\hlstd{(}\hlkwc{data} \hlstd{= df,}
-    \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,} \hlkwc{x} \hlstd{= longitude,}
-        \hlkwc{fill} \hlstd{= neighbourhood),}
-    \hlkwc{expand} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{radius} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{,}
-    \hlkwc{linewidth} \hlstd{=} \hlnum{0.1}\hlstd{)}
-\hlstd{hull} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
+\end{knitrout}
+Este gráfico demonstra que os bairros conformem com a definição do Departamento de Planejamento da cidade. Demonstra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, conforme o mapa de calor. \pagebreak
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{pricePlot} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,}
+    \hlkwd{aes}\hlstd{(price))}
+\hlstd{pricebox} \hlkwb{<-} \hlstd{pricePlot} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
+    \hlkwd{coord_flip}\hlstd{()}
+\hlstd{pricebox}
 \end{alltt}
 \end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/chunk-plotNeighbs-2} \end{marginfigure}
+\includegraphics[width=\maxwidth]{figure/chunk-priceBoxPlot-1} \end{marginfigure}
+
+\end{knitrout}
+Este \textit{boxplot} do preço consegue notar imediatamente a existem de muitos valores atípicos, o que equivalem a preços muito altos, comparado com a média de preços dos registos, 303.465 USD. Estes preços vão sem dúvida interferir com as nossas análises. \\
+Estes preços conseguem ser justificados quando analisamos a fonte destes preços altos.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df} \hlopt{%>%}
+    \hlkwd{select}\hlstd{(name, price)} \hlopt{%>%}
+    \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{price)} \hlopt{%>%}
+    \hlkwd{head}\hlstd{(}\hlnum{7}\hlstd{)} \hlopt{%>%}
+    \hlkwd{showT}\hlstd{(T)}
+\end{alltt}
+\end{kframe}\begingroup\fontsize{10}{12}\selectfont
+
+\begin{RTable*}{r|r}
+\hline
+name & price\\
+\hline
+\cellcolor{gray!6}{Harbor Court Hotel, Bay View King Room} & \cellcolor{gray!6}{25000}\\
+\hline
+Harbor Court Hotel, Bay View Queen Room & 25000\\
+\hline
+\cellcolor{gray!6}{Hotel Griffon by the Bay, queen bedded room} & \cellcolor{gray!6}{25000}\\
+\hline
+1-Bedroom Suite with One Bed and One Sofabed at Fairmont San Francisco by Suiteness & 20000\\
+\hline
+\cellcolor{gray!6}{Suite plus Connecting Room with Three Beds and One Sofabed at Fairmont San Francisco by Suiteness} & \cellcolor{gray!6}{20000}\\
+\hline
+Suite plus Connecting Room with Two Beds and One Sofabed at Fairmont San Francisco by Suiteness & 20000\\
+\hline
+\cellcolor{gray!6}{1-Bedroom Suite with One Bed at Fairmont San Francisco by Suiteness} & \cellcolor{gray!6}{20000}\\
+\hline
+\end{RTable*}
+\endgroup{}
 
 \end{knitrout}
 
+Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. Por agora, de forma a poder analisar a maioria dos alojamentos, vamos apenas ver a preços abaixo de 895 USD. \\
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{upper_limit} \hlkwb{<-} \hlkwd{quantile}\hlstd{(df}\hlopt{$}\hlstd{price,}
+    \hlnum{0.975}\hlstd{)} \hlopt{+} \hlnum{20}
+\hlstd{pricebox} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 158 rows containing non-finite values (`stat\_boxplot()`).}}\end{kframe}\begin{marginfigure}
+\includegraphics[width=\maxwidth]{figure/chunk-priceBoxPlotLim-1} \end{marginfigure}
+
+\end{knitrout}
+Este \textit{boxplot} mostra que a maioria dos alojamentos tem preços entre 103 e 254 USD. Este facto torna-se ainda mais evidente quando analisamos a distribuição dos preços. \\
+O gráfico mostra também que há muitos alojamentos fora destes limites, podendo ser valores atípicos também, embora não tão extremos como aqueles vistos anteriormente. No entanto, à primeira vista estes não devem ser valores atípicos, devido à sua quantidade, mesmo quando comparado com o número de registos.\\
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{pricePlot} \hlopt{+} \hlkwd{geom_histogram}\hlstd{(}\hlkwc{binwidth} \hlstd{=} \hlnum{25}\hlstd{,}
+    \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= ..density..))} \hlopt{+}
+    \hlkwd{geom_density}\hlstd{(}\hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{)} \hlopt{+}
+    \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
+\end{alltt}
+\end{kframe}\begin{marginfigure}
+\includegraphics[width=\maxwidth]{figure/chunk-priceHist-1} \end{marginfigure}
+
+\end{knitrout}
+A distribuição de preços apresentada demonstra que a maioria dos alojamentos se encontram no limite mostrado anteriormente, e a distribuição parece aproximar-se de uma distribuição $\chi_{k}^{2}$, com um pequeno grau de liberdade. Curiosamente, o gráfico mostra que os preços parecem aumentar algumas vezes cada 50 USD, o que pode ser devido ao facto de que os hospedeiros escolhem preços redondos, como 50, 100, 175, etc. Este fenómeno parece ser mais visível nos 250 e nos 500.\\
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df} \hlopt{%>%}
+    \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price,}
+        \hlkwc{y} \hlstd{=} \hlkwd{fct_reorder}\hlstd{(neighbourhood,}
+            \hlopt{-}\hlstd{price,} \hlkwc{.fun} \hlstd{= median)))} \hlopt{+}
+    \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{,}
+    \hlstd{upper_limit)}
+\end{alltt}
+\end{kframe}\begin{figure*}
+\includegraphics[width=\maxwidth]{figure/chunk-boxPriceNeighs-1} \end{figure*}
+
+\end{knitrout}
 
 \nobibliography{references.bib}
 \bibliographystyle{plainnat}
