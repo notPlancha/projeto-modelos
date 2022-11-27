@@ -24,6 +24,8 @@
     \usepackage{xcolor}
     \usepackage{comment}
     \usepackage{lipsum}
+    \usepackage{tabulary}
+    \usepackage{tabularx}
     %\usepackage{showframe}
   % }
 % }
@@ -51,6 +53,7 @@
 % }
 % {R code and table
 \newenvironment{RTable}[1]{\begin{margintable}\begin{center}\begin{tabular}{#1}}{\end{tabular}\end{center}\end{margintable}}
+\newenvironment{RTable*}[1]{\begin{table*}\begin{center}\begin{tabular}{#1}}{\end{tabular}\end{center}\end{table*}}
 % }
 
 \begin{document}
@@ -100,7 +103,7 @@ Usámos como suporte técnico a linguagem R através do uso de um computador pes
 <<chunk-listings>>=
 @
 
-A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}. 
+A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
 
 A base de dados contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 
@@ -130,7 +133,6 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
 
 <<chunk-listingsHead>>=
 @
-
 
 \nobibliography{references.bib}
 \bibliographystyle{plainnat}

@@ -74,6 +74,8 @@
     \usepackage{xcolor}
     \usepackage{comment}
     \usepackage{lipsum}
+    \usepackage{tabulary}
+    \usepackage{tabularx}
     %\usepackage{showframe}
   % }
 % }
@@ -89,10 +91,10 @@
     <tfroo1@iscte-iul.pt> \\
     Afonso Silva, 105208 \\
     <agsos@iscte-iul.pt> \\
-    TODO AUTOR, NUMERO \\
-    <TODO EMAIL>
+    Rui Chaves, 104914 \\
+    rfpcs1@iscte-iul.pt
   }
-  \date{26/11/2022 \\ Versão 0.0.1} % 
+  \date{27/11/2022 \\ Versão 0.0.1} % 
 % }
 
 % { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
@@ -101,6 +103,7 @@
 % }
 % {R code and table
 \newenvironment{RTable}[1]{\begin{margintable}\begin{center}\begin{tabular}{#1}}{\end{tabular}\end{center}\end{margintable}}
+\newenvironment{RTable*}[1]{\begin{table*}\begin{center}\begin{tabular}{#1}}{\end{tabular}\end{center}\end{table*}}
 % }
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
@@ -112,8 +115,8 @@
 ## 
 ## function (object) 
 ## standardGeneric("show")
-## <bytecode: 0x000001a87009b490>
-## <environment: 0x000001a86ed20280>
+## <bytecode: 0x00000198cb4a6578>
+## <environment: 0x00000198ca122220>
 ## Methods may be defined for arguments: object
 ## Use  showMethods(show)  for currently available ones.
 ## (This generic function excludes non-simple inheritance; see ?setIs)
@@ -168,7 +171,7 @@ Usámos como suporte técnico a linguagem R através do uso de um computador pes
 \end{kframe}
 \end{knitrout}
 
-A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}. 
+A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
 
 A base de dados contém 6629 entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 
@@ -181,7 +184,7 @@ A base de dados contém 6629 entradas, e cada uma delas representa um registo de
 \end{alltt}
 \end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright}X}
+\begin{RTable}{l|c}
 \hline
   & type\\
 \hline
@@ -221,7 +224,7 @@ availability\_365 & integer\\
 \hline
 license & character\\
 \hline
-\end{tabu}
+\end{RTable}
 \endgroup{}
 
 \end{knitrout}
@@ -250,31 +253,11 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{listings} \hlopt{%>%}
-    \hlkwd{head}\hlstd{(}\hlnum{5}\hlstd{)} \hlopt{%>%}
-    \hlkwd{showT}\hlstd{(T)}
+\hlcom{# listings %>% head(1) %>% t() %>%}
+\hlcom{# showT(T)}
 \end{alltt}
-\end{kframe}\begingroup\fontsize{10}{12}\selectfont
-
-\begin{tabu} to \linewidth {>{\raggedleft}X>{\raggedright}X>{\raggedleft}X>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedleft}X>{\raggedleft}X>{\raggedright}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedright}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedright}X}
-\hline
-id & name & host\_id & host\_name & neighbourhood\_group & neighbourhood & latitude & longitude & room\_type & price & minimum\_nights & number\_of\_reviews & last\_review & reviews\_per\_month & calculated\_host\_listings\_count & availability\_365 & number\_of\_reviews\_ltm & license\\
-\hline
-\cellcolor{gray!6}{958} & \cellcolor{gray!6}{Bright, Modern Garden Unit - 1BR/1BTH} & \cellcolor{gray!6}{1169} & \cellcolor{gray!6}{Holly} & \cellcolor{gray!6}{NA} & \cellcolor{gray!6}{Western Addition} & \cellcolor{gray!6}{37.77028} & \cellcolor{gray!6}{-122.4332} & \cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{180} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{358} & \cellcolor{gray!6}{2022-08-21} & \cellcolor{gray!6}{2.24} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{140} & \cellcolor{gray!6}{60} & \cellcolor{gray!6}{City Registration Pending}\\
-\hline
-5858 & Creative Sanctuary & 8904 & Philip And Tania & NA & Bernal Heights & 37.74474 & -122.4209 & Entire home/apt & 235 & 30 & 111 & 2017-08-06 & 0.68 & 1 & 365 & 0 & \\
-\hline
-\cellcolor{gray!6}{8014} & \cellcolor{gray!6}{room in FEMALE house WIFI market nearby} & \cellcolor{gray!6}{22402} & \cellcolor{gray!6}{Jia} & \cellcolor{gray!6}{NA} & \cellcolor{gray!6}{Outer Mission} & \cellcolor{gray!6}{37.73077} & \cellcolor{gray!6}{-122.4483} & \cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{61} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{86} & \cellcolor{gray!6}{2022-09-04} & \cellcolor{gray!6}{0.70} & \cellcolor{gray!6}{3} & \cellcolor{gray!6}{5} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{STR-0000974}\\
-\hline
-8142 & Friendly Room Apt. Style -UCSF/USF - San Francisco & 21994 & Aaron & NA & Haight Ashbury & 37.76555 & -122.4521 & Private room & 56 & 32 & 8 & 2018-09-12 & 0.08 & 12 & 297 & 0 & \\
-\hline
-\cellcolor{gray!6}{8339} & \cellcolor{gray!6}{Historic Alamo Square Victorian} & \cellcolor{gray!6}{24215} & \cellcolor{gray!6}{Rosy} & \cellcolor{gray!6}{NA} & \cellcolor{gray!6}{Western Addition} & \cellcolor{gray!6}{37.77564} & \cellcolor{gray!6}{-122.4364} & \cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{895} & \cellcolor{gray!6}{7} & \cellcolor{gray!6}{28} & \cellcolor{gray!6}{2019-06-28} & \cellcolor{gray!6}{0.18} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{351} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{STR-0000264}\\
-\hline
-\end{tabu}
-\endgroup{}
-
+\end{kframe}
 \end{knitrout}
-
 
 \nobibliography{references.bib}
 \bibliographystyle{plainnat}

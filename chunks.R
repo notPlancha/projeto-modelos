@@ -4,18 +4,21 @@ pacman::p_load(
   here,
   knitr,
   kableExtra,
-  gtsummary,
-  ggplot2
+  ggplot2,
+  here,
+  ggplot2,
+  tmap,
+  dplyr
 )
 showT <- function(x, fullWidth = F, ...) {
-  kable(x, ...) %>% 
+  kable(x, align="c", ...) %>% 
     kable_styling(
       full_width = F, 
       position = "left",  
       font_size = 10, 
       latex_options = c("striped"),
-      latex_table_env= ifelse(fullWidth, "tabular", "RTable")
-      )
+      latex_table_env= ifelse(fullWidth, "RTable*", "RTable")
+    )
 }
 
 show
@@ -41,5 +44,5 @@ data.frame(
 ) %>% showT()
 
 ## ---- chunk-listingsHead ----
-listings %>% head(5) %>% showT(T)
+#listings %>% head(1) %>% t() %>% showT(T)
 

@@ -13,7 +13,7 @@ p_load(
   ggforce,
   concaveman,
   corrplot,
-  tidyr
+  tidyr,
   car
 )
 df <- read.csv(here("data", "listings.csv"))
