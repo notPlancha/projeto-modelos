@@ -96,15 +96,15 @@ knitr::read_chunk("chunks.R")
 % }
 % descricao airbnb TODO
 % also o airbnb n vende quartos
-O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no AIrbnb, com vista nesse objetivo foi nos disponibilizado uma base de dados que têm várias informações úteis para realizar esta tarefa.
-Usámos como suporte técnico a linguagem R através do uso de um computador pessoal quer para a limpeza de dados, o tratamento de dados, e as respetivas previsões efectuadas.
+O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no Airbnb. Com vista nesse objetivo foi nos disponibilizada uma base de dados que tem várias informações úteis para a realização desta tarefa.
+Usámos como suporte técnico a linguagem R, através do uso de um computador pessoal quer para a limpeza de dados quer para o seu tratamento de dados e as respetivas previsões efectuadas.
 
 <<chunk-dfLoad, results=FALSE>>=
 @
 
 A base de dados que nos foi disponibilizada vem do  projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
 
-A base de dados contém \Sexpr{nrow(df)} entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
+A base de dados contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 
 <<chunk-dfClasses>>=
 @ 
@@ -116,7 +116,7 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{host\_id}: Identificador único da conta do hospedeiro;
   \item \textbf{host\_name}: Nome da conta do hospedeiro \sidenote{Normalmente este campo inclui apenas o primeiro nome ou nome da instituição hospedeira};
   \item \textbf{neighbourhood\_group}: Este campo encontra-se vazio e não inclui descrição no dicionário;
-  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve bairros de São Francisco como definido pelo Departamento de Planejamento da cidade \sidenote{Os bairros de São Francisco não contém fronteiras oficiais e dependem da fonte (\url{tldrify.com/19p8}), logo a definição das fronteiras definidas pelo Airbnb tiveram de ser determinadas. Mais à frente será demonstrado as fronteiras};
+  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo representa os bairros de São Francisco como definido pelo Departamento de Planeamento da cidade \sidenote{Os bairros de São Francisco não contém fronteiras oficiais e dependem da fonte (\url{tldrify.com/19p8}), logo a definição das fronteiras definidas pelo Airbnb tiveram de ser determinadas. Mais à frente será demonstrado as fronteiras};
   \item \textbf{latitude/longitude}: Coordenadas geográficas do alojamento;
   \item \textbf{room\_type}: Tipo de alojamento, entre "Quarto privado", "Quarto partilhado", "Quarto de hotel", e "Casa/Apartamento inteiro";
   \item \textbf{price}: Preço do alojamento por noite em USD;
