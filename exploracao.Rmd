@@ -14,7 +14,8 @@ p_load(
   concaveman,
   corrplot,
   tidyr,
-  car
+  car,
+  ggridges
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -88,6 +89,7 @@ pricebox+ xlim(0, 500)
 ```{r}
 priceHistPer20 <- pricePlot + # nota-se uma subida a cada +- 50$
   geom_histogram(binwidth=20, aes(y = ..density..)) +
+  geom_density(color="red") +
   xlim(0, upper_bound)
 priceHistPer50 <- pricePlot +
   geom_histogram(binwidth=50, aes(y = ..density..)) +
@@ -128,6 +130,10 @@ scattHighPriceMap
 rasterLowerPriceMap
 rasterPriceMap
 df %>% arrange(latitude)
+```
+
+```{r}
+df %>% ggplot(aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges + theme_ridges() + theme(legend.position = "none")
 ```
 
 

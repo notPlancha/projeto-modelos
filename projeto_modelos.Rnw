@@ -102,7 +102,7 @@ Usámos como suporte técnico a linguagem R, através do uso de um computador pe
 <<chunk-dfLoad, results=FALSE>>=
 @
 
-A base de dados que nos foi disponibilizada vem do projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
+A base de dados que nos foi disponibilizada vem do  projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
 
 A base de dados contém \Sexpr{nrow(listings)} entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
 
@@ -149,9 +149,28 @@ O mapa claramente demonstra a concentração de alojamentos na zona clara, mas t
 A tabela mostra que a maioria dos alojamentos listados estão localizados no distrito de \textit{Downtown/Civic Center} e \textit{Mission}.
 
 <<chunk-plotNeighbs>>=
+@
+Este gráfico demonstra que os bairros conformem com a definição do Departamento de Planejamento da cidade. Demonstra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, conforme o mapa de calor. \pagebreak
 
-<<chunk-hullNeighbs>>=
-<<chunk-hullLegend>>=
+<<chunk-priceBoxPlot>>=
+@
+Este \textit{boxplot} do preço consegue notar imediatamente a existem de muitos valores atípicos, o que equivalem a preços muito altos, comparado com a média de preços dos registos, \Sexpr{round(mean(df$price), 3)} USD. Estes preços vão sem dúvida interferir com as nossas análises. \\
+Estes preços conseguem ser justificados quando analisamos a fonte destes preços altos.
+<<chunk-priceHead>>=
+@
+
+Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. Por agora, de forma a poder analisar a maioria dos alojamentos, vamos apenas ver a preços abaixo de \Sexpr{quantile(df$price, 0.975) + 20} USD. \\
+
+<<chunk-priceBoxPlotLim>>=
+@
+Este \textit{boxplot} mostra que a maioria dos alojamentos tem preços entre \Sexpr{quantile(df$price, 0.25)} e \Sexpr{quantile(df$price, 0.75)} USD. Este facto torna-se ainda mais evidente quando analisamos a distribuição dos preços. \\
+O gráfico mostra também que há muitos alojamentos fora destes limites, podendo ser valores atípicos também, embora não tão extremos como aqueles vistos anteriormente. No entanto, à primeira vista estes não devem ser valores atípicos, devido à sua quantidade, mesmo quando comparado com o número de registos.\\
+
+<<chunk-priceHist, warning=FALSE>>=
+@
+A distribuição de preços apresentada demonstra que a maioria dos alojamentos se encontram no limite mostrado anteriormente, e a distribuição parece aproximar-se de uma distribuição $\chi_{k}^{2}$, com um pequeno grau de liberdade. Curiosamente, o gráfico mostra que os preços parecem aumentar algumas vezes cada 50 USD, o que pode ser devido ao facto de que os hospedeiros escolhem preços redondos, como 50, 100, 175, etc. Este fenómeno parece ser mais visível nos 250 e nos 500.\\
+
+<<chunk-boxPriceNeighs, fig.env="figure*", fig.width=6, fig.height=4, warning=FALSE>>=
 @
 
 \nobibliography{references.bib}

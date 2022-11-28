@@ -12,10 +12,12 @@ pacman::p_load(
   sf,
   cowplot,
   ggpubr,
-  ggforce
+  ggforce,
+  ggridges,
+  forcats
 )
 showT <- function(x, fullWidth = F, ...) {
-  kable(x, align="c", ...) %>% 
+  kable(x, align="r", ...) %>% 
     kable_styling(
       full_width = F, 
       position = "left",  
@@ -32,7 +34,7 @@ opts_chunk$set(
   warning = TRUE, #TODO warnings, messages
   message = TRUE,
   results = TRUE,
-  tidy.opts = list(width.cutoff = 30), 
+  tidy.opts = list(width.cutoff = 25), 
   tidy = TRUE,
   fig.cap = "",
   fig.env = "marginfigure",
@@ -83,10 +85,39 @@ df %>% group_by(neighbourhood) %>% summarise(n=n(), freq = n/nrow(df)) %>%
 ## ---- chunk-plotNeighbs
 shape_plot +
   geom_point(data=df, aes(y=latitude, x=longitude, color=neighbourhood), alpha=0.5, size=0.1) +
+  geom_point(
+    data=(df %>% filter(neighbourhood == "Downtown/Civic Center")), 
+  aes(y=latitude, x=longitude), color="red", alpha=1, size=0.1) +
   theme(legend.position = "none")
 
 
-## -- chunk-hullNeighbs
+## ---- chunk-hullNeighbs
 hull <- shape_plot +
   geom_mark_hull(data=df, aes(y=latitude, x=longitude, fill=neighbourhood), expand = 0, radius=0,alpha=0.7, linewidth=0.1)
 hull + theme(legend.position = "none")
+
+## ---- chunk-hullLegend
+hull %>% get_legend() #TODO check https://stackoverflow.com/questions/33927027/how-to-extract-the-legend-labels-from-a-ggplot2-object
+
+## ---- chunk-priceBoxPlot
+pricePlot <- ggplot(data=df, aes(price))
+pricebox <- pricePlot + 
+  geom_boxplot() + 
+  coord_flip()
+pricebox
+
+## ---- chunk-priceBoxPlotLim
+upper_limit <- quantile(df$price, 0.975) + 20
+pricebox + xlim(0,upper_limit)
+
+## ---- chunk-priceHead
+df %>% select(name, price) %>% arrange(-price) %>% head(7) %>% showT(T)
+
+## ---- chunk-priceHist
+pricePlot +
+  geom_histogram(binwidth=25, aes(y = ..density..)) +
+  geom_density(color="red") +
+  xlim(0, upper_limit)
+
+## ---- chunk-boxPriceNeighs
+df %>% ggplot(aes(x=price, y = fct_reorder(neighbourhood, -price, .fun=median))) + geom_boxplot() + xlim(0, upper_limit)
