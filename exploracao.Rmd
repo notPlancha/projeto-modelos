@@ -133,7 +133,9 @@ df %>% arrange(latitude)
 ```
 
 ```{r}
-df %>% ggplot(aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges + theme_ridges() + theme(legend.position = "none")
+ggplot(data = df, aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges() + theme_ridges() + theme(legend.position = "none") + xlim(0, upper_bound)
+df %>% ggplot(aes(x=price, y = forcats::fct_reorder(neighbourhood, -price, .fun=median))) + geom_boxplot() + xlim(0, upper_bound)
+
 ```
 
 
@@ -153,6 +155,7 @@ MoreExpNotLuxPricesScatt <- shape_plot +
 cheaperPricesScatt
 MoreExpNotLuxPricesScatt
 ```
+
 ```{r}
 df %>%
   group_by(room_type) %>% 
@@ -207,6 +210,12 @@ df %>%
 ```{r}
 corrplot(df %>% select_if(is.numeric) %>% cor(), method="pie")
 mean(df$price)
+cor(df %>%
+select(latitude, longitude,
+price, reviews_per_month,
+availability_365,
+number_of_reviews_ltm))
+df %>% filter(is.na(reviews_per_month))
 ```
 
 
@@ -216,7 +225,7 @@ md1
 ```
 
 ```{r}
-df2 <- df %>% select(latitude,longitude,price, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, availability_365, number_of_reviews_ltm)
+df2 <- df %>% select(latitude, longitude, price, reviews_per_month, availability_365, number_of_reviews_ltm)
 
 scatterplotMatrix(df2, smooth = FALSE, main="Scatter Plot Matrix")
 

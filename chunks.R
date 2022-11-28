@@ -14,7 +14,8 @@ pacman::p_load(
   ggpubr,
   ggforce,
   ggridges,
-  forcats
+  forcats,
+  ggcorrplot
 )
 showT <- function(x, fullWidth = F, ...) {
   kable(x, align="r", ...) %>% 
@@ -31,8 +32,8 @@ extractLegend <- function(ggp){
 }
 
 opts_chunk$set(
-  warning = TRUE, #TODO warnings, messages
-  message = TRUE,
+  warning = FALSE, #TODO warnings, messages
+  message = FALSE,
   results = TRUE,
   tidy.opts = list(width.cutoff = 25), 
   tidy = TRUE,
@@ -120,4 +121,35 @@ pricePlot +
   xlim(0, upper_limit)
 
 ## ---- chunk-boxPriceNeighs
-df %>% ggplot(aes(x=price, y = fct_reorder(neighbourhood, -price, .fun=median))) + geom_boxplot() + xlim(0, upper_limit)
+df %>% ggplot(aes(x=price, y = fct_reorder(neighbourhood, -price, .fun=median))) + geom_boxplot() + xlim(0, upper_limit) +
+labs(y = "")
+
+## ---- chunk-freqRoomTypes
+df %>%
+  group_by(room_type) %>% 
+  summarise(
+    n = n(), 
+    freq = n()/nrow(.),
+    averagePrice = mean(price)
+  ) %>% showT()
+## ---- chunk-freqRoomTypesWoLuxo
+df %>%
+  group_by(room_type) %>% 
+  filter(price < upper_limit) %>%
+  summarise(
+    n = n(), 
+    freq = n()/nrow(.),
+    averagePrice = mean(price)
+  ) %>% showT()
+
+## ---- chunk-RoomTypesPrice
+ggplot(df, aes(x=price, y=room_type, fill=room_type)) +
+  geom_density_ridges() + xlim(0, upper_limit) +
+  theme_ridges() + theme(legend.position = "none") 
+
+## ---- chunk-CorrPlot
+ggcorrplot(
+  cor(df %>% select(latitude, longitude, price, reviews_per_month, availability_365, number_of_reviews_ltm), use = "complete.obs"), 
+      lab = TRUE
+  )
+

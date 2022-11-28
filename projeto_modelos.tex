@@ -92,9 +92,9 @@
     Afonso Silva, 105208 \\
     <agsos@iscte-iul.pt> \\
     Rui Chaves, 104914 \\
-    rfpcs1@iscte-iul.pt
+    <rfpcs1@iscte-iul.pt>
   }
-  \date{27/11/2022 \\ Versão 0.0.1} % 
+  \date{28/11/2022 \\ Versão 0.0.1} % 
 % }
 
 % { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
@@ -142,8 +142,8 @@
 % }
 % descricao airbnb TODO
 % also o airbnb n vende quartos
-O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no AIrbnb, com vista nesse objetivo foi nos disponibilizado uma base de dados que têm várias informações úteis para realizar esta tarefa.
-Usámos como suporte técnico a linguagem R através do uso de um computador pessoal quer para a limpeza de dados, o tratamento de dados, e as respetivas previsões efectuadas.
+O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no Airbnb. Com vista nesse objetivo foi nos disponibilizada uma base de dados que tem várias informações úteis para a realização desta tarefa.
+Usámos como suporte técnico a linguagem R, através do uso de um computador pessoal quer para a limpeza de dados quer para o seu tratamento de dados e as respetivas previsões efectuadas.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -153,10 +153,6 @@ Usámos como suporte técnico a linguagem R através do uso de um computador pes
 \hlstd{shape} \hlkwb{<-} \hlkwd{st_read}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,}
     \hlstr{"SF Planning Neighborhood Groups Map"}\hlstd{))}
 \hlkwd{tmap_mode}\hlstd{(}\hlstr{"plot"}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# tmap mode set to plotting}}\begin{alltt}
 \hlstd{shape_plot} \hlkwb{<-} \hlstd{shape} \hlopt{%>%}
     \hlkwd{ggplot}\hlstd{()} \hlopt{+} \hlkwd{geom_sf}\hlstd{()} \hlopt{+}
     \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"bottom"}\hlstd{)}
@@ -229,7 +225,7 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{host\_id}: Identificador único da conta do hospedeiro;
   \item \textbf{host\_name}: Nome da conta do hospedeiro \sidenote{Normalmente este campo inclui apenas o primeiro nome ou nome da instituição hospedeira};
   \item \textbf{neighbourhood\_group}: Este campo encontra-se vazio e não inclui descrição no dicionário;
-  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo descreve bairros de São Francisco como definido pelo Departamento de Planejamento da cidade \sidenote{Os bairros de São Francisco não contém fronteiras oficiais e dependem da fonte (\url{tldrify.com/19p8}), logo a definição das fronteiras definidas pelo Airbnb tiveram de ser determinadas. Mais à frente será demonstrado as fronteiras};
+  \item \textbf{neighbourhood}: Embora este campo não inclua descrição no dicionário, nesta base de dados este campo representa os bairros de São Francisco como definido pelo Departamento de Planeamento da cidade \sidenote{Os bairros de São Francisco não contém fronteiras oficiais e dependem da fonte (\url{tldrify.com/19p8}), logo a definição das fronteiras definidas pelo Airbnb tiveram de ser determinadas. Mais à frente será demonstrado as fronteiras};
   \item \textbf{latitude/longitude}: Coordenadas geográficas do alojamento;
   \item \textbf{room\_type}: Tipo de alojamento, entre "Quarto privado", "Quarto partilhado", "Quarto de hotel", e "Casa/Apartamento inteiro";
   \item \textbf{price}: Preço do alojamento por noite em USD;
@@ -407,9 +403,7 @@ Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que se
     \hlnum{0.975}\hlstd{)} \hlopt{+} \hlnum{20}
 \hlstd{pricebox} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
 \end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 158 rows containing non-finite values (`stat\_boxplot()`).}}\end{kframe}\begin{marginfigure}
+\end{kframe}\begin{marginfigure}
 \includegraphics[width=\maxwidth]{figure/chunk-priceBoxPlotLim-1} \end{marginfigure}
 
 \end{knitrout}
@@ -438,10 +432,102 @@ A distribuição de preços apresentada demonstra que a maioria dos alojamentos 
         \hlkwc{y} \hlstd{=} \hlkwd{fct_reorder}\hlstd{(neighbourhood,}
             \hlopt{-}\hlstd{price,} \hlkwc{.fun} \hlstd{= median)))} \hlopt{+}
     \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{,}
-    \hlstd{upper_limit)}
+    \hlstd{upper_limit)} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{y} \hlstd{=} \hlstr{""}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure*}
 \includegraphics[width=\maxwidth]{figure/chunk-boxPriceNeighs-1} \end{figure*}
+
+\end{knitrout}
+Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df} \hlopt{%>%}
+    \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
+    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
+        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
+    \hlkwd{showT}\hlstd{()}
+\end{alltt}
+\end{kframe}\begingroup\fontsize{10}{12}\selectfont
+
+\begin{RTable}{r|r|r|r}
+\hline
+room\_type & n & freq & averagePrice\\
+\hline
+\cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{4243} & \cellcolor{gray!6}{0.6400664} & \cellcolor{gray!6}{275.8965}\\
+\hline
+Hotel room & 65 & 0.0098054 & 266.2154\\
+\hline
+\cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{2239} & \cellcolor{gray!6}{0.3377583} & \cellcolor{gray!6}{360.1474}\\
+\hline
+Shared room & 82 & 0.0123699 & 211.7683\\
+\hline
+\end{RTable}
+\endgroup{}
+
+\end{knitrout}
+A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. A tablea também expoem que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Enquanto que o preço médio das salas partilhadas é esperado, é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df} \hlopt{%>%}
+    \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
+    \hlkwd{filter}\hlstd{(price} \hlopt{<} \hlstd{upper_limit)} \hlopt{%>%}
+    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
+        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
+    \hlkwd{showT}\hlstd{()}
+\end{alltt}
+\end{kframe}\begingroup\fontsize{10}{12}\selectfont
+
+\begin{RTable}{r|r|r|r}
+\hline
+room\_type & n & freq & averagePrice\\
+\hline
+\cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{4131} & \cellcolor{gray!6}{0.6388803} & \cellcolor{gray!6}{233.9990}\\
+\hline
+Hotel room & 63 & 0.0097433 & 241.0159\\
+\hline
+\cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{2192} & \cellcolor{gray!6}{0.3390040} & \cellcolor{gray!6}{135.2176}\\
+\hline
+Shared room & 80 & 0.0123724 & 78.3125\\
+\hline
+\end{RTable}
+\endgroup{}
+
+\end{knitrout}
+
+Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperados; quartos de hoteis serem os mais caros com preços aproximados aos das casas inteiras, e os alojamentos partilhados serem os mais baratos. Os preços médios dos quartos privados desceram significativamente, e isto pode ser explicado pela classificação de alojamentos de luxo como "quartos privados". Nós suspeitamos que, sem os quartos de luxo, esta nova categoria identifica-se mais com albergues.\\
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggplot}\hlstd{(df,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price,}
+    \hlkwc{y} \hlstd{= room_type,} \hlkwc{fill} \hlstd{= room_type))} \hlopt{+}
+    \hlkwd{geom_density_ridges}\hlstd{()} \hlopt{+}
+    \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)} \hlopt{+}
+    \hlkwd{theme_ridges}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{marginfigure}
+\includegraphics[width=\maxwidth]{figure/chunk-RoomTypesPrice-1} \end{marginfigure}
+
+\end{knitrout}
+
+O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Ele corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggcorrplot}\hlstd{(}\hlkwd{cor}\hlstd{(df} \hlopt{%>%}
+    \hlkwd{select}\hlstd{(latitude, longitude,}
+        \hlstd{price, reviews_per_month,}
+        \hlstd{availability_365,}
+        \hlstd{number_of_reviews_ltm),}
+    \hlkwc{use} \hlstd{=} \hlstr{"complete.obs"}\hlstd{),}
+    \hlkwc{lab} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure*}
+\includegraphics[width=\maxwidth]{figure/chunk-CorrPlot-1} \end{figure*}
 
 \end{knitrout}
 
