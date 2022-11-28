@@ -225,7 +225,7 @@ md1
 ```
 
 ```{r}
-df2 <- df %>% select(latitude, longitude, price, reviews_per_month, availability_365, number_of_reviews_ltm)
+df2 <- df %>% select(price, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, number_of_reviews_ltm)
 
 scatterplotMatrix(df2, smooth = FALSE, main="Scatter Plot Matrix")
 
