@@ -94,7 +94,7 @@
     Rui Chaves, 104914 \\
     <rfpcs1@iscte-iul.pt>
   }
-  \date{28/11/2022 \\ Versão 0.0.1} % 
+  \date{07/12/2022 \\ Versão 0.0.1} % 
 % }
 
 % { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
@@ -108,7 +108,50 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## package 'kableExtra' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+## package 'rlang' successfully unpacked and MD5 sums checked
+## package 'vctrs' successfully unpacked and MD5 sums checked
+## package 'ggplot2' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+## package 'dplyr' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+## package 'cowplot' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+## package 'ggpubr' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+## package 'ggforce' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+## package 'ggridges' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+## package 'forcats' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+## package 'ggcorrplot' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+## 	C:\Users\Andre\AppData\Local\Temp\RtmpqEdVRP\downloaded_packages
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 % cover { 
   \cleardoublepage
@@ -142,22 +185,19 @@
 % }
 % descricao airbnb TODO
 % also o airbnb n vende quartos
-O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no Airbnb. Com vista nesse objetivo foi nos disponibilizada uma base de dados que tem várias informações úteis para a realização desta tarefa.
-Usámos como suporte técnico a linguagem R, através do uso de um computador pessoal quer para a limpeza de dados quer para o seu tratamento de dados e as respetivas previsões efectuadas.
+% TODO introdução se preciso
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,}
-    \hlstr{"listings.csv"}\hlstd{))}
-\hlstd{shape} \hlkwb{<-} \hlkwd{st_read}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,}
-    \hlstr{"SF Planning Neighborhood Groups Map"}\hlstd{))}
+\hlstd{df} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"listings.csv"}\hlstd{))}
+\hlstd{shape} \hlkwb{<-} \hlkwd{st_read}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"SF Planning Neighborhood Groups Map"}\hlstd{))}
 \hlkwd{tmap_mode}\hlstd{(}\hlstr{"plot"}\hlstd{)}
-\hlstd{shape_plot} \hlkwb{<-} \hlstd{shape} \hlopt{%>%}
-    \hlkwd{ggplot}\hlstd{()} \hlopt{+} \hlkwd{geom_sf}\hlstd{()} \hlopt{+}
-    \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"bottom"}\hlstd{)}
+\hlstd{shape_plot} \hlkwb{<-} \hlstd{shape} \hlopt{%>%} \hlkwd{ggplot}\hlstd{()}\hlopt{+} \hlkwd{geom_sf}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"bottom"}\hlstd{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ggplot(.): could not find function "{}ggplot"{}}}\end{kframe}
 \end{knitrout}
 
 A base de dados que nos foi disponibilizada vem do  projeto \href{http://insideairbnb.com/}{Inside Airbnb}, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
@@ -167,55 +207,14 @@ A base de dados contém 6629 entradas, e cada uma delas representa um registo de
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{data.frame}\hlstd{(}\hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(df),}
-    \hlkwc{type} \hlstd{=} \hlkwd{sapply}\hlstd{(df, class))} \hlopt{%>%}
-    \hlkwd{showT}\hlstd{()}
+\hlkwd{data.frame}\hlstd{(}
+  \hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(df),}
+  \hlstr{"type"} \hlstd{=} \hlkwd{sapply}\hlstd{(df, class)}
+\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
 \end{alltt}
-\end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable}{l|r}
-\hline
-  & type\\
-\hline
-\cellcolor{gray!6}{id} & \cellcolor{gray!6}{numeric}\\
-\hline
-name & character\\
-\hline
-\cellcolor{gray!6}{host\_id} & \cellcolor{gray!6}{integer}\\
-\hline
-host\_name & character\\
-\hline
-\cellcolor{gray!6}{neighbourhood\_group} & \cellcolor{gray!6}{logical}\\
-\hline
-neighbourhood & character\\
-\hline
-\cellcolor{gray!6}{latitude} & \cellcolor{gray!6}{numeric}\\
-\hline
-longitude & numeric\\
-\hline
-\cellcolor{gray!6}{room\_type} & \cellcolor{gray!6}{character}\\
-\hline
-price & integer\\
-\hline
-\cellcolor{gray!6}{minimum\_nights} & \cellcolor{gray!6}{integer}\\
-\hline
-number\_of\_reviews & integer\\
-\hline
-\cellcolor{gray!6}{last\_review} & \cellcolor{gray!6}{character}\\
-\hline
-reviews\_per\_month & numeric\\
-\hline
-\cellcolor{gray!6}{calculated\_host\_listings\_count} & \cellcolor{gray!6}{integer}\\
-\hline
-availability\_365 & integer\\
-\hline
-\cellcolor{gray!6}{number\_of\_reviews\_ltm} & \cellcolor{gray!6}{integer}\\
-\hline
-license & character\\
-\hline
-\end{RTable}
-\endgroup{}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in kable\_styling(., full\_width = F, position = "{}left"{}, font\_size = 10, : could not find function "{}kable\_styling"{}}}\end{kframe}
 \end{knitrout}
 De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "dicionário de dados"\cite{DicDadosAirBnb} que explica o significado de cada uma das variáveis:
 
@@ -242,46 +241,49 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# df %>% head(1) %>% t()}
-\hlcom{# %>% showT(T)}
+\hlcom{#df %>% head(1) %>% t() %>% showT(T)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede\sidenote{Estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.}, a disponibilidade do alojamento durante o ano, e a licença do alojamento. 
 
-Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade entre [distritos], mas que também existem muitos alojamentos no resto das cidades.  %TODO remove if not needed
+Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade, principalmente em \textit{Downtown/Civic Center}, mas que também existem muitos alojamentos no resto das cidades.  %TODO remove if not needed
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{shape_plot} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= df,}
-    \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,} \hlkwc{x} \hlstd{= longitude),}
-    \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{,}
-    \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)}
+\hlstd{shape_plot} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwc{data}\hlstd{=df,} \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=latitude,} \hlkwc{x}\hlstd{=longitude),} \hlkwc{alpha}\hlstd{=}\hlnum{0.5}\hlstd{,} \hlkwc{color}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{size}\hlstd{=}\hlnum{0.1}\hlstd{)}
 \end{alltt}
-\end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/chunk-plotPlace-1} \end{marginfigure}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'shape\_plot' not found}}\end{kframe}
 \end{knitrout}
 Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas julgamos que não vá interferir com as nossas análises, devido ao correto agrupamento\sidenote{Demonstrado mais à frente.} e à proximidade da cidade. Embora a razão nos seja desconhecida, acreditamos que o próprio Airbnb agrupa desta forma esses locais devido à sua proximidade com a cidade. \\
 A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{rast} \hlkwb{<-} \hlstd{(shape_plot} \hlopt{+} \hlkwd{stat_bin2d}\hlstd{(}\hlkwc{data} \hlstd{= df,}
-    \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= longitude,} \hlkwc{y} \hlstd{= latitude),}
-    \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{,} \hlkwc{bins} \hlstd{=} \hlnum{30}\hlstd{,}
-    \hlkwc{linejoin} \hlstd{=} \hlstr{"round"}\hlstd{)} \hlopt{+}
-    \hlkwd{scale_fill_viridis_c}\hlstd{(}\hlkwc{option} \hlstd{=} \hlstr{"C"}\hlstd{))}
+\hlstd{rast} \hlkwb{<-} \hlstd{(shape_plot} \hlopt{+}
+  \hlkwd{stat_bin2d}\hlstd{(}
+    \hlkwc{data}\hlstd{=df,}
+    \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=longitude,} \hlkwc{y}\hlstd{=latitude),}
+    \hlkwc{alpha}\hlstd{=}\hlnum{0.7}\hlstd{,} \hlkwc{bins} \hlstd{=} \hlnum{30}\hlstd{,} \hlkwc{linejoin}\hlstd{=}\hlstr{"round"}
+  \hlstd{)} \hlopt{+}
+  \hlkwd{scale_fill_viridis_c}\hlstd{(}\hlkwc{option}\hlstd{=}\hlstr{"C"}\hlstd{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'shape\_plot' not found}}\begin{alltt}
 \hlstd{rast}
 \end{alltt}
-\end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/chunk-rasterPlaces-1} \end{marginfigure}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'rast' not found}}\end{kframe}
 \end{knitrout}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# rast %>% extractLegend}
+\hlcom{#rast %>% extractLegend}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -289,109 +291,62 @@ O mapa claramente demonstra a concentração de alojamentos na zona clara, mas t
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlopt{%>%}
-    \hlkwd{group_by}\hlstd{(neighbourhood)} \hlopt{%>%}
-    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{= n}\hlopt{/}\hlkwd{nrow}\hlstd{(df))} \hlopt{%>%}
-    \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{n)} \hlopt{%>%}
-    \hlkwd{head}\hlstd{(}\hlnum{8}\hlstd{)} \hlopt{%>%}
-    \hlkwd{showT}\hlstd{()}
+\hlstd{df} \hlopt{%>%} \hlkwd{group_by}\hlstd{(neighbourhood)} \hlopt{%>%} \hlkwd{summarise}\hlstd{(}\hlkwc{n}\hlstd{=}\hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{= n}\hlopt{/}\hlkwd{nrow}\hlstd{(df))} \hlopt{%>%}
+  \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{n)} \hlopt{%>%} \hlkwd{head}\hlstd{(}\hlnum{8}\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
 \end{alltt}
-\end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable}{r|r|r}
-\hline
-neighbourhood & n & freq\\
-\hline
-\cellcolor{gray!6}{Downtown/Civic Center} & \cellcolor{gray!6}{745} & \cellcolor{gray!6}{0.1123850}\\
-\hline
-Mission & 558 & 0.0841756\\
-\hline
-\cellcolor{gray!6}{South of Market} & \cellcolor{gray!6}{450} & \cellcolor{gray!6}{0.0678835}\\
-\hline
-Western Addition & 418 & 0.0630563\\
-\hline
-\cellcolor{gray!6}{Nob Hill} & \cellcolor{gray!6}{328} & \cellcolor{gray!6}{0.0494796}\\
-\hline
-Outer Sunset & 281 & 0.0423895\\
-\hline
-\cellcolor{gray!6}{Bernal Heights} & \cellcolor{gray!6}{280} & \cellcolor{gray!6}{0.0422386}\\
-\hline
-Haight Ashbury & 276 & 0.0416352\\
-\hline
-\end{RTable}
-\endgroup{}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in kable\_styling(., full\_width = F, position = "{}left"{}, font\_size = 10, : could not find function "{}kable\_styling"{}}}\end{kframe}
 \end{knitrout}
 A tabela mostra que a maioria dos alojamentos listados estão localizados no distrito de \textit{Downtown/Civic Center} e \textit{Mission}.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{shape_plot} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= df,}
-    \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,} \hlkwc{x} \hlstd{= longitude,}
-        \hlkwc{color} \hlstd{= neighbourhood),}
-    \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+}
-    \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= (df} \hlopt{%>%}
-        \hlkwd{filter}\hlstd{(neighbourhood} \hlopt{==}
-            \hlstr{"Downtown/Civic Center"}\hlstd{)),}
-        \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,}
-            \hlkwc{x} \hlstd{= longitude),}
-        \hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{alpha} \hlstd{=} \hlnum{1}\hlstd{,}
-        \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
+\hlstd{shape_plot} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwc{data}\hlstd{=df,} \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=latitude,} \hlkwc{x}\hlstd{=longitude,} \hlkwc{color}\hlstd{=neighbourhood),} \hlkwc{alpha}\hlstd{=}\hlnum{0.5}\hlstd{,} \hlkwc{size}\hlstd{=}\hlnum{0.1}\hlstd{)} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}
+    \hlkwc{data}\hlstd{=(df} \hlopt{%>%} \hlkwd{filter}\hlstd{(neighbourhood} \hlopt{==} \hlstr{"Downtown/Civic Center"}\hlstd{)),}
+  \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=latitude,} \hlkwc{x}\hlstd{=longitude),} \hlkwc{color}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{alpha}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{size}\hlstd{=}\hlnum{0.1}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
 \end{alltt}
-\end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/chunk-plotNeighbs-1} \end{marginfigure}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'shape\_plot' not found}}\end{kframe}
 \end{knitrout}
-Este gráfico demonstra que os bairros conformem com a definição do Departamento de Planejamento da cidade. Demonstra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, conforme o mapa de calor. \pagebreak
+Este gráfico demonstra que os bairros conformem com a definição do Departamento de Planejamento da cidade. Demonstra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, conforme o mapa de calor. \pagebreak %TODO if needed
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{pricePlot} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,}
-    \hlkwd{aes}\hlstd{(price))}
-\hlstd{pricebox} \hlkwb{<-} \hlstd{pricePlot} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
-    \hlkwd{coord_flip}\hlstd{()}
+\hlstd{pricePlot} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data}\hlstd{=df,} \hlkwd{aes}\hlstd{(price))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ggplot(data = df, aes(price)): could not find function "{}ggplot"{}}}\begin{alltt}
+\hlstd{pricebox} \hlkwb{<-} \hlstd{pricePlot} \hlopt{+}
+  \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
+  \hlkwd{coord_flip}\hlstd{()}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'pricePlot' not found}}\begin{alltt}
 \hlstd{pricebox}
 \end{alltt}
-\end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/chunk-priceBoxPlot-1} \end{marginfigure}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'pricebox' not found}}\end{kframe}
 \end{knitrout}
 Este \textit{boxplot} do preço consegue notar imediatamente a existem de muitos valores atípicos, o que equivalem a preços muito altos, comparado com a média de preços dos registos, 303.465 USD. Estes preços vão sem dúvida interferir com as nossas análises. \\
 Estes preços conseguem ser justificados quando analisamos a fonte destes preços altos.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlopt{%>%}
-    \hlkwd{select}\hlstd{(name, price)} \hlopt{%>%}
-    \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{price)} \hlopt{%>%}
-    \hlkwd{head}\hlstd{(}\hlnum{7}\hlstd{)} \hlopt{%>%}
-    \hlkwd{showT}\hlstd{(T)}
+\hlstd{df} \hlopt{%>%} \hlkwd{select}\hlstd{(name, price)} \hlopt{%>%} \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{price)} \hlopt{%>%} \hlkwd{head}\hlstd{(}\hlnum{7}\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{(T)}
 \end{alltt}
-\end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable*}{r|r}
-\hline
-name & price\\
-\hline
-\cellcolor{gray!6}{Harbor Court Hotel, Bay View King Room} & \cellcolor{gray!6}{25000}\\
-\hline
-Harbor Court Hotel, Bay View Queen Room & 25000\\
-\hline
-\cellcolor{gray!6}{Hotel Griffon by the Bay, queen bedded room} & \cellcolor{gray!6}{25000}\\
-\hline
-1-Bedroom Suite with One Bed and One Sofabed at Fairmont San Francisco by Suiteness & 20000\\
-\hline
-\cellcolor{gray!6}{Suite plus Connecting Room with Three Beds and One Sofabed at Fairmont San Francisco by Suiteness} & \cellcolor{gray!6}{20000}\\
-\hline
-Suite plus Connecting Room with Two Beds and One Sofabed at Fairmont San Francisco by Suiteness & 20000\\
-\hline
-\cellcolor{gray!6}{1-Bedroom Suite with One Bed at Fairmont San Francisco by Suiteness} & \cellcolor{gray!6}{20000}\\
-\hline
-\end{RTable*}
-\endgroup{}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in kable\_styling(., full\_width = F, position = "{}left"{}, font\_size = 10, : could not find function "{}kable\_styling"{}}}\end{kframe}
 \end{knitrout}
 
 Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. Por agora, de forma a poder analisar a maioria dos alojamentos, vamos apenas ver a preços abaixo de 895 USD. \\
@@ -399,13 +354,12 @@ Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que se
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{upper_limit} \hlkwb{<-} \hlkwd{quantile}\hlstd{(df}\hlopt{$}\hlstd{price,}
-    \hlnum{0.975}\hlstd{)} \hlopt{+} \hlnum{20}
-\hlstd{pricebox} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
+\hlstd{upper_limit} \hlkwb{<-} \hlkwd{quantile}\hlstd{(df}\hlopt{$}\hlstd{price,} \hlnum{0.975}\hlstd{)} \hlopt{+} \hlnum{20}
+\hlstd{pricebox} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{,upper_limit)}
 \end{alltt}
-\end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/chunk-priceBoxPlotLim-1} \end{marginfigure}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'pricebox' not found}}\end{kframe}
 \end{knitrout}
 Este \textit{boxplot} mostra que a maioria dos alojamentos tem preços entre 103 e 254 USD. Este facto torna-se ainda mais evidente quando analisamos a distribuição dos preços. \\
 O gráfico mostra também que há muitos alojamentos fora destes limites, podendo ser valores atípicos também, embora não tão extremos como aqueles vistos anteriormente. No entanto, à primeira vista estes não devem ser valores atípicos, devido à sua quantidade, mesmo quando comparado com o número de registos.\\
@@ -413,30 +367,26 @@ O gráfico mostra também que há muitos alojamentos fora destes limites, podend
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{pricePlot} \hlopt{+} \hlkwd{geom_histogram}\hlstd{(}\hlkwc{binwidth} \hlstd{=} \hlnum{25}\hlstd{,}
-    \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= ..density..))} \hlopt{+}
-    \hlkwd{geom_density}\hlstd{(}\hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{)} \hlopt{+}
-    \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
+\hlstd{pricePlot} \hlopt{+}
+  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{binwidth}\hlstd{=}\hlnum{25}\hlstd{,} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= ..density..))} \hlopt{+}
+  \hlkwd{geom_density}\hlstd{(}\hlkwc{color}\hlstd{=}\hlstr{"red"}\hlstd{)} \hlopt{+}
+  \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
 \end{alltt}
-\end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/chunk-priceHist-1} \end{marginfigure}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'pricePlot' not found}}\end{kframe}
 \end{knitrout}
 A distribuição de preços apresentada demonstra que a maioria dos alojamentos se encontram no limite mostrado anteriormente, e a distribuição parece aproximar-se de uma distribuição $\chi_{k}^{2}$, com um pequeno grau de liberdade. Curiosamente, o gráfico mostra que os preços parecem aumentar algumas vezes cada 50 USD, o que pode ser devido ao facto de que os hospedeiros escolhem preços redondos, como 50, 100, 175, etc. Este fenómeno parece ser mais visível nos 250 e nos 500.\\
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlopt{%>%}
-    \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price,}
-        \hlkwc{y} \hlstd{=} \hlkwd{fct_reorder}\hlstd{(neighbourhood,}
-            \hlopt{-}\hlstd{price,} \hlkwc{.fun} \hlstd{= median)))} \hlopt{+}
-    \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{,}
-    \hlstd{upper_limit)} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{y} \hlstd{=} \hlstr{""}\hlstd{)}
+\hlstd{df} \hlopt{%>%} \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=price,} \hlkwc{x} \hlstd{=} \hlkwd{fct_reorder}\hlstd{(neighbourhood,} \hlopt{-}\hlstd{price,} \hlkwc{.fun}\hlstd{=median)))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)} \hlopt{+}
+\hlkwd{labs}\hlstd{(}\hlkwc{y} \hlstd{=} \hlstr{""}\hlstd{)}
 \end{alltt}
-\end{kframe}\begin{figure*}
-\includegraphics[width=\maxwidth]{figure/chunk-boxPriceNeighs-1} \end{figure*}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ggplot(., aes(y = price, x = fct\_reorder(neighbourhood, -price, : could not find function "{}ggplot"{}}}\end{kframe}
 \end{knitrout}
 Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
 
@@ -444,57 +394,33 @@ Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
-    \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
-    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
-        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
-    \hlkwd{showT}\hlstd{()}
+  \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
+  \hlkwd{summarise}\hlstd{(}
+    \hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),}
+    \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
+    \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price)}
+  \hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
 \end{alltt}
-\end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable}{r|r|r|r}
-\hline
-room\_type & n & freq & averagePrice\\
-\hline
-\cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{4243} & \cellcolor{gray!6}{0.6400664} & \cellcolor{gray!6}{275.8965}\\
-\hline
-Hotel room & 65 & 0.0098054 & 266.2154\\
-\hline
-\cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{2239} & \cellcolor{gray!6}{0.3377583} & \cellcolor{gray!6}{360.1474}\\
-\hline
-Shared room & 82 & 0.0123699 & 211.7683\\
-\hline
-\end{RTable}
-\endgroup{}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in kable\_styling(., full\_width = F, position = "{}left"{}, font\_size = 10, : could not find function "{}kable\_styling"{}}}\end{kframe}
 \end{knitrout}
 A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. A tablea também expoem que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Enquanto que o preço médio das salas partilhadas é esperado, é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
-    \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
-    \hlkwd{filter}\hlstd{(price} \hlopt{<} \hlstd{upper_limit)} \hlopt{%>%}
-    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
-        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
-    \hlkwd{showT}\hlstd{()}
+  \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
+  \hlkwd{filter}\hlstd{(price} \hlopt{<} \hlstd{upper_limit)} \hlopt{%>%}
+  \hlkwd{summarise}\hlstd{(}
+    \hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),}
+    \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
+    \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price)}
+  \hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
 \end{alltt}
-\end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
-\begin{RTable}{r|r|r|r}
-\hline
-room\_type & n & freq & averagePrice\\
-\hline
-\cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{4131} & \cellcolor{gray!6}{0.6388803} & \cellcolor{gray!6}{233.9990}\\
-\hline
-Hotel room & 63 & 0.0097433 & 241.0159\\
-\hline
-\cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{2192} & \cellcolor{gray!6}{0.3390040} & \cellcolor{gray!6}{135.2176}\\
-\hline
-Shared room & 80 & 0.0123724 & 78.3125\\
-\hline
-\end{RTable}
-\endgroup{}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in kable\_styling(., full\_width = F, position = "{}left"{}, font\_size = 10, : could not find function "{}kable\_styling"{}}}\end{kframe}
 \end{knitrout}
 
 Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperados; quartos de hoteis serem os mais caros com preços aproximados aos das casas inteiras, e os alojamentos partilhados serem os mais baratos. Os preços médios dos quartos privados desceram significativamente, e isto pode ser explicado pela classificação de alojamentos de luxo como "quartos privados". Nós suspeitamos que, sem os quartos de luxo, esta nova categoria identifica-se mais com albergues.\\
@@ -502,15 +428,13 @@ Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperad
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggplot}\hlstd{(df,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price,}
-    \hlkwc{y} \hlstd{= room_type,} \hlkwc{fill} \hlstd{= room_type))} \hlopt{+}
-    \hlkwd{geom_density_ridges}\hlstd{()} \hlopt{+}
-    \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)} \hlopt{+}
-    \hlkwd{theme_ridges}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
+\hlkwd{ggplot}\hlstd{(df,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=price,} \hlkwc{y}\hlstd{=room_type,} \hlkwc{fill}\hlstd{=room_type))} \hlopt{+}
+  \hlkwd{geom_density_ridges}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)} \hlopt{+}
+  \hlkwd{theme_ridges}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
 \end{alltt}
-\end{kframe}\begin{marginfigure}
-\includegraphics[width=\maxwidth]{figure/chunk-RoomTypesPrice-1} \end{marginfigure}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ggplot(df, aes(x = price, y = room\_type, fill = room\_type)): could not find function "{}ggplot"{}}}\end{kframe}
 \end{knitrout}
 
 O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Ele corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
@@ -518,17 +442,14 @@ O diagrama apresentado demonstra as distribuições dos preços por tipo de aloj
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggcorrplot}\hlstd{(}\hlkwd{cor}\hlstd{(df} \hlopt{%>%}
-    \hlkwd{select}\hlstd{(latitude, longitude,}
-        \hlstd{price, reviews_per_month,}
-        \hlstd{availability_365,}
-        \hlstd{number_of_reviews_ltm),}
-    \hlkwc{use} \hlstd{=} \hlstr{"complete.obs"}\hlstd{),}
-    \hlkwc{lab} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{ggcorrplot}\hlstd{(}
+  \hlkwd{cor}\hlstd{(df} \hlopt{%>%} \hlkwd{select}\hlstd{(latitude, longitude, price, reviews_per_month, availability_365, number_of_reviews_ltm),} \hlkwc{use} \hlstd{=} \hlstr{"complete.obs"}\hlstd{),}
+      \hlkwc{lab} \hlstd{=} \hlnum{TRUE}
+  \hlstd{)}
 \end{alltt}
-\end{kframe}\begin{figure*}
-\includegraphics[width=\maxwidth]{figure/chunk-CorrPlot-1} \end{figure*}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ggcorrplot(cor(df \%>\% select(latitude, longitude, price, reviews\_per\_month, : could not find function "{}ggcorrplot"{}}}\end{kframe}
 \end{knitrout}
 
 \nobibliography{references.bib}

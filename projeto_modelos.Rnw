@@ -96,8 +96,7 @@ knitr::read_chunk("chunks.R")
 % }
 % descricao airbnb TODO
 % also o airbnb n vende quartos
-O nosso trabalho tem como objetivo desenvolver um modelo que permita prever o preço a que os quartos são colocados á venda no Airbnb. Com vista nesse objetivo foi nos disponibilizada uma base de dados que tem várias informações úteis para a realização desta tarefa.
-Usámos como suporte técnico a linguagem R, através do uso de um computador pessoal quer para a limpeza de dados quer para o seu tratamento de dados e as respetivas previsões efectuadas.
+% TODO introdução se preciso
 
 <<chunk-dfLoad, results=FALSE>>=
 @
@@ -134,7 +133,7 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
 @
 Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede\sidenote{Estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.}, a disponibilidade do alojamento durante o ano, e a licença do alojamento. 
 
-Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade entre [distritos], mas que também existem muitos alojamentos no resto das cidades.  %TODO remove if not needed
+Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade, principalmente em \textit{Downtown/Civic Center}, mas que também existem muitos alojamentos no resto das cidades.  %TODO remove if not needed
 <<chunk-plotPlace>>=
 @
 Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas julgamos que não vá interferir com as nossas análises, devido ao correto agrupamento\sidenote{Demonstrado mais à frente.} e à proximidade da cidade. Embora a razão nos seja desconhecida, acreditamos que o próprio Airbnb agrupa desta forma esses locais devido à sua proximidade com a cidade. \\
@@ -150,7 +149,7 @@ A tabela mostra que a maioria dos alojamentos listados estão localizados no dis
 
 <<chunk-plotNeighbs>>=
 @
-Este gráfico demonstra que os bairros conformem com a definição do Departamento de Planejamento da cidade. Demonstra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, conforme o mapa de calor. \pagebreak
+Este gráfico demonstra que os bairros conformem com a definição do Departamento de Planejamento da cidade. Demonstra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, conforme o mapa de calor. \pagebreak %TODO if needed
 
 <<chunk-priceBoxPlot>>=
 @
