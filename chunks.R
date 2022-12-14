@@ -121,7 +121,7 @@ pricePlot +
   xlim(0, upper_limit)
 
 ## ---- chunk-boxPriceNeighs
-df %>% ggplot(aes(x=price, y = fct_reorder(neighbourhood, -price, .fun=median))) + geom_boxplot() + xlim(0, upper_limit) +
+df %>% ggplot(aes(y=price, x = fct_reorder(neighbourhood, -price, .fun=median))) + geom_boxplot() + xlim(0, upper_limit) +
 labs(y = "")
 
 ## ---- chunk-freqRoomTypes

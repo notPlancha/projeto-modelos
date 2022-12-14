@@ -59,8 +59,8 @@ neighbourhoods %>% nrow()
 ```{r}
 coloredScatt <- shape_plot +
   geom_point(data=df, aes(y=latitude, x=longitude, color=neighbourhood), alpha=0.5, size=0.1)
-coloredPolygn <- shape_plot +
-  geom_mark_hull(data=df, aes(y=latitude, x=longitude, fill=neighbourhood), expand = 0, radius=0,alpha=0.7, size=0.1, level=0.2)
+shape_plot +
+  geom_mark_hull(data=df %>% filter(neighbourhood == c("Downtown/Civic Center", "South of Market", "Western Addition", "Mission")), aes(y=latitude, x=longitude, fill=neighbourhood), expand = 0, radius=0,alpha=0.7, size=0.1, level=0.2)
 coloredScatt
 coloredPolygn
 ```
@@ -82,6 +82,8 @@ pricebox <- pricePlot +
   coord_flip()
 pricebox # hard to visualize without xlim, but it becomes easier to see the high outliers
 pricebox+ xlim(0, 500)
+logPriceBox <- ggplot(data=df, aes(log(price)))
+logPriceBox + geom_boxplot()
 ```
 
 
@@ -233,6 +235,12 @@ scatterplotMatrix(df2, smooth = FALSE, main="Scatter Plot Matrix")
 
 
 
+```{r}
+df %>% count(minimum_nights)
+df %>% select(price, neighbourhood, latitude, longitude, room_type) %>%
+  mutate(isLuxuary = price > quantile(df$price, 0.975) + 20, logPrice = log(price), )
+df %>% arrange(-price) %>% select(name, price, host_name)
+```
 
 
 
