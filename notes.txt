@@ -1,5 +1,4 @@
-to do inline code it's \Sexpr{} ( mini-code chunk)
-to do figures é \begin{figure} e o chunk, dps o caption e o label (e o end)
+figures é \begin{figure} e o chunk, dps o caption e o label (e o end)
 https://rpubs.com/YaRrr/SweaveIntro
 
 fazer plot 3d do preco com lat/long
@@ -31,5 +30,6 @@ Por cover minusculo tmb
 Fazer o abstract (e por numa pagina sozinha)
 N esquecer de por as fontes no archive.org
 also mudar os tinyurls para trldifys 
-
+tirar todos e este ficheiro
 tabela de frequencias para as variaveis nominais
+

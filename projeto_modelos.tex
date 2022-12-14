@@ -94,7 +94,7 @@
     Rui Chaves, 104914 \\
     <rfpcs1@iscte-iul.pt>
   }
-  \date{28/11/2022 \\ Versão 0.0.1} % 
+  \date{14/12/2022 \\ Versão 0.0.1} % 
 % }
 
 % { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
@@ -230,7 +230,7 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{room\_type}: Tipo de alojamento, entre "Quarto privado", "Quarto partilhado", "Quarto de hotel", e "Casa/Apartamento inteiro";
   \item \textbf{price}: Preço do alojamento por noite em USD;
   \item \textbf{minimum\_nights}: Número mínimo de noites que o hospedeiro exige para alugar o alojamento;
-  \item \textbf{number\_of\_reviews}: Número total de \textit{reviews} que o alojamento tem;
+  \item \textbf{number\_of\_reviews}: Número total de \textit{reviews} que o alojamento tem desde o seu registo no Airbnb;
   \item \textbf{last\_review}: Data da última \textit{review} que o alojamento recebeu;
   \item \textbf{reviews\_per\_month}: Número médio de \textit{reviews} que o alojamento recebe por mês;
   \item \textbf{calculated\_host\_listings\_count}: Número de alojamentos que o hospedeiro tem disponíveis em São Francisco;
@@ -239,14 +239,6 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{license}: A licença/autorização/número de registo do alojamento.
 \end{itemize}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# df %>% head(1) %>% t()}
-\hlcom{# %>% showT(T)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
 Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede\sidenote{Estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.}, a disponibilidade do alojamento durante o ano, e a licença do alojamento. 
 
 Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade entre [distritos], mas que também existem muitos alojamentos no resto das cidades.  %TODO remove if not needed
