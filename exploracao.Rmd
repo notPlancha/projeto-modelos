@@ -67,10 +67,10 @@ coloredPolygn
 
 ```{r}
 # price outliers
-lower_bound <- quantile(df$price, 0.025)
-upper_bound <- quantile(df$price, 0.975)
-df %>% filter(price < lower_bound) %>% arrange(price) %>% select(name, price, host_name, neighbourhood)
-df %>% filter(price > upper_bound) %>% arrange(-price) %>% select(name, price, host_name, neighbourhood) # talvez separar aqueles luxuosas
+lower_limit <- quantile(df$price, 0.025)
+upper_limit <- quantile(df$price, 0.975)
+df %>% filter(price < lower_limit) %>% arrange(price) %>% select(name, price, host_name, neighbourhood)
+df %>% filter(price > upper_limit) %>% arrange(-price) %>% select(name, price, host_name, neighbourhood) # talvez separar aqueles luxuosas
 # há preços a 0
 ```
 
@@ -92,11 +92,11 @@ logPriceBox + geom_boxplot()
 priceHistPer20 <- pricePlot + # nota-se uma subida a cada +- 50$
   geom_histogram(binwidth=20, aes(y = ..density..)) +
   geom_density(color="red") +
-  xlim(0, upper_bound)
+  xlim(0, upper_limit)
 priceHistPer50 <- pricePlot +
   geom_histogram(binwidth=50, aes(y = ..density..)) +
   geom_density(color="red") +
-  xlim(0, upper_bound)
+  xlim(0, upper_limit)
 grid.arrange(priceHistPer20, priceHistPer50, ncol=2) 
 ```
 
@@ -104,7 +104,7 @@ grid.arrange(priceHistPer20, priceHistPer50, ncol=2)
 ```{r}
 scattPriceMap <- shape_plot + 
   geom_point(
-    data=df %>% filter(price < upper_bound),
+    data=df %>% filter(price < upper_limit),
     aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
   ) +
   scale_color_gradient(low="blue", high="red")
@@ -116,14 +116,14 @@ rasterPriceMap <- shape_plot +
   scale_fill_viridis_c(option="C", trans="log10") #log(average price
 rasterLowerPriceMap <- shape_plot +
   stat_summary_2d(
-    data = df %>% filter(price < upper_bound), 
+    data = df %>% filter(price < upper_limit), 
     aes(y=latitude, x=longitude, z=price), binwidth=0.005, alpha = 0.8
     ) + 
   scale_fill_viridis_c(option="D") #non luxury average price
 
 scattHighPriceMap <- shape_plot + 
   geom_point(
-    data=df %>% filter(price >= upper_bound),
+    data=df %>% filter(price >= upper_limit),
     aes(y=latitude, x=longitude, color=price), alpha=0.5, size=2, 
   ) +
   scale_color_gradient(low="#FF731D", high="#2A3990")
@@ -135,8 +135,8 @@ df %>% arrange(latitude)
 ```
 
 ```{r}
-ggplot(data = df, aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges() + theme_ridges() + theme(legend.position = "none") + xlim(0, upper_bound)
-df %>% ggplot(aes(y=price, x = forcats::fct_reorder(neighbourhood, price, .fun=median))) + geom_boxplot() + coord_cartesian(ylim=c(0, upper_bound)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+ggplot(data = df, aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges() + theme_ridges() + theme(legend.position = "none") + xlim(0, upper_limit)
+df %>% ggplot(aes(y=price, x = forcats::fct_reorder(neighbourhood, price, .fun=median))) + geom_boxplot() + coord_cartesian(ylim=c(0, upper_limit)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 ```{r}
 df %>% group_by(neighbourhood) %>% summarise(med = median(price))
@@ -153,7 +153,7 @@ cheaperPricesScatt <- shape_plot +
   scale_color_gradient(low="blue", high="red")
 MoreExpNotLuxPricesScatt <- shape_plot + 
   geom_point(
-    data=df %>% filter(price > mean(df$price) & price < upper_bound),
+    data=df %>% filter(price > mean(df$price) & price < upper_limit),
     aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
   ) +
   scale_color_gradient(low="blue", high="red")
@@ -200,7 +200,7 @@ df %>%
   arrange(-averagePrice)
 df %>% 
   group_by(neighbourhood, room_type) %>%
-  filter(price < upper_bound) %>%
+  filter(price < upper_limit) %>%
   summarise(
     n = n(),
     averagePrice = mean(price), 
@@ -250,11 +250,28 @@ df %>% arrange(-price) %>% select(name, price, host_name)
 
 ```{r}
 # dummies
+denseGroups <- df %>%
+group_by(neighbourhood) %>%
+summarise(n = n(), freq = n/nrow(df)) %>% 
+arrange(-n) %>% mutate(ind = row_number(), cum = cumsum(freq), grouped = case_when(cum>0.66 ~ 1, cum <= 0.66 & cum >=0.33 ~ 2, TRUE ~ 3))
+groupDensest <- denseGroups %>% filter(grouped==3)
+groupLowDensity <- denseGroups %>% filter(grouped==1)  
+
+
+
 df %>% select(neighbourhood, latitude, longitude, room_type, price) %>%
   mutate(
     logPrice = log(price), 
-    isFromSuperDenseGroup = ifelse(neighbourhood %in%  )
-  )
+    
+    isFromDenseGroup = ifelse(neighbourhood %in% groupDensest$neighbourhood, 1, 0),
+    isFromLowDenseGroup = ifelse(neighbourhood %in% groupLowDensity$neighbourhood, 1, 0),
+    
+    isLuxuary = ifelse(price > upper_limit, 1, 0),
+    
+    isInUpperPriceBracket = ifelse(neighbourhood %in% c('Diamond Heights','Potrero Hill','Castro/Upper Market','Glen Park','Russian Hill','Chinatown','Financial District','Marina','North Beach','Twin Peaks','Presidio'), 1, 0),
+    isInLowerPriceBracket = ifelse(neighbourhood %in% c('Excelsior','Lakeshore','Crocker Amazon','Ocean View','Bayview','Visitacion Valley','Outer Sunset','Outer Mission','Parkside','Inner Sunset','Nob Hill','Mission','Downtown/Civic Center','West of Twin Peaks'), 1, 0)
+  ) -> dfReady
+dfReady
 ```
 
 
