@@ -32,5 +32,5 @@ N esquecer de por as fontes no archive.org
 also mudar os tinyurls para trldifys 
 tirar todos e este ficheiro
 tabela de frequencias com o preco logarimizado, min, max, desvio padrao.
-rodar a tabela dos boxplots
 por o price dos corplots inicio
+adicionar tmb boxplot do price log e dizer "ao logaritmizar muitos dos aparentes outliers parecem sair" or smth

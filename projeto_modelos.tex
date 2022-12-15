@@ -94,7 +94,7 @@
     Rui Chaves, 104914 \\
     <rfpcs1@iscte-iul.pt>
   }
-  \date{14/12/2022 \\ Versão 0.0.1} % 
+  \date{15/12/2022 \\ Versão 0.0.1} % 
 % }
 
 % { bug workaround (https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017)
@@ -420,14 +420,16 @@ A distribuição de preços apresentada demonstra que a maioria dos alojamentos 
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
     \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= price,}
-        \hlkwc{x} \hlstd{=} \hlkwd{fct_reorder}\hlstd{(neighbourhood,}
-            \hlopt{-}\hlstd{price,} \hlkwc{.fun} \hlstd{= median)))} \hlopt{+}
-    \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{,}
-    \hlstd{upper_limit)} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{y} \hlstd{=} \hlstr{""}\hlstd{)}
+        \hlkwc{x} \hlstd{= forcats}\hlopt{::}\hlkwd{fct_reorder}\hlstd{(neighbourhood,}
+            \hlstd{price,} \hlkwc{.fun} \hlstd{= median)))} \hlopt{+}
+    \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}
+    \hlstd{upper_limit))} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{angle} \hlstd{=} \hlnum{90}\hlstd{,}
+    \hlkwc{vjust} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{hjust} \hlstd{=} \hlnum{1}\hlstd{))} \hlopt{+}
+    \hlkwd{labs}\hlstd{(}\hlkwc{x} \hlstd{=} \hlstr{""}\hlstd{)}
 \end{alltt}
+\end{kframe}\begin{figure*}
+\includegraphics[width=\maxwidth]{figure/chunk-boxPriceNeighs-1} \end{figure*}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: Discrete value supplied to continuous scale}}\end{kframe}
 \end{knitrout}
 Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
 

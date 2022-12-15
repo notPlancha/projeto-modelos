@@ -46,12 +46,12 @@ scatt
 grid.arrange(heat, heatLog, ncol=2)
 ```
 ```{r}
-neighbourhoods <- df %>%
+neighbourhoodss <- df %>%
   group_by(neighbourhood) %>%
   summarise(n = n()) %>%
   arrange(-n)
-neighbourhoods
-neighbourhoods %>% nrow()
+neighbourhoodss
+neighbourhoodss %>% nrow()
 ```
 
 
@@ -136,9 +136,12 @@ df %>% arrange(latitude)
 
 ```{r}
 ggplot(data = df, aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges() + theme_ridges() + theme(legend.position = "none") + xlim(0, upper_bound)
-df %>% ggplot(aes(x=price, y = forcats::fct_reorder(neighbourhood, -price, .fun=median))) + geom_boxplot() + xlim(0, upper_bound)
-
+df %>% ggplot(aes(y=price, x = forcats::fct_reorder(neighbourhood, price, .fun=median))) + geom_boxplot() + coord_cartesian(ylim=c(0, upper_bound)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
+```{r}
+df %>% group_by(neighbourhood) %>% summarise(med = median(price))
+```
+
 
 
 ```{r}
@@ -218,6 +221,7 @@ price, reviews_per_month,
 availability_365,
 number_of_reviews_ltm))
 df %>% filter(is.na(reviews_per_month))
+corrplot(df %>% select_if(is.numeric) %>% cor(method= 'kendall'), method="pie")
 ```
 
 
@@ -244,6 +248,14 @@ df %>% arrange(-price) %>% select(name, price, host_name)
 
 
 
+```{r}
+# dummies
+df %>% select(neighbourhood, latitude, longitude, room_type, price) %>%
+  mutate(
+    logPrice = log(price), 
+    isFromSuperDenseGroup = ifelse(neighbourhood %in%  )
+  )
+```
 
 
 
