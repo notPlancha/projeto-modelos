@@ -187,6 +187,8 @@ O diagrama apresentado demonstra as distribuições dos preços por tipo de aloj
 <<chunk-CorrPlot, fig.env="figure*", fig.width=7>>=
 @
 
+Perante o gráfico, não parece haver uma correlação alta entre o preço e as várias variaveis presentes no \textit{dataset}.
+
 \nobibliography{references.bib}
 \bibliographystyle{plainnat}
 \end{document}

@@ -31,5 +31,6 @@ Fazer o abstract (e por numa pagina sozinha)
 N esquecer de por as fontes no archive.org
 also mudar os tinyurls para trldifys 
 tirar todos e este ficheiro
-tabela de frequencias para as variaveis nominais
-
+tabela de frequencias com o preco logarimizado, min, max, desvio padrao.
+rodar a tabela dos boxplots
+por o price dos corplots inicio
