@@ -15,7 +15,11 @@ p_load(
   corrplot,
   tidyr,
   car,
-  ggridges
+  ggridges,
+  ggcorrplot,
+  ggfortify,
+  lmtest,
+  ggstats
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -259,7 +263,8 @@ groupLowDensity <- denseGroups %>% filter(grouped==1)
 
 
 
-df %>% select(neighbourhood, latitude, longitude, room_type, price) %>%
+df %>% filter(price > 0) %>%
+  select(neighbourhood, latitude, longitude, room_type, price) %>%
   mutate(
     logPrice = log(price), 
     
@@ -269,13 +274,48 @@ df %>% select(neighbourhood, latitude, longitude, room_type, price) %>%
     isLuxuary = ifelse(price > upper_limit, 1, 0),
     
     isInUpperPriceBracket = ifelse(neighbourhood %in% c('Diamond Heights','Potrero Hill','Castro/Upper Market','Glen Park','Russian Hill','Chinatown','Financial District','Marina','North Beach','Twin Peaks','Presidio'), 1, 0),
-    isInLowerPriceBracket = ifelse(neighbourhood %in% c('Excelsior','Lakeshore','Crocker Amazon','Ocean View','Bayview','Visitacion Valley','Outer Sunset','Outer Mission','Parkside','Inner Sunset','Nob Hill','Mission','Downtown/Civic Center','West of Twin Peaks'), 1, 0)
-  ) -> dfReady
+    isInLowerPriceBracket = ifelse(neighbourhood %in% c('Excelsior','Lakeshore','Crocker Amazon','Ocean View','Bayview','Visitacion Valley','Outer Sunset','Outer Mission','Parkside','Inner Sunset','Nob Hill','Mission','Downtown/Civic Center','West of Twin Peaks'), 1, 0),
+    isPrivateRoom = ifelse(room_type == 'Private room', 1, 0),
+    isSharedRoom = ifelse(room_type == 'Shared room', 1, 0),
+    isHotel = ifelse(room_type == 'Hotel room', 1, 0),
+  ) %>% select(-neighbourhood, -room_type) %>% relocate(price, logPrice) %>% arrange(price) -> dfReady
 dfReady
 ```
 
 
+```{r}
+# corPlot
+cor(dfReady) %>% ggcorrplot(lab=TRUE, type = "lower")
+```
 
+
+
+```{r}
+# modelos
+modelos <- data.frame(c("Desc", 'model', 'Call', 'RSquared', 'Residuals', 'Breusch–Pagan pvalue','autoplot'))
+# apenas latitude e longitude
+
+
+lm1 <- lm(price ~ .,data=dfReady %>% select(-logPrice))
+lm1Log <- lm(logPrice ~ .,data=dfReady %>% select(-price))
+summary(lm1Log)
+h <- lm1Log$residuals^2
+
+
+bestModel <- lm(logPrice ~ .,data=dfReady %>% select(-price), weights = 1/h)
+
+bestModel %>% autoplot() -> temp
+temp[[1]] #residuals vs fitted, pra ver a relacao linear (se n estiver funil? e a volta do 0)
+dfReady %>% ggplot(aes(x=predict(bestModel), y=logPrice)) + geom_point()#alternativa
+temp[[2]] #ve a normalidade de X, se for uma linha reta
+hist(bestModel$residuals, breaks=seq(from=-2, to=3, by=0.1))#alternativa, visual
+shapiro.test(sample(MASS::studres(bestModel),5000))#alternativa se p-value > 0.05
+temp[[3]]#ve a homoscedascicity, se for uma linha horizontal e os pontos estão iguamnete espalhados
+bptest# p < 0.05 H0 (homoskedasticity) é rejeitado e assume-se heteroskedasticity 
+#temp[[4]]
+#plot(bestModel, 4)
+
+```
 
 
 
