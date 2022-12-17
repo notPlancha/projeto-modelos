@@ -138,7 +138,6 @@ Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas j
 A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 <<chunk-rasterPlaces>>= 
 
-<<chunk-rasterLegend>>=
 @
 O mapa claramente demonstra a concentração de alojamentos na zona clara, mas também consegue-se observar uma grande quantidade, embora mais dispersos, na zona central.
 <<chunk-freqTableNeighbs>>=

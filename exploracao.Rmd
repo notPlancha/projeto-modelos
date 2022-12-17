@@ -19,7 +19,9 @@ p_load(
   ggcorrplot,
   ggfortify,
   lmtest,
-  ggstats
+  ggstats,
+  tidymodels,
+  themis
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -251,7 +253,6 @@ df %>% arrange(-price) %>% select(name, price, host_name)
 ```
 
 
-
 ```{r}
 # dummies
 denseGroups <- df %>%
@@ -266,20 +267,24 @@ groupLowDensity <- denseGroups %>% filter(grouped==1)
 df %>% filter(price > 0) %>%
   select(neighbourhood, latitude, longitude, room_type, price) %>%
   mutate(
-    logPrice = log(price), 
-    
     isFromDenseGroup = ifelse(neighbourhood %in% groupDensest$neighbourhood, 1, 0),
     isFromLowDenseGroup = ifelse(neighbourhood %in% groupLowDensity$neighbourhood, 1, 0),
-    
-    isLuxuary = ifelse(price > upper_limit, 1, 0),
     
     isInUpperPriceBracket = ifelse(neighbourhood %in% c('Diamond Heights','Potrero Hill','Castro/Upper Market','Glen Park','Russian Hill','Chinatown','Financial District','Marina','North Beach','Twin Peaks','Presidio'), 1, 0),
     isInLowerPriceBracket = ifelse(neighbourhood %in% c('Excelsior','Lakeshore','Crocker Amazon','Ocean View','Bayview','Visitacion Valley','Outer Sunset','Outer Mission','Parkside','Inner Sunset','Nob Hill','Mission','Downtown/Civic Center','West of Twin Peaks'), 1, 0),
     isPrivateRoom = ifelse(room_type == 'Private room', 1, 0),
     isSharedRoom = ifelse(room_type == 'Shared room', 1, 0),
     isHotel = ifelse(room_type == 'Hotel room', 1, 0),
-  ) %>% select(-neighbourhood, -room_type) %>% relocate(price, logPrice) %>% arrange(price) -> dfReady
+  ) %>% select(-neighbourhood) %>% relocate(price) %>% arrange(price) -> dfReady
 dfReady
+```
+
+```{r}
+#recipe testing
+set.seed(1)
+recipeTest <-recipe(price ~ neighbourhood + latitude + longitude + room_type, data=df) %>%
+  # step_smote(room_type) %>% 
+  step_dummy(neighbourhood, room_type)
 ```
 
 
@@ -288,13 +293,13 @@ dfReady
 cor(dfReady) %>% ggcorrplot(lab=TRUE, type = "lower")
 ```
 
+```{r}
+dfSplit <- dfReady %>% group_initial_split()
+```
 
 
 ```{r}
-# modelos
-modelos <- data.frame(c("Desc", 'model', 'Call', 'RSquared', 'Residuals', 'Breusch–Pagan pvalue','autoplot'))
 # apenas latitude e longitude
-
 
 lm1 <- lm(price ~ .,data=dfReady %>% select(-logPrice))
 lm1Log <- lm(logPrice ~ .,data=dfReady %>% select(-price))

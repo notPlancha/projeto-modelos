@@ -77,7 +77,7 @@ rast <- (shape_plot +
   scale_fill_viridis_c(option="C"))
 rast
 ## ---- chunk-rasterLegend
-#rast %>% extractLegend
+rast %>% extractLegend
 
 ## ---- chunk-freqTableNeighbs
 df %>% group_by(neighbourhood) %>% summarise(n=n(), freq = n/nrow(df)) %>% 
