@@ -44,13 +44,6 @@ data.frame(
   "type" = sapply(df, class)
 ) %>% showT()
 
-## ---- chunk-dfHead
-#df %>% head(1) %>% t() %>% showT(T)
-
-## ---- chunk-selectUsefulOnly
-# df %>% select(-id, -host_id, -neighbourhood_group, -license, -availability_365) -> df #TODO n tenho a certeza de quais tirar tmb
-# tmb n se se é preciso
-
 ## ---- chunk-plotPlace
 shape_plot + 
   geom_point(data=df, aes(y=latitude, x=longitude), alpha=0.5, color="red", size=0.1)
@@ -90,21 +83,23 @@ hull + theme(legend.position = "none")
 hull %>% get_legend() #TODO check https://stackoverflow.com/questions/33927027/how-to-extract-the-legend-labels-from-a-ggplot2-object
 
 ## ---- chunk-priceBoxPlot
-pricePlot <- ggplot(data=df, aes(price))
-pricebox <- pricePlot + 
+ggplot(data=df, aes(price)) +
   geom_boxplot() + 
   coord_flip()
-pricebox
 
 ## ---- chunk-priceBoxPlotLim
 upper_limit <- quantile(df$price, 0.975) + 20
-pricebox + xlim(0,upper_limit)
+ggplot(data=df, aes(price)) +
+  geom_boxplot() + 
+  coord_flip() +
+  xlim(0,upper_limit)
+
 
 ## ---- chunk-priceHead
 df %>% select(name, price) %>% arrange(-price) %>% head(7) %>% showT(T)
 
 ## ---- chunk-priceHist
-pricePlot +
+ggplot(data=df, aes(price)) +
   geom_histogram(binwidth=25, aes(y = ..density..)) +
   geom_density(color="red") +
   xlim(0, upper_limit)

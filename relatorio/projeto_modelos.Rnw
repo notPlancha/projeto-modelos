@@ -40,7 +40,7 @@ knitr::opts_chunk$set(
   tidy = TRUE,
   fig.cap = "",
   fig.height= 3.5,
-  tidy.opts = list(width.cutoff = 60)
+  tidy.opts = list(width.cutoff = 40)
 )
 @
 <<chunk-setup, echo=FALSE, warning=FALSE, message=FALSE>>=
@@ -77,9 +77,9 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{license}: A licença/autorização/número de registo do alojamento.
 \end{itemize}
 
-Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. 
+Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. Como o nosso objetivo será prever o preço esperado baseado na localização do apartamento, não vamos também utilizar variáveis associadas aos hóspedes, como o número de \textit{reviews} e o número de alojamentos que o hóspede tem disponíveis em São Francisco.
 
-Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade, principalmente em \textit{Downtown/Civic Center}, mas que também existem muitos alojamentos no resto das cidades.  %TODO remove if not needed
+Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade, principalmente em \textit{Downtown/Civic Center}, mas que também existem muitos alojamentos no resto das cidades.
 <<chunk-plotPlace>>=
 @
 Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas julgamos que não vá interferir com as nossas análises, devido ao correto agrupamento (demonstrado mais à frente) e à proximidade da cidade. Embora a razão nos seja desconhecida, acreditamos que o próprio Airbnb agrupa desta forma esses locais devido à sua proximidade com a cidade. \\
@@ -87,7 +87,7 @@ A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 <<chunk-rasterPlaces, fig.height = 5>>= 
 
 @
-O mapa claramente demonstra a concentração de alojamentos na zona clara, mas também consegue-se observar uma grande quantidade, embora mais dispersos, na zona central.
+O mapa claramente demonstra a concentração de alojamentos na zona clara, mas também consegue-se observar uma grande quantidade, embora mais dispersos, na zona central. Este gráfico demonstra uma possibilidade de agrupar os alojamentos nestas zonas.
 <<chunk-freqTableNeighbs>>=
 @ 
 A tabela mostra que a maioria dos alojamentos listados estão localizados no distrito de \textit{Downtown/Civic Center} e \textit{Mission}.
@@ -103,7 +103,9 @@ Estes preços conseguem ser justificados quando analisamos a fonte destes preço
 <<chunk-priceHead>>=
 @
 
-Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. Por agora, de forma a poder analisar a maioria dos alojamentos, vamos apenas ver a preços abaixo de \Sexpr{quantile(df$price, 0.975) + 20} USD. \\
+Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. 
+
+Como tentativa de mitigar estes altos verdadeiros \textit{outliers}, será provavelmente necessário fazer uma transformação logarítmica do objetivo, de forma a reduzir a influência destes valores no modelo.
 
 <<chunk-priceBoxPlotLim>>=
 @
@@ -114,13 +116,15 @@ O gráfico mostra também que há muitos alojamentos fora destes limites, podend
 @
 A distribuição de preços apresentada demonstra que a maioria dos alojamentos se encontram no limite mostrado anteriormente, e a distribuição parece aproximar-se de uma distribuição $\chi_{k}^{2}$, com um pequeno grau de liberdade. Curiosamente, o gráfico mostra que os preços parecem aumentar algumas vezes cada 50 USD, o que pode ser devido ao facto de que os hospedeiros escolhem preços redondos, como 50, 100, 175, etc. Este fenómeno parece ser mais visível nos 250 e nos 500.\\
 
-<<chunk-boxPriceNeighs, fig.env="figure*", fig.width=6, fig.height=4, warning=FALSE>>=
+<<chunk-boxPriceNeighs>>=
 @
 Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
 
 <<chunk-freqRoomTypes>>=
 @
-A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. A tablea também expoem que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Enquanto que o preço médio das salas partilhadas é esperado, é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
+A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. Isto pode levar a ser necessário o use de alguma técnica de \textit{oversampling} para os quartos de hotel e de alojamentos partilhados, de forma a aumentar a quantidade de registos destes tipos de alojamentos.\\
+
+A tabela também expoem que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Enquanto que o preço médio das salas partilhadas é esperado, é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
 <<chunk-freqRoomTypesWoLuxo>>=
 @
 
@@ -129,12 +133,9 @@ Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperad
 <<chunk-RoomTypesPrice, warning=F>>=
 @
 
-O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Ele corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
+O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Este corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
 
-<<chunk-CorrPlot, fig.height=5>>=
-@
 
-Perante o gráfico, não parece haver uma correlação alta entre o preço e as várias variaveis presentes no \textit{dataset}.
 
 \bibliography{references}{}
 \bibliographystyle{plain}

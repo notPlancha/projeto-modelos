@@ -100,7 +100,8 @@ A base de dados contém 6629 entradas, e cada uma delas representa um registo de
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{data.frame}\hlstd{(}\hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(df),} \hlkwc{type} \hlstd{=} \hlkwd{sapply}\hlstd{(df, class))} \hlopt{%>%}
+\hlkwd{data.frame}\hlstd{(}\hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(df),} \hlkwc{type} \hlstd{=} \hlkwd{sapply}\hlstd{(df,}
+    \hlstd{class))} \hlopt{%>%}
     \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
@@ -173,14 +174,15 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{license}: A licença/autorização/número de registo do alojamento.
 \end{itemize}
 
-Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. 
+Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. Como o nosso objetivo será prever o preço esperado baseado na localização do apartamento, não vamos também utilizar variáveis associadas aos hóspedes, como o número de \textit{reviews} e o número de alojamentos que o hóspede tem disponíveis em São Francisco.
 
-Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade, principalmente em \textit{Downtown/Civic Center}, mas que também existem muitos alojamentos no resto das cidades.  %TODO remove if not needed
+Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade, principalmente em \textit{Downtown/Civic Center}, mas que também existem muitos alojamentos no resto das cidades.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{shape_plot} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,} \hlkwc{x} \hlstd{= longitude),}
-    \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)}
+\hlstd{shape_plot} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,}
+    \hlkwc{x} \hlstd{= longitude),} \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{,}
+    \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/chunk-plotPlace-1} \end{figure}
@@ -191,9 +193,9 @@ A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{rast} \hlkwb{<-} \hlstd{(shape_plot} \hlopt{+} \hlkwd{stat_bin2d}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= longitude,}
-    \hlkwc{y} \hlstd{= latitude),} \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{,} \hlkwc{bins} \hlstd{=} \hlnum{30}\hlstd{,} \hlkwc{linejoin} \hlstd{=} \hlstr{"round"}\hlstd{)} \hlopt{+}
-    \hlkwd{scale_fill_viridis_c}\hlstd{(}\hlkwc{option} \hlstd{=} \hlstr{"C"}\hlstd{))}
+\hlstd{rast} \hlkwb{<-} \hlstd{(shape_plot} \hlopt{+} \hlkwd{stat_bin2d}\hlstd{(}\hlkwc{data} \hlstd{= df,}
+    \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= longitude,} \hlkwc{y} \hlstd{= latitude),} \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{,}
+    \hlkwc{bins} \hlstd{=} \hlnum{30}\hlstd{,} \hlkwc{linejoin} \hlstd{=} \hlstr{"round"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_viridis_c}\hlstd{(}\hlkwc{option} \hlstd{=} \hlstr{"C"}\hlstd{))}
 \hlstd{rast}
 \end{alltt}
 \end{kframe}\begin{figure}
@@ -244,10 +246,12 @@ A tabela mostra que a maioria dos alojamentos listados estão localizados no dis
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{shape_plot} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,} \hlkwc{x} \hlstd{= longitude,}
-    \hlkwc{color} \hlstd{= neighbourhood),} \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= (df} \hlopt{%>%}
-    \hlkwd{filter}\hlstd{(neighbourhood} \hlopt{==} \hlstr{"Downtown/Civic Center"}\hlstd{)),} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,}
-    \hlkwc{x} \hlstd{= longitude),} \hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{alpha} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
+\hlstd{shape_plot} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,}
+    \hlkwc{x} \hlstd{= longitude,} \hlkwc{color} \hlstd{= neighbourhood),}
+    \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= (df} \hlopt{%>%}
+    \hlkwd{filter}\hlstd{(neighbourhood} \hlopt{==} \hlstr{"Downtown/Civic Center"}\hlstd{)),}
+    \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,} \hlkwc{x} \hlstd{= longitude),} \hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{,}
+    \hlkwc{alpha} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/chunk-plotNeighbs-1} \end{figure}
@@ -258,9 +262,8 @@ Este gráfico demonstra que os bairros conformem com a definição do Departamen
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{pricePlot} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(price))}
-\hlstd{pricebox} \hlkwb{<-} \hlstd{pricePlot} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{coord_flip}\hlstd{()}
-\hlstd{pricebox}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
+    \hlkwd{coord_flip}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/chunk-priceBoxPlot-1} \end{figure}
@@ -302,13 +305,17 @@ Suite plus Connecting Room with Two Beds and One Sofabed at Fairmont San Francis
 
 \end{knitrout}
 
-Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. Por agora, de forma a poder analisar a maioria dos alojamentos, vamos apenas ver a preços abaixo de 895 USD. \\
+Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. 
+
+Como tentativa de mitigar estes altos verdadeiros \textit{outliers}, será provavelmente necessário fazer uma transformação logarítmica do objetivo, de forma a reduzir a influência destes valores no modelo.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{upper_limit} \hlkwb{<-} \hlkwd{quantile}\hlstd{(df}\hlopt{$}\hlstd{price,} \hlnum{0.975}\hlstd{)} \hlopt{+} \hlnum{20}
-\hlstd{pricebox} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
+\hlstd{upper_limit} \hlkwb{<-} \hlkwd{quantile}\hlstd{(df}\hlopt{$}\hlstd{price,} \hlnum{0.975}\hlstd{)} \hlopt{+}
+    \hlnum{20}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
+    \hlkwd{coord_flip}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
 \end{alltt}
 
 
@@ -322,8 +329,9 @@ O gráfico mostra também que há muitos alojamentos fora destes limites, podend
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{pricePlot} \hlopt{+} \hlkwd{geom_histogram}\hlstd{(}\hlkwc{binwidth} \hlstd{=} \hlnum{25}\hlstd{,} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= ..density..))} \hlopt{+}
-    \hlkwd{geom_density}\hlstd{(}\hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{)} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+} \hlkwd{geom_histogram}\hlstd{(}\hlkwc{binwidth} \hlstd{=} \hlnum{25}\hlstd{,}
+    \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= ..density..))} \hlopt{+} \hlkwd{geom_density}\hlstd{(}\hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{)} \hlopt{+}
+    \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/chunk-priceHist-1} \end{figure}
@@ -336,12 +344,13 @@ A distribuição de preços apresentada demonstra que a maioria dos alojamentos 
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
     \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= price,} \hlkwc{x} \hlstd{= forcats}\hlopt{::}\hlkwd{fct_reorder}\hlstd{(neighbourhood,}
-        \hlstd{price,} \hlkwc{.fun} \hlstd{= median)))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}
-    \hlstd{upper_limit))} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{angle} \hlstd{=} \hlnum{90}\hlstd{,}
-    \hlkwc{vjust} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{hjust} \hlstd{=} \hlnum{1}\hlstd{))} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{x} \hlstd{=} \hlstr{""}\hlstd{)}
+        \hlstd{price,} \hlkwc{.fun} \hlstd{= median)))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
+    \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{, upper_limit))} \hlopt{+}
+    \hlkwd{theme}\hlstd{(}\hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{angle} \hlstd{=} \hlnum{90}\hlstd{,}
+        \hlkwc{vjust} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{hjust} \hlstd{=} \hlnum{1}\hlstd{))} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{x} \hlstd{=} \hlstr{""}\hlstd{)}
 \end{alltt}
-\end{kframe}\begin{figure*}
-\includegraphics[width=\maxwidth]{figure/chunk-boxPriceNeighs-1} \end{figure*}
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/chunk-boxPriceNeighs-1} \end{figure}
 
 \end{knitrout}
 Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
@@ -351,7 +360,8 @@ Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
     \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
-    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),} \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
+    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
+        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
     \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
@@ -374,14 +384,17 @@ Shared room & 82 & 0.0123699 & 211.7683\\
 \end{table}
 
 \end{knitrout}
-A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. A tablea também expoem que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Enquanto que o preço médio das salas partilhadas é esperado, é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
+A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. Isto pode levar a ser necessário o use de alguma técnica de \textit{oversampling} para os quartos de hotel e de alojamentos partilhados, de forma a aumentar a quantidade de registos destes tipos de alojamentos.\\
+
+A tabela também expoem que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Enquanto que o preço médio das salas partilhadas é esperado, é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
     \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
     \hlkwd{filter}\hlstd{(price} \hlopt{<} \hlstd{upper_limit)} \hlopt{%>%}
-    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),} \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
+    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
+        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
     \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
@@ -410,8 +423,9 @@ Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperad
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggplot}\hlstd{(df,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price,} \hlkwc{y} \hlstd{= room_type,} \hlkwc{fill} \hlstd{= room_type))} \hlopt{+}
-    \hlkwd{geom_density_ridges}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)} \hlopt{+} \hlkwd{theme_ridges}\hlstd{()} \hlopt{+}
+\hlkwd{ggplot}\hlstd{(df,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price,} \hlkwc{y} \hlstd{= room_type,}
+    \hlkwc{fill} \hlstd{= room_type))} \hlopt{+} \hlkwd{geom_density_ridges}\hlstd{()} \hlopt{+}
+    \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)} \hlopt{+} \hlkwd{theme_ridges}\hlstd{()} \hlopt{+}
     \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
 \end{alltt}
 
@@ -421,21 +435,9 @@ Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperad
 
 \end{knitrout}
 
-O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Ele corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
+O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Este corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{ggcorrplot}\hlstd{(}\hlkwd{cor}\hlstd{(df} \hlopt{%>%}
-    \hlkwd{select}\hlstd{(latitude, longitude, price, reviews_per_month, availability_365,}
-        \hlstd{number_of_reviews_ltm),} \hlkwc{use} \hlstd{=} \hlstr{"complete.obs"}\hlstd{),} \hlkwc{lab} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\end{alltt}
-\end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/chunk-CorrPlot-1} \end{figure}
 
-\end{knitrout}
-
-Perante o gráfico, não parece haver uma correlação alta entre o preço e as várias variaveis presentes no \textit{dataset}.
 
 \bibliography{references}{}
 \bibliographystyle{plain}

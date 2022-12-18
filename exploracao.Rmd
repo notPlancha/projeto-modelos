@@ -21,7 +21,9 @@ p_load(
   lmtest,
   ggstats,
   tidymodels,
-  themis
+  themis,
+  yardstick,
+  MLmetrics
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -68,7 +70,6 @@ coloredScatt <- shape_plot +
 shape_plot +
   geom_mark_hull(data=df %>% filter(neighbourhood == c("Downtown/Civic Center", "South of Market", "Western Addition", "Mission")), aes(y=latitude, x=longitude, fill=neighbourhood), expand = 0, radius=0,alpha=0.7, size=0.1, level=0.2)
 coloredScatt
-coloredPolygn
 ```
 
 ```{r}
@@ -281,10 +282,18 @@ dfReady
 
 ```{r}
 #recipe testing
-set.seed(1)
-recipeTest <-recipe(price ~ neighbourhood + latitude + longitude + room_type, data=df) %>%
+set.seed(2)
+dfSplit <- initial_split(df)
+recipe <-recipe(price ~ neighbourhood + latitude + longitude + room_type, data=df) %>%
   # step_smote(room_type) %>% 
-  step_dummy(neighbourhood, room_type)
+  step_dummy(neighbourhood, room_type) %>% 
+  prep()
+bake(recipe, training(dfSplit)) -> dfTraining
+bake(recipe, testing(dfSplit)) -> dfTest
+summary(lm(price ~ ., dfReady))$residuals -> ws
+lm(price ~ ., dfTraining, w=1/ws^2) -> model
+predict(model, dfTest) -> p
+MLmetrics::MAPE(p, dfTest$price)
 ```
 
 
