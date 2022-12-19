@@ -23,7 +23,13 @@ p_load(
   tidymodels,
   themis,
   yardstick,
-  MLmetrics
+  MLmetrics,
+  akima,
+  olsrr,
+  textrecipes,
+  stopwords,
+  tseries,
+  MASS
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -53,6 +59,19 @@ heat <- shape_plot +
 scatt
 grid.arrange(heat, heatLog, ncol=2)
 ```
+
+```{r}
+df %>% filter(price > 0) -> df
+grid <- interp(df$longitude, df$latitude, df$price, duplicate="ignore")
+griddf <- data.frame(x = rep(grid$x, ncol(grid$z)), 
+                     y = rep(grid$y, each = nrow(grid$z)), 
+                     z = as.numeric(grid$z))
+# ggplot(df, aes(x=longitude, y=latitude, z=price)) + geom_contour(aes(z=price))
+ggplot(griddf,aes(x = x, y=y, z=z)) + geom_contour_filled()
+ggplot(griddf,aes(x = x, y=y, z=z)) + geom_contour_filled()
+```
+
+
 ```{r}
 neighbourhoodss <- df %>%
   group_by(neighbourhood) %>%
@@ -276,24 +295,114 @@ df %>% filter(price > 0) %>%
     isPrivateRoom = ifelse(room_type == 'Private room', 1, 0),
     isSharedRoom = ifelse(room_type == 'Shared room', 1, 0),
     isHotel = ifelse(room_type == 'Hotel room', 1, 0),
-  ) %>% select(-neighbourhood) %>% relocate(price) %>% arrange(price) -> dfReady
+  ) %>% select(-neighbourhood, -room_type) %>% relocate(price) %>% arrange(price) -> dfReady
 dfReady
 ```
 
 ```{r}
 #recipe testing
 set.seed(2)
-dfSplit <- initial_split(df)
-recipe <-recipe(price ~ neighbourhood + latitude + longitude + room_type, data=df) %>%
-  # step_smote(room_type) %>% 
+
+recipe <-recipe(price ~ neighbourhood + 
+                  latitude + longitude + room_type + price + minimum_nights + number_of_reviews + calculated_host_listings_count + availability_365, data=df) %>%
+  #step_tokenize(name) %>% 
+  #step_stopwords(name) %>%
+  #step_tokenfilter(name, max_tokens=30) %>%
+  #step_tf(name) %>%
+  step_upsample(room_type) %>%
   step_dummy(neighbourhood, room_type) %>% 
   prep()
+dfSplit <- initial_split(df)
 bake(recipe, training(dfSplit)) -> dfTraining
 bake(recipe, testing(dfSplit)) -> dfTest
-summary(lm(price ~ ., dfReady))$residuals -> ws
-lm(price ~ ., dfTraining, w=1/ws^2) -> model
-predict(model, dfTest) -> p
-MLmetrics::MAPE(p, dfTest$price)
+bake(recipe, df) -> dfAll
+```
+
+```{r}
+testModel <- function (model){
+  print("call")
+  print(model$call)
+  print("R^2")
+  print(summary(model)$r.squared)
+  print(bptest(model))
+  print("standart residuals mean")
+  print(mean(rstandard(model)))
+  plot(model, 1)
+  jarque.bera.test(model$residuals)
+  print("MAPE = 0")
+}
+fit0 <- lm(price ~ ., dfAll)
+fit1 <- lm(log10(price) ~ ., dfAll)
+fit2 <- lm(1/price ~ ., dfAll)
+testModel(fit0)
+testModel(fit1)
+testModel(fit2)
+#fit2 é o melhor
+```
+
+```{r}
+#crPlots(fit2)
+```
+```{r}
+fit3 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
+testModel(fit2)
+testModel(fit3)
+AIC(fit2, fit3)
+```
+```{r}
+# pesos
+fit4 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), w=1/((1:nrow(dfAll))^2))
+testModel(fit3)
+testModel(fit4) #E(error) != 0?
+AIC(fit3, fit4)
+```
+
+```{r}
+fit5 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), w=1/((1:nrow(dfAll))^0.5))
+testModel(fit3)
+testModel(fit5)
+AIC(fit3, fit5)
+```
+
+```{r}
+pfit3 <- predict(fit1, dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
+fit6 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), 
+           w=(1/sqrt(pfit3)) + min(1/sqrt(pfit3)))
+testModel(fit3)
+testModel(fit6)
+AIC(fit3, fit6)
+```
+```{r}
+fit7 <- rlm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
+testModel(fit3)
+testModel(fit7)
+AIC(fit3, fit7)
+```
+
+```{r}
+h = 1/sqrt(fit3$residuals^2)
+fit8 <-lm(1/price ~ .,dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), w = h)
+testModel(fit3)
+testModel(fit8)
+AIC(fit3, fit8)
+#fit3 e fit8 são os melhores até agora
+```
+```{r}
+
+```
+
+
+```{r}
+MAPE(1/fit3$fitted.values,dfAll$price) # in-sample
+fit3Training <- lm(1/price ~ ., dfTraining %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
+predict(fit3Training, dfTest %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3)) -> p 
+MLmetrics::MAPE(1/p, dfTest$price) #out of sample
+
+MAPE(1/(fit8$fitted.values+ fit8$residuals), dfAll$price)# in-sample
+h <- 1/sqrt(fit3Training$residuals^2)
+fit8Training <-lm(1/price ~ .,dfTraining %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), w = h)
+predict(fit8Training, dfTest %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3)) -> p 
+MLmetrics::MAPE(1/p, dfTest$price) #out of sample
 ```
 
 
@@ -332,6 +441,11 @@ bptest# p < 0.05 H0 (homoskedasticity) é rejeitado e assume-se heteroskedastici
 ```
 
 
+```{r}
+shape_plot +
+  stat_summary_hex(data = df, aes(x=longitude, y=latitude, z= log(price)), alpha=0.8) +
+  scale_fill_viridis_c() + 
+```
 
 
 

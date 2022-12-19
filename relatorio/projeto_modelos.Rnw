@@ -120,6 +120,11 @@ A distribuição de preços apresentada demonstra que a maioria dos alojamentos 
 @
 Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
 
+<<chunk-priceHexes>>=
+@
+
+Este gráfico demonstra a variariadade presente nos vários distritos, e da mesma forma não é possível descrever nenhum padrão \textit{a priori} para os preços. \\
+
 <<chunk-freqRoomTypes>>=
 @
 A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. Isto pode levar a ser necessário o use de alguma técnica de \textit{oversampling} para os quartos de hotel e de alojamentos partilhados, de forma a aumentar a quantidade de registos destes tipos de alojamentos.\\
@@ -135,7 +140,8 @@ Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperad
 
 O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Este corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
 
-
+<<chunk-readyDf>>=
+@
 
 \bibliography{references}{}
 \bibliographystyle{plain}

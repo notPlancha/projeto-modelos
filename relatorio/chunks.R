@@ -136,3 +136,10 @@ ggcorrplot(
       lab = TRUE
   )
 
+## ---- chunk-priceHexes
+shape_plot +
+  stat_summary_hex(data = df, aes(x=longitude, y=latitude, z= log(price)), alpha=0.8) +
+  scale_fill_viridis_c() +
+  theme(legend.position = "right")
+
+## ---- chunk-readyDf

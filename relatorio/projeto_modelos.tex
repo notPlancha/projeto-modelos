@@ -74,7 +74,7 @@
   Rui Chaves, 104914 \\
   <rfpcs1@iscte-iul.pt>
 }
-\date{17/12/2022 \\ Versão 0.0.2} % 
+\date{18/12/2022 \\ Versão 0.0.2} % 
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \maketitle
@@ -202,7 +202,7 @@ A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 \includegraphics[width=\maxwidth]{figure/chunk-rasterPlaces-1} \end{figure}
 
 \end{knitrout}
-O mapa claramente demonstra a concentração de alojamentos na zona clara, mas também consegue-se observar uma grande quantidade, embora mais dispersos, na zona central.
+O mapa claramente demonstra a concentração de alojamentos na zona clara, mas também consegue-se observar uma grande quantidade, embora mais dispersos, na zona central. Este gráfico demonstra uma possibilidade de agrupar os alojamentos nestas zonas.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -354,6 +354,23 @@ A distribuição de preços apresentada demonstra que a maioria dos alojamentos 
 
 \end{knitrout}
 Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{shape_plot} \hlopt{+} \hlkwd{stat_summary_hex}\hlstd{(}\hlkwc{data} \hlstd{= df,}
+    \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= longitude,} \hlkwc{y} \hlstd{= latitude,} \hlkwc{z} \hlstd{=} \hlkwd{log}\hlstd{(price)),}
+    \hlkwc{alpha} \hlstd{=} \hlnum{0.8}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_viridis_c}\hlstd{()} \hlopt{+}
+    \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"right"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 3 rows containing non-finite values (`stat\_summary\_hex()`).}}\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/chunk-priceHexes-1} \end{figure}
+
+\end{knitrout}
+
+Este gráfico demonstra a variariadade presente nos vários distritos, e da mesma forma não é possível descrever nenhum padrão \textit{a priori} para os preços. \\
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
