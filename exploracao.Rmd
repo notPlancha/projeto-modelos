@@ -400,12 +400,53 @@ AIC(fit3, fit8)
 
 
 ```{r}
+#fit 0
+MAPE(fit0$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 1
+MAPE(fit1$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 2
+MAPE(fit2$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit3
 MAPE(1/fit3$fitted.values,dfAll$price) # in-sample
+
 fit3Training <- lm(1/price ~ ., dfTraining %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
 predict(fit3Training, dfTest %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3)) -> p 
 MLmetrics::MAPE(1/p, dfTest$price) #out of sample
+```
 
+```{r}
+#fit 4
+MAPE(fit4$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 5
+MAPE(fit5$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 6
+MAPE(fit6$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 7
+MAPE(fit7$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 8
 MAPE(1/(fit8$fitted.values+ fit8$residuals), dfAll$price)# in-sample
+
 h <- 1/sqrt(fit3Training$residuals^2)
 fit8Training <-lm(1/price ~ .,dfTraining %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), w = h)
 predict(fit8Training, dfTest %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3)) -> p 
