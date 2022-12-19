@@ -1,6 +1,7 @@
 ```{r}
 library(pacman)
 p_load(
+  MASS,
   here,
   rgdal,
   sf,
@@ -29,7 +30,6 @@ p_load(
   textrecipes,
   stopwords,
   tseries,
-  MASS
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -95,8 +95,7 @@ coloredScatt
 # price outliers
 lower_limit <- quantile(df$price, 0.025)
 upper_limit <- quantile(df$price, 0.975)
-df %>% filter(price < lower_limit) %>% arrange(price) %>% select(name, price, host_name, neighbourhood)
-df %>% filter(price > upper_limit) %>% arrange(-price) %>% select(name, price, host_name, neighbourhood) # talvez separar aqueles luxuosas
+
 # há preços a 0
 ```
 
@@ -164,6 +163,8 @@ df %>% arrange(latitude)
 ggplot(data = df, aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges() + theme_ridges() + theme(legend.position = "none") + xlim(0, upper_limit)
 df %>% ggplot(aes(y=price, x = forcats::fct_reorder(neighbourhood, price, .fun=median))) + geom_boxplot() + coord_cartesian(ylim=c(0, upper_limit)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
+
+
 ```{r}
 df %>% group_by(neighbourhood) %>% summarise(med = median(price))
 ```
@@ -255,8 +256,6 @@ corrplot(df %>% select_if(is.numeric) %>% cor(method= 'kendall'), method="pie")
 md1 <- lm(price ~ number_of_reviews + minimum_nights, df)
 summary(md1)
 mean(residuals(md1))
-
-bgtest(price ~ number_of_reviews + minimum_nights)
 ```
 
 ```{r}
@@ -351,12 +350,14 @@ testModel(fit2)
 ```{r}
 #crPlots(fit2)
 ```
+
 ```{r}
 fit3 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
 testModel(fit2)
 testModel(fit3)
 AIC(fit2, fit3)
 ```
+
 ```{r}
 # pesos
 fit4 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), w=1/((1:nrow(dfAll))^2))
@@ -380,6 +381,7 @@ testModel(fit3)
 testModel(fit6)
 AIC(fit3, fit6)
 ```
+
 ```{r}
 fit7 <- rlm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
 testModel(fit3)
@@ -394,9 +396,6 @@ testModel(fit3)
 testModel(fit8)
 AIC(fit3, fit8)
 #fit3 e fit8 são os melhores até agora
-```
-```{r}
-
 ```
 
 
@@ -450,7 +449,7 @@ bptest# p < 0.05 H0 (homoskedasticity) é rejeitado e assume-se heteroskedastici
 
 
 ```{r}
-shape_plot +
+shape_plot() +
   stat_summary_hex(data = df, aes(x=longitude, y=latitude, z= log(price)), alpha=0.8) +
   scale_fill_viridis_c() + 
 ```
