@@ -252,8 +252,16 @@ corrplot(df %>% select_if(is.numeric) %>% cor(method= 'kendall'), method="pie")
 
 
 ```{r}
-md1 <- lm(reviews_per_month ~ number_of_reviews , df)
-md1
+md1 <- lm(price ~ number_of_reviews + minimum_nights, df)
+summary(md1)
+mean(residuals(md1))
+
+bgtest(price ~ number_of_reviews + minimum_nights)
+```
+
+```{r}
+md2 <- lm(reviews_per_month ~ number_of_reviews + minimum_nights, df)
+
 ```
 
 ```{r}
