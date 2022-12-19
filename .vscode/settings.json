@@ -1,14 +1,5 @@
 {
     "latex-workshop.latex.autoBuild.run": "never",
-    "saveAndRun": {
-        "shell": "pwsh",
-        "commands": [
-            {
-                "match": ".Rnw",
-                "cmd": "R.exe -e 'knitr::knit(r\"{${file}}\", encoding=\"UTF-8\")' && .\\tectonic \".\\${fileBasenameNoExt}.tex\""
-            }
-        ]
-    },
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false,
