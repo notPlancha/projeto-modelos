@@ -77,9 +77,8 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{license}: A licença/autorização/número de registo do alojamento.
 \end{itemize}
 
-Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. Como o nosso objetivo será prever o preço esperado baseado na localização do apartamento, não vamos também utilizar variáveis associadas aos hóspedes, como o número de \textit{reviews} e o número de alojamentos que o hóspede tem disponíveis em São Francisco.
-
-Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade, principalmente em \textit{Downtown/Civic Center}, mas que também existem muitos alojamentos no resto das cidades.
+Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. Como o nosso objetivo será prever o preço esperado baseado na localização do apartamento, não vamos também utilizar variáveis associadas aos hóspedes, como o número de \textit{reviews} e o número de alojamentos que o hóspede tem disponíveis em São Francisco. 
+Cada registo contém as coordenadas geográficas e se as representármos graficamente, podemos verificar que grande parte dos alojamentos se encontram concentrados a nordeste da cidade, principalmente em \textit{Downtown/Civic Center}. Apesar disso, também existem muitos alojamentos no resto da cidade.
 <<chunk-plotPlace>>=
 @
 Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas julgamos que não vá interferir com as nossas análises, devido ao correto agrupamento (demonstrado mais à frente) e à proximidade da cidade. Embora a razão nos seja desconhecida, acreditamos que o próprio Airbnb agrupa desta forma esses locais devido à sua proximidade com a cidade. \\
@@ -90,22 +89,22 @@ A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 O mapa claramente demonstra a concentração de alojamentos na zona clara, mas também consegue-se observar uma grande quantidade, embora mais dispersos, na zona central. Este gráfico demonstra uma possibilidade de agrupar os alojamentos nestas zonas.
 <<chunk-freqTableNeighbs>>=
 @ 
-A tabela mostra que a maioria dos alojamentos listados estão localizados no distrito de \textit{Downtown/Civic Center} e \textit{Mission}.
+A tabela mostra que grande parte dos alojamentos listados estão localizados no distrito de \textit{Downtown/Civic Center} e \textit{Mission}.
 
 <<chunk-plotNeighbs>>=
 @
-Este gráfico demonstra que os bairros conformem com a definição do Departamento de Planejamento da cidade. Demonstra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, conforme o mapa de calor.
+Esta figura demonstra que os bairros estão em conformidade com a definição do Departamento de Planejamento da cidade. Mostra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, através do mapa de calor.
 
 <<chunk-priceBoxPlot>>=
 @
-Este \textit{boxplot} do preço consegue notar imediatamente a existem de muitos valores atípicos, o que equivalem a preços muito altos, comparado com a média de preços dos registos, \Sexpr{round(mean(df$price), 3)} USD. Estes preços vão sem dúvida interferir com as nossas análises. \\
-Estes preços conseguem ser justificados quando analisamos a fonte destes preços altos.
+Neste \textit{boxplot} do preço conseguimos notar imediatamente a existência de muitos valores atípicos, que equivalem a preços muito altos tendo em conta a média de preços dos registos que é de \Sexpr{round(mean(df$price), 3)} USD. Estes preços vão sem dúvida interferir com as nossas análises. \\
+Estes preços conseguem ser explicados quando analisamos a sua fonte.
 <<chunk-priceHead>>=
 @
 
-Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. 
+Assim, estes preços equivalem a alojamentos de luxo, que pela sua natureza terão de ser tratadas de forma diferente quando for feita a modelação, uma vez que não são comparáveis com o resto dos alojamentos. 
 
-Como tentativa de mitigar estes altos verdadeiros \textit{outliers}, será provavelmente necessário fazer uma transformação logarítmica do objetivo, de forma a reduzir a influência destes valores no modelo.
+Como tentativa de mitigar estes valores muito altos (\textit{outliers}), provavelmente será necessário fazer uma transformação logarítmica do objetivo, de forma a reduzir a influência destes valores no modelo.
 
 <<chunk-priceBoxPlotLim>>=
 @
@@ -114,26 +113,26 @@ O gráfico mostra também que há muitos alojamentos fora destes limites, podend
 
 <<chunk-priceHist, warning=FALSE>>=
 @
-A distribuição de preços apresentada demonstra que a maioria dos alojamentos se encontram no limite mostrado anteriormente, e a distribuição parece aproximar-se de uma distribuição $\chi_{k}^{2}$, com um pequeno grau de liberdade. Curiosamente, o gráfico mostra que os preços parecem aumentar algumas vezes cada 50 USD, o que pode ser devido ao facto de que os hospedeiros escolhem preços redondos, como 50, 100, 175, etc. Este fenómeno parece ser mais visível nos 250 e nos 500.\\
+A distribuição de preços apresentada demonstra que a maioria dos alojamentos se encontram no limite mostrado anteriormente, e a distribuição parece aproximar-se de uma distribuição $\chi_{k}^{2}$, com um pequeno grau de liberdade. Curiosamente, o gráfico mostra que os preços parecem aumentar algumas vezes a cada 50 USD, o que pode ser devido ao facto de que os hospedeiros escolhem preços redondos, como 50, 100, 175, etc. Este fenómeno parece ser mais visível nos 250 e nos 500.\\
 
 <<chunk-boxPriceNeighs>>=
 @
-Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
+Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros, exceto no bairro Golden Gate Park.\\
 
 <<chunk-freqRoomTypes>>=
 @
-A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. Isto pode levar a ser necessário o use de alguma técnica de \textit{oversampling} para os quartos de hotel e de alojamentos partilhados, de forma a aumentar a quantidade de registos destes tipos de alojamentos.\\
+A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequentes. Mostra também a pequena quantidade de quartos de hotéis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. Isto pode levar a que seja necessário o uso de alguma técnica de \textit{oversampling} para os quartos de hotel e para alojamentos partilhados, de forma a aumentar a quantidade de registos destes tipos de alojamentos.\\
 
-A tabela também expoem que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Enquanto que o preço médio das salas partilhadas é esperado, é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
+A tabela também expõe que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Esta observação é esperada na parte que diz respeito aos quartos partilhados, no entanto é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
 <<chunk-freqRoomTypesWoLuxo>>=
 @
 
-Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperados; quartos de hoteis serem os mais caros com preços aproximados aos das casas inteiras, e os alojamentos partilhados serem os mais baratos. Os preços médios dos quartos privados desceram significativamente, e isto pode ser explicado pela classificação de alojamentos de luxo como "quartos privados". Nós suspeitamos que, sem os quartos de luxo, esta nova categoria identifica-se mais com albergues.\\
+Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperados; quartos de hoteis serem os mais caros com preços aproximados aos das casas inteiras, e os alojamentos partilhados serem os mais baratos. Os preços médios dos quartos privados desceram significativamente. Isto pode ser explicado pela classificação de alojamentos de luxo como "quartos privados". Deste modo suspeitamos que, sem os quartos de luxo, esta nova categoria identifica-se mais com albergues.\\
 
 <<chunk-RoomTypesPrice, warning=F>>=
 @
 
-O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Este corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
+O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Este corrobora que os quartos de hóteis são os mais caros, mas parece demonstrar também que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros. desta forma, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
 
 
 
