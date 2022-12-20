@@ -1,5 +1,6 @@
 ```{r}
 library(pacman)
+if(!p_isinstalled(MASS)) p_install(MASS)
 p_load(
   here,
   rgdal,
@@ -28,8 +29,7 @@ p_load(
   olsrr,
   textrecipes,
   stopwords,
-  tseries,
-  MASS
+  tseries
 )
 df <- read.csv(here("data", "listings.csv"))
 ```
@@ -91,14 +91,6 @@ shape_plot +
 coloredScatt
 ```
 
-```{r}
-# price outliers
-lower_limit <- quantile(df$price, 0.025)
-upper_limit <- quantile(df$price, 0.975)
-df %>% filter(price < lower_limit) %>% arrange(price) %>% select(name, price, host_name, neighbourhood)
-df %>% filter(price > upper_limit) %>% arrange(-price) %>% select(name, price, host_name, neighbourhood) # talvez separar aqueles luxuosas
-# há preços a 0
-```
 
 
 ```{r}
@@ -118,11 +110,11 @@ logPriceBox + geom_boxplot()
 priceHistPer20 <- pricePlot + # nota-se uma subida a cada +- 50$
   geom_histogram(binwidth=20, aes(y = ..density..)) +
   geom_density(color="red") +
-  xlim(0, upper_limit)
+  xlim(0, 800)
 priceHistPer50 <- pricePlot +
   geom_histogram(binwidth=50, aes(y = ..density..)) +
   geom_density(color="red") +
-  xlim(0, upper_limit)
+  xlim(0, 800)
 grid.arrange(priceHistPer20, priceHistPer50, ncol=2) 
 ```
 
@@ -130,7 +122,7 @@ grid.arrange(priceHistPer20, priceHistPer50, ncol=2)
 ```{r}
 scattPriceMap <- shape_plot + 
   geom_point(
-    data=df %>% filter(price < upper_limit),
+    data=df %>% filter(price < 800),
     aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
   ) +
   scale_color_gradient(low="blue", high="red")
@@ -142,14 +134,14 @@ rasterPriceMap <- shape_plot +
   scale_fill_viridis_c(option="C", trans="log10") #log(average price
 rasterLowerPriceMap <- shape_plot +
   stat_summary_2d(
-    data = df %>% filter(price < upper_limit), 
+    data = df %>% filter(price < 800), 
     aes(y=latitude, x=longitude, z=price), binwidth=0.005, alpha = 0.8
     ) + 
   scale_fill_viridis_c(option="D") #non luxury average price
 
 scattHighPriceMap <- shape_plot + 
   geom_point(
-    data=df %>% filter(price >= upper_limit),
+    data=df %>% filter(price >= 800),
     aes(y=latitude, x=longitude, color=price), alpha=0.5, size=2, 
   ) +
   scale_color_gradient(low="#FF731D", high="#2A3990")
@@ -161,8 +153,8 @@ df %>% arrange(latitude)
 ```
 
 ```{r}
-ggplot(data = df, aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges() + theme_ridges() + theme(legend.position = "none") + xlim(0, upper_limit)
-df %>% ggplot(aes(y=price, x = forcats::fct_reorder(neighbourhood, price, .fun=median))) + geom_boxplot() + coord_cartesian(ylim=c(0, upper_limit)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+ggplot(data = df, aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges() + theme_ridges() + theme(legend.position = "none") + xlim(0, 800)
+df %>% ggplot(aes(y=price, x = forcats::fct_reorder(neighbourhood, price, .fun=median))) + geom_boxplot() + coord_cartesian(ylim=c(0, 800)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 ```{r}
 df %>% group_by(neighbourhood) %>% summarise(med = median(price))
@@ -179,7 +171,7 @@ cheaperPricesScatt <- shape_plot +
   scale_color_gradient(low="blue", high="red")
 MoreExpNotLuxPricesScatt <- shape_plot + 
   geom_point(
-    data=df %>% filter(price > mean(df$price) & price < upper_limit),
+    data=df %>% filter(price > mean(df$price) & price < 800),
     aes(y=latitude, x=longitude, color=price), alpha=0.5, size=0.5
   ) +
   scale_color_gradient(low="blue", high="red")
@@ -226,7 +218,7 @@ df %>%
   arrange(-averagePrice)
 df %>% 
   group_by(neighbourhood, room_type) %>%
-  filter(price < upper_limit) %>%
+  filter(price < 800) %>%
   summarise(
     n = n(),
     averagePrice = mean(price), 
@@ -250,22 +242,9 @@ df %>% filter(is.na(reviews_per_month))
 corrplot(df %>% select_if(is.numeric) %>% cor(method= 'kendall'), method="pie")
 ```
 
-
-```{r}
-md1 <- lm(price ~ number_of_reviews + minimum_nights, df)
-summary(md1)
-mean(residuals(md1))
-
-bgtest(price ~ number_of_reviews + minimum_nights)
-```
-
-```{r}
-md2 <- lm(reviews_per_month ~ number_of_reviews + minimum_nights, df)
-
-```
-
 ```{r}
 df2 <- df %>% select(price, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, number_of_reviews_ltm)
+df %>% select(price)
 
 scatterplotMatrix(df2, smooth = FALSE, main="Scatter Plot Matrix")
 
@@ -312,7 +291,7 @@ dfReady
 set.seed(2)
 
 recipe <-recipe(price ~ neighbourhood + 
-                  latitude + longitude + room_type + price + minimum_nights + number_of_reviews + calculated_host_listings_count + availability_365, data=df) %>%
+                  latitude + longitude + room_type + minimum_nights + number_of_reviews + calculated_host_listings_count + availability_365, data=df) %>%
   #step_tokenize(name) %>% 
   #step_stopwords(name) %>%
   #step_tokenfilter(name, max_tokens=30) %>%
@@ -334,14 +313,16 @@ testModel <- function (model){
   print(summary(model)$r.squared)
   print(bptest(model))
   print("standart residuals mean")
-  print(mean(rstandard(model)))
+  print(mean(?rstandard(model)))
   plot(model, 1)
   jarque.bera.test(model$residuals)
-  print("MAPE = 0")
 }
 fit0 <- lm(price ~ ., dfAll)
 fit1 <- lm(log10(price) ~ ., dfAll)
 fit2 <- lm(1/price ~ ., dfAll)
+bgtest(fit0)
+bgtest(fit1)
+bgtest(fit2)
 testModel(fit0)
 testModel(fit1)
 testModel(fit2)
@@ -351,12 +332,15 @@ testModel(fit2)
 ```{r}
 #crPlots(fit2)
 ```
+
 ```{r}
 fit3 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
 testModel(fit2)
 testModel(fit3)
 AIC(fit2, fit3)
+vif(fit3)
 ```
+
 ```{r}
 # pesos
 fit4 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), w=1/((1:nrow(dfAll))^2))
@@ -381,7 +365,7 @@ testModel(fit6)
 AIC(fit3, fit6)
 ```
 ```{r}
-fit7 <- rlm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
+fit7 <- MASS::rlm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
 testModel(fit3)
 testModel(fit7)
 AIC(fit3, fit7)
@@ -395,6 +379,7 @@ testModel(fit8)
 AIC(fit3, fit8)
 #fit3 e fit8 são os melhores até agora
 ```
+
 ```{r}
 
 ```

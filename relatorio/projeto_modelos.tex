@@ -74,7 +74,7 @@
   Rui Chaves, 104914 \\
   <rfpcs1@iscte-iul.pt>
 }
-\date{18/12/2022 \\ Versão 0.0.2} % 
+\date{20/12/2022 \\ Versão 0.0.2} % 
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \maketitle
@@ -174,9 +174,8 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
   \item \textbf{license}: A licença/autorização/número de registo do alojamento.
 \end{itemize}
 
-Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. Como o nosso objetivo será prever o preço esperado baseado na localização do apartamento, não vamos também utilizar variáveis associadas aos hóspedes, como o número de \textit{reviews} e o número de alojamentos que o hóspede tem disponíveis em São Francisco.
-
-Cada registo contém as coordenadas geográficas, e se as representármos graficamente, podemos verificar que uma grande parte dos alojamentos concentrados encontram-se a nordoeste da cidade, principalmente em \textit{Downtown/Civic Center}, mas que também existem muitos alojamentos no resto das cidades.
+Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. Como o nosso objetivo será prever o preço esperado baseado na localização do apartamento, não vamos também utilizar variáveis associadas aos hóspedes, como o número de \textit{reviews} e o número de alojamentos que o hóspede tem disponíveis em São Francisco. 
+Cada registo contém as coordenadas geográficas e se as representármos graficamente, podemos verificar que grande parte dos alojamentos se encontram concentrados a nordeste da cidade, principalmente em \textit{Downtown/Civic Center}. Apesar disso, também existem muitos alojamentos no resto da cidade.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -241,7 +240,7 @@ Haight Ashbury & 276 & 0.0416352\\
 \end{table}
 
 \end{knitrout}
-A tabela mostra que a maioria dos alojamentos listados estão localizados no distrito de \textit{Downtown/Civic Center} e \textit{Mission}.
+A tabela mostra que grande parte dos alojamentos listados estão localizados no distrito de \textit{Downtown/Civic Center} e \textit{Mission}.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -257,7 +256,7 @@ A tabela mostra que a maioria dos alojamentos listados estão localizados no dis
 \includegraphics[width=\maxwidth]{figure/chunk-plotNeighbs-1} \end{figure}
 
 \end{knitrout}
-Este gráfico demonstra que os bairros conformem com a definição do Departamento de Planejamento da cidade. Demonstra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, conforme o mapa de calor.
+Esta figura demonstra que os bairros estão em conformidade com a definição do Departamento de Planejamento da cidade. Mostra também a posição do distrito \textit{Downtown/Civic Center} a vermelho, através do mapa de calor.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -269,8 +268,8 @@ Este gráfico demonstra que os bairros conformem com a definição do Departamen
 \includegraphics[width=\maxwidth]{figure/chunk-priceBoxPlot-1} \end{figure}
 
 \end{knitrout}
-Este \textit{boxplot} do preço consegue notar imediatamente a existem de muitos valores atípicos, o que equivalem a preços muito altos, comparado com a média de preços dos registos, 303.465 USD. Estes preços vão sem dúvida interferir com as nossas análises. \\
-Estes preços conseguem ser justificados quando analisamos a fonte destes preços altos.
+Neste \textit{boxplot} do preço conseguimos notar imediatamente a existência de muitos valores atípicos, que equivalem a preços muito altos tendo em conta a média de preços dos registos que é de 303.465 USD. Estes preços vão sem dúvida interferir com as nossas análises. \\
+Estes preços conseguem ser explicados quando analisamos a sua fonte.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -305,9 +304,9 @@ Suite plus Connecting Room with Two Beds and One Sofabed at Fairmont San Francis
 
 \end{knitrout}
 
-Estes preços equivalem a alojamentos de luxo. Estes alojamentos vão ter que ser tratadas de forma diferente quando a for feita a modelação, pois não são comparáveis com o resto dos alojamentos. 
+Assim, estes preços equivalem a alojamentos de luxo, que pela sua natureza terão de ser tratadas de forma diferente quando for feita a modelação, uma vez que não são comparáveis com o resto dos alojamentos. 
 
-Como tentativa de mitigar estes altos verdadeiros \textit{outliers}, será provavelmente necessário fazer uma transformação logarítmica do objetivo, de forma a reduzir a influência destes valores no modelo.
+Como tentativa de mitigar estes valores muito altos (\textit{outliers}), provavelmente será necessário fazer uma transformação logarítmica do objetivo, de forma a reduzir a influência destes valores no modelo.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -337,7 +336,7 @@ O gráfico mostra também que há muitos alojamentos fora destes limites, podend
 \includegraphics[width=\maxwidth]{figure/chunk-priceHist-1} \end{figure}
 
 \end{knitrout}
-A distribuição de preços apresentada demonstra que a maioria dos alojamentos se encontram no limite mostrado anteriormente, e a distribuição parece aproximar-se de uma distribuição $\chi_{k}^{2}$, com um pequeno grau de liberdade. Curiosamente, o gráfico mostra que os preços parecem aumentar algumas vezes cada 50 USD, o que pode ser devido ao facto de que os hospedeiros escolhem preços redondos, como 50, 100, 175, etc. Este fenómeno parece ser mais visível nos 250 e nos 500.\\
+A distribuição de preços apresentada demonstra que a maioria dos alojamentos se encontram no limite mostrado anteriormente, e a distribuição parece aproximar-se de uma distribuição $\chi_{k}^{2}$, com um pequeno grau de liberdade. Curiosamente, o gráfico mostra que os preços parecem aumentar algumas vezes a cada 50 USD, o que pode ser devido ao facto de que os hospedeiros escolhem preços redondos, como 50, 100, 175, etc. Este fenómeno parece ser mais visível nos 250 e nos 500.\\
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -353,7 +352,7 @@ A distribuição de preços apresentada demonstra que a maioria dos alojamentos 
 \includegraphics[width=\maxwidth]{figure/chunk-boxPriceNeighs-1} \end{figure}
 
 \end{knitrout}
-Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros.\\
+Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante de acordo com o bairro sendo que o ponto médio não varia bastante entre bairros, excepto os bairros \textit{Twin Peaks}, e \textit{Presidio}. No entanto, o gráfico mostra uma grande variância dos preços em todos os bairros, exceto no bairro Golden Gate Park.\\
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -378,56 +377,58 @@ Este gráfico demonstra a variariadade presente nos vários distritos, e da mesm
 \hlstd{df} \hlopt{%>%}
     \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
     \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
-        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
+        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price),} \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(price),}
+        \hlkwc{min} \hlstd{=} \hlkwd{min}\hlstd{(price),} \hlkwc{max} \hlstd{=} \hlkwd{max}\hlstd{(price))} \hlopt{%>%}
     \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
 
-\begin{tabular}{r|r|r|r}
+\begin{tabular}{r|r|r|r|r|r|r}
 \hline
-room\_type & n & freq & averagePrice\\
+room\_type & n & freq & averagePrice & sd & min & max\\
 \hline
-\cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{4243} & \cellcolor{gray!6}{0.6400664} & \cellcolor{gray!6}{275.8965}\\
+\cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{4243} & \cellcolor{gray!6}{0.6400664} & \cellcolor{gray!6}{275.8965} & \cellcolor{gray!6}{406.8473} & \cellcolor{gray!6}{33} & \cellcolor{gray!6}{12000}\\
 \hline
-Hotel room & 65 & 0.0098054 & 266.2154\\
+Hotel room & 65 & 0.0098054 & 266.2154 & 211.0756 & 0 & 1220\\
 \hline
-\cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{2239} & \cellcolor{gray!6}{0.3377583} & \cellcolor{gray!6}{360.1474}\\
+\cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{2239} & \cellcolor{gray!6}{0.3377583} & \cellcolor{gray!6}{360.1474} & \cellcolor{gray!6}{1972.6562} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{25000}\\
 \hline
-Shared room & 82 & 0.0123699 & 211.7683\\
+Shared room & 82 & 0.0123699 & 211.7683 & 1101.4410 & 25 & 10000\\
 \hline
 \end{tabular}
 \endgroup{}
 \end{table}
 
 \end{knitrout}
-A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequents. Mostra também a pequena quantidade de quartos de hoteis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. Isto pode levar a ser necessário o use de alguma técnica de \textit{oversampling} para os quartos de hotel e de alojamentos partilhados, de forma a aumentar a quantidade de registos destes tipos de alojamentos.\\
+A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequentes. Mostra também a pequena quantidade de quartos de hotéis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. Isto pode levar a que seja necessário o uso de alguma técnica de \textit{oversampling} para os quartos de hotel e para alojamentos partilhados, de forma a aumentar a quantidade de registos destes tipos de alojamentos.\\
 
-A tabela também expoem que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Enquanto que o preço médio das salas partilhadas é esperado, é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
+A tabela também expõe que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Esta observação é esperada na parte que diz respeito aos quartos partilhados, no entanto é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados". Isto pode explicar também o grande desvio padrão das variáveis.\\
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
     \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
-    \hlkwd{filter}\hlstd{(price} \hlopt{<} \hlstd{upper_limit)} \hlopt{%>%}
+    \hlkwd{filter}\hlstd{(price} \hlopt{<} \hlstd{upper_limit, price} \hlopt{>} \hlnum{0}\hlstd{)} \hlopt{%>%}
     \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
-        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
+        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price),} \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(price),}
+        \hlkwc{min} \hlstd{=} \hlkwd{min}\hlstd{(price),} \hlkwc{max} \hlstd{=} \hlkwd{max}\hlstd{(price))} \hlopt{%>%}
     \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
 
-\begin{tabular}{r|r|r|r}
+\begin{tabular}{r|r|r|r|r|r|r}
 \hline
-room\_type & n & freq & averagePrice\\
+room\_type & n & freq & averagePrice & sd & min & max\\
 \hline
-\cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{4131} & \cellcolor{gray!6}{0.6388803} & \cellcolor{gray!6}{233.9990}\\
+\cellcolor{gray!6}{Entire home/apt} & \cellcolor{gray!6}{4131} & \cellcolor{gray!6}{0.6391769} & \cellcolor{gray!6}{233.9990} & \cellcolor{gray!6}{147.74938} & \cellcolor{gray!6}{33} & \cellcolor{gray!6}{880}\\
 \hline
-Hotel room & 63 & 0.0097433 & 241.0159\\
+Hotel room & 61 & 0.0094383 & 248.9180 & 151.65776 & 72 & 820\\
 \hline
-\cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{2192} & \cellcolor{gray!6}{0.3390040} & \cellcolor{gray!6}{135.2176}\\
+\cellcolor{gray!6}{Private room} & \cellcolor{gray!6}{2191} & \cellcolor{gray!6}{0.3390067} & \cellcolor{gray!6}{135.2793} & \cellcolor{gray!6}{95.85747} & \cellcolor{gray!6}{24} & \cellcolor{gray!6}{800}\\
 \hline
-Shared room & 80 & 0.0123724 & 78.3125\\
+Shared room & 80 & 0.0123782 & 78.3125 & 55.54006 & 25 & 300\\
 \hline
 \end{tabular}
 \endgroup{}
@@ -435,7 +436,7 @@ Shared room & 80 & 0.0123724 & 78.3125\\
 
 \end{knitrout}
 
-Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperados; quartos de hoteis serem os mais caros com preços aproximados aos das casas inteiras, e os alojamentos partilhados serem os mais baratos. Os preços médios dos quartos privados desceram significativamente, e isto pode ser explicado pela classificação de alojamentos de luxo como "quartos privados". Nós suspeitamos que, sem os quartos de luxo, esta nova categoria identifica-se mais com albergues.\\
+Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperados; quartos de hoteis serem os mais caros com preços aproximados aos das casas inteiras, e os alojamentos partilhados serem os mais baratos. Os preços médios dos quartos privados desceram significativamente. Isto pode ser explicado pela classificação de alojamentos de luxo como "quartos privados". Deste modo suspeitamos que, sem os quartos de luxo, esta nova categoria identifica-se mais com albergues.\\
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -452,7 +453,122 @@ Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperad
 
 \end{knitrout}
 
-O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Este corrobora que os quartos de hóteis sejam os mais caros, mas parece demonstrar que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros; ou seja, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
+O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Este corrobora que os quartos de hóteis são os mais caros, mas parece demonstrar também que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros. desta forma, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df} \hlopt{%>%}
+    \hlkwd{select}\hlstd{(price, latitude, longitude, minimum_nights,}
+        \hlstd{number_of_reviews, calculated_host_listings_count,}
+        \hlstd{availability_365)} \hlopt{%>%}
+    \hlkwd{cor}\hlstd{(}\hlkwc{use} \hlstd{=} \hlstr{"complete.obs"}\hlstd{)} \hlopt{%>%}
+    \hlkwd{ggcorrplot}\hlstd{(}\hlkwc{lab} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"lower"}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/chunk-CorrPlot-1} \end{figure}
+
+\end{knitrout}
+O gráfico de correlações não mostra também nenhuma correlação significante entre o preço e as outras variáveis numéricas analisaveis. Mostra também uma pouca correlação entre as variáveis independentes.\\
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{recipeUpSample} \hlkwb{<-} \hlkwd{recipe}\hlstd{(price} \hlopt{~} \hlstd{neighbourhood} \hlopt{+}
+    \hlstd{latitude} \hlopt{+} \hlstd{longitude} \hlopt{+} \hlstd{room_type} \hlopt{+} \hlstd{minimum_nights} \hlopt{+}
+    \hlstd{number_of_reviews} \hlopt{+} \hlstd{calculated_host_listings_count} \hlopt{+}
+    \hlstd{availability_365,} \hlkwc{data} \hlstd{= df)} \hlopt{%>%}
+    \hlkwd{step_upsample}\hlstd{(room_type,} \hlkwc{skip} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+        \hlkwc{over_ratio} \hlstd{=} \hlnum{0.363}\hlstd{)} \hlopt{%>%}
+    \hlkwd{step_dummy}\hlstd{(neighbourhood, room_type)} \hlopt{%>%}
+    \hlkwd{prep}\hlstd{()}
+\hlstd{recipeNoUpSample} \hlkwb{<-} \hlkwd{recipe}\hlstd{(price} \hlopt{~} \hlstd{neighbourhood} \hlopt{+}
+    \hlstd{latitude} \hlopt{+} \hlstd{longitude} \hlopt{+} \hlstd{room_type} \hlopt{+} \hlstd{minimum_nights} \hlopt{+}
+    \hlstd{number_of_reviews} \hlopt{+} \hlstd{calculated_host_listings_count} \hlopt{+}
+    \hlstd{availability_365,} \hlkwc{data} \hlstd{= df)} \hlopt{%>%}
+    \hlkwd{step_dummy}\hlstd{(neighbourhood, room_type)} \hlopt{%>%}
+    \hlkwd{prep}\hlstd{()}
+\hlstd{dfAll} \hlkwb{<-} \hlkwd{bake}\hlstd{(recipeUpSample, df} \hlopt{%>%}
+    \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{))}
+\hlstd{dfAll} \hlopt{%>%}
+    \hlkwd{group_by}\hlstd{(}\hlkwc{isHotel} \hlstd{= room_type_Hotel.room,}
+        \hlkwc{isPrivateRoom} \hlstd{= room_type_Private.room,}
+        \hlkwc{isSharedRoom} \hlstd{= room_type_Shared.room)} \hlopt{%>%}
+    \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{= n}\hlopt{/}\hlkwd{nrow}\hlstd{(dfAll),}
+        \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
+    \hlkwd{showT}\hlstd{()}
+\end{alltt}
+\end{kframe}\begin{table}
+\centering\begingroup\fontsize{10}{12}\selectfont
+
+\begin{tabular}{r|r|r|r|r|r}
+\hline
+isHotel & isPrivateRoom & isSharedRoom & n & freq & averagePrice\\
+\hline
+\cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{4243} & \cellcolor{gray!6}{0.4437820} & \cellcolor{gray!6}{271.0295}\\
+\hline
+0 & 0 & 1 & 1540 & 0.1610710 & 212.9039\\
+\hline
+\cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{2238} & \cellcolor{gray!6}{0.2340759} & \cellcolor{gray!6}{391.4486}\\
+\hline
+1 & 0 & 0 & 1540 & 0.1610710 & 274.1903\\
+\hline
+\end{tabular}
+\endgroup{}
+\end{table}
+
+\end{knitrout}
+A quantidade de hotéis e alojoamentos partilhados foram aumentada para 1540 (ainda inclui desequilíbrio, mas devido à realmente pequena quantidade destes decidimos não equilibrar demasiado), e as nossas variáveis categóricas foram transformadas em \textit{dummies}, de forma a tornar possível a sua análise.\\
+
+Para analisar e comparar modelos, vai ser usado \textit{in-sample} e analisado as estatísticas do coeficiente de determinação $R^2$, e o \textit{MAPE}. A estatística $F$ vai ser insignificante pare o nosso modelo, devido à grande quantidade de observações, levando a uma rejeição da hipótese nula constante. Para comparar modelos, vai ser observado o \textit{AIC} de cada, quando apropriado. Para verificar os pressupostos, vai ser analisado se a média dos resíduos padrozinados é praticamente zero, o teste de \textit{Breusch-Pagan} para verificar a homocedasticidade, o teste de \textit{Breusch-Godfrey} para verificar a autocorrelação, e o teste de \textit{Jarque-Bera} para verificar a normalidade dos resíduos. Em alguns modelos vai ser também analisado o gráficos de resíduos.\\
+
+Em cada um destes testes, se o valor $p$ for menor que $0.05$, então rejeitamos $H_0$. No teste \textit{Breusch-Pagan}, $H_0$ é que os resíduos são homocedásticos, e no teste \textit{Breusch-Godfrey}, $H_0$ é que os resíduos não são autocorrelacionados. No teste \textit{Jarque-Bera}, $H_0$ é que os resíduos são normais.\\
+
+O nosso primeiro modelo linear foi um modelo que diretamente relaciona as variáveis todas com o preço. \\
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fit0} \hlkwb{<-} \hlkwd{lm}\hlstd{(price} \hlopt{~} \hlstd{., dfAll)}
+\hlstd{fit0} \hlopt{%>%}
+    \hlkwd{glance}\hlstd{()} \hlopt{%>%}
+    \hlkwd{select}\hlstd{(}\hlkwc{R2} \hlstd{= r.squared,} \hlkwc{AIC} \hlstd{= AIC)} \hlopt{%>%}
+    \hlkwd{mutate}\hlstd{(}\hlkwc{MAPE} \hlstd{=} \hlkwd{MAPE}\hlstd{(dfAll}\hlopt{$}\hlstd{price,} \hlkwd{predict}\hlstd{(fit0,}
+        \hlstd{dfAll)),} \hlkwc{`Breusch-Pagan`} \hlstd{=} \hlkwd{validP}\hlstd{(}\hlkwd{bptest}\hlstd{(fit0)}\hlopt{$}\hlstd{p.value,}
+        \hlnum{FALSE}\hlstd{),} \hlkwc{`Breusch-Godfrey`} \hlstd{=} \hlkwd{validP}\hlstd{(}\hlkwd{bgtest}\hlstd{(fit0)}\hlopt{$}\hlstd{p.value,}
+        \hlnum{FALSE}\hlstd{),} \hlkwc{`Jarque-Bera`} \hlstd{=} \hlkwd{validP}\hlstd{(}\hlkwd{jarque.bera.test}\hlstd{(fit0}\hlopt{$}\hlstd{residuals)}\hlopt{$}\hlstd{p.value,}
+        \hlnum{TRUE}\hlstd{))} \hlopt{%>%}
+    \hlkwd{t}\hlstd{()} \hlopt{%>%}
+    \hlkwd{showT}\hlstd{()}
+\end{alltt}
+\end{kframe}\begin{table}
+\centering\begingroup\fontsize{10}{12}\selectfont
+
+\begin{tabular}{l|r}
+\hline
+R2 & 0.04582814\\
+\hline
+\cellcolor{gray!6}{AIC} & \cellcolor{gray!6}{161374.8}\\
+\hline
+MAPE & 3.782943\\
+\hline
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 1.57675882618306e-50}\\
+\hline
+Breusch-Godfrey & p > 0.05\\
+\hline
+\cellcolor{gray!6}{Jarque-Bera} & \cellcolor{gray!6}{p < 0.05}\\
+\hline
+\end{tabular}
+\endgroup{}
+\end{table}
+
+\begin{kframe}\begin{alltt}
+\hlkwd{plot}\hlstd{(fit0,} \hlnum{1}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/chunk-fit0-1} \end{figure}
+
+\end{knitrout}
 
 
 

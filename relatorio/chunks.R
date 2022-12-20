@@ -15,7 +15,12 @@ pacman::p_load(
   ggforce,
   ggridges,
   forcats,
-  ggcorrplot
+  ggcorrplot,
+  tidymodels,
+  themis,
+  MLmetrics,
+  lmtest,
+  tseries
 )
 showT <- function(x, fullWidth = F, ...) {
   kable(x, align="r", ...) %>% 
@@ -27,6 +32,13 @@ showT <- function(x, fullWidth = F, ...) {
 }
 extractLegend <- function(ggp){
   ggdraw() + draw_grob(get_legend(ggp), x = 1, y = 1, hjust = 1, vjust = 1)
+}
+validP <- function(p.value, wantH0=TRUE, alpha=0.05){
+  if (p.value < alpha){
+    return (ifelse(wantH0, paste("p <", alpha), paste("p =", p.value)))
+  }else{
+    return (ifelse(wantH0, paste("p =", p.value), paste("p >", alpha)))
+  }
 }
 
 ## ---- chunk-temp
@@ -79,9 +91,6 @@ hull <- shape_plot +
   geom_mark_hull(data=df, aes(y=latitude, x=longitude, fill=neighbourhood), expand = 0, radius=0,alpha=0.7, linewidth=0.1)
 hull + theme(legend.position = "none")
 
-## ---- chunk-hullLegend
-hull %>% get_legend() #TODO check https://stackoverflow.com/questions/33927027/how-to-extract-the-legend-labels-from-a-ggplot2-object
-
 ## ---- chunk-priceBoxPlot
 ggplot(data=df, aes(price)) +
   geom_boxplot() + 
@@ -113,16 +122,22 @@ df %>%
   summarise(
     n = n(), 
     freq = n()/nrow(.),
-    averagePrice = mean(price)
+    averagePrice = mean(price),
+    sd = sd(price),
+    min = min(price),
+    max = max(price)
   ) %>% showT()
 ## ---- chunk-freqRoomTypesWoLuxo
 df %>%
   group_by(room_type) %>% 
-  filter(price < upper_limit) %>%
+  filter(price < upper_limit, price > 0) %>%
   summarise(
     n = n(), 
     freq = n()/nrow(.),
-    averagePrice = mean(price)
+    averagePrice = mean(price),
+    sd = sd(price),
+    min = min(price),
+    max = max(price)
   ) %>% showT()
 
 ## ---- chunk-RoomTypesPrice
@@ -131,10 +146,10 @@ ggplot(df, aes(x=price, y=room_type, fill=room_type)) +
   theme_ridges() + theme(legend.position = "none") 
 
 ## ---- chunk-CorrPlot
-ggcorrplot(
-  cor(df %>% select(latitude, longitude, price, reviews_per_month, availability_365, number_of_reviews_ltm), use = "complete.obs"), 
-      lab = TRUE
-  )
+df %>% 
+select(price, latitude, longitude,minimum_nights, number_of_reviews, calculated_host_listings_count, availability_365) %>% 
+cor(use = "complete.obs") %>% 
+ggcorrplot(lab = TRUE, type = "lower")
 
 ## ---- chunk-priceHexes
 shape_plot +
@@ -142,4 +157,36 @@ shape_plot +
   scale_fill_viridis_c() +
   theme(legend.position = "right")
 
+
 ## ---- chunk-readyDf
+recipeUpSample <- recipe(price ~ neighbourhood + latitude + longitude + room_type + minimum_nights + number_of_reviews + calculated_host_listings_count + availability_365, data=df) %>%
+  step_upsample(room_type, skip=FALSE, over_ratio = 0.363) %>% 
+  step_dummy(neighbourhood, room_type) %>%
+  prep()
+recipeNoUpSample <- recipe(price ~ neighbourhood + latitude + longitude + room_type + minimum_nights + number_of_reviews + calculated_host_listings_count + availability_365, data=df) %>%
+step_dummy(neighbourhood, room_type) %>%
+prep()
+dfAll <- bake(recipeUpSample, df %>% filter(price > 0))
+dfAll %>% group_by(isHotel = room_type_Hotel.room, isPrivateRoom = room_type_Private.room, isSharedRoom = room_type_Shared.room) %>% summarise(n=n(), freq=n/nrow(dfAll), averagePrice = mean(price)) %>% showT()
+
+## ---- chunk-splitDf
+set.seed(123)
+dfSplit <- initial_split(df, prop = 0.8, strata = room_type)
+dfTrain <- training(bake(recipeUpSample, dfSplit))
+dfTest <- testing(bake(recipeNoUpSample, dfSplit))
+cbind(
+  "train" = c(nrow(dfTrain), nrow(dfTrain)/nrow(dfAll)),
+  "test" = c(nrow(dfTest), nrow(dfTest)/nrow(dfAll))
+) %>% showT()
+
+## ---- chunk-fit0
+fit0 <- lm(price ~ ., dfAll)
+fit0 %>% glance() %>% select(
+  R2=r.squared, 
+  AIC=AIC) %>% mutate(
+  MAPE=MAPE(dfAll$price, predict(fit0, dfAll)),
+  "Breusch-Pagan"=validP(bptest(fit0)$p.value, FALSE),
+  "Breusch-Godfrey"=validP(bgtest(fit0)$p.value, FALSE),
+  "Jarque-Bera"=validP(jarque.bera.test(fit0$residuals)$p.value, TRUE)
+) %>% t() %>% showT()
+plot(fit0, 1)

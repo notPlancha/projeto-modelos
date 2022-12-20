@@ -128,7 +128,7 @@ Este gráfico demonstra a variariadade presente nos vários distritos, e da mesm
 @
 A tabela mostra que a maioria dos alojamentos são apartamentos ou casas inteiras, enquanto que os quartos privados são menos frequentes. Mostra também a pequena quantidade de quartos de hotéis e de alojamentos partilhados, sendo estes apenas $2\%$ dos registos. Isto pode levar a que seja necessário o uso de alguma técnica de \textit{oversampling} para os quartos de hotel e para alojamentos partilhados, de forma a aumentar a quantidade de registos destes tipos de alojamentos.\\
 
-A tabela também expõe que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Esta observação é esperada na parte que diz respeito aos quartos partilhados, no entanto é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados".\\
+A tabela também expõe que os quartos privados são os mais caros em média, enquanto que os alojamentos partilhados são os mais baratos. Esta observação é esperada na parte que diz respeito aos quartos partilhados, no entanto é supreendente que os quartos privados sejam mais caros em média que as casas inteiras e os quartos de hotel. Isto pode ser porque a diferença entre "quarto privado" e "quarto de hotel" pode ser confusa, tanto que os hoteis de alto preço notados em cima estão caracterizados como "quartos privados". Isto pode explicar também o grande desvio padrão das variáveis.\\
 <<chunk-freqRoomTypesWoLuxo>>=
 @
 
@@ -139,8 +139,24 @@ Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperad
 
 O diagrama apresentado demonstra as distribuições dos preços por tipo de alojamento. Este corrobora que os quartos de hóteis são os mais caros, mas parece demonstrar também que a maioria dos outros grupos se encontram com preços semelhantes, com uma diferença na densidade na cauda do gráfico, explicando assim a alta média de apartamentos inteiros. desta forma, a maioria dos alojamentos inteiros estão de acordo com quartos privados, mas existem mais alojamentos inteiros mais caros.
 
-<<chunk-readyDf>>=
+<<chunk-CorrPlot, fig.height=5>>=
 @
+O gráfico de correlações não mostra também nenhuma correlação significante entre o preço e as outras variáveis numéricas analisaveis. Mostra também uma pouca correlação entre as variáveis independentes.\\
+
+
+<<chunk-readyDf, message = FALSE>>=
+@
+A quantidade de hotéis e alojoamentos partilhados foram aumentada para \Sexpr{dfAll %>% filter(room_type_Hotel.room == 1) %>% nrow()} (ainda inclui desequilíbrio, mas devido à realmente pequena quantidade destes decidimos não equilibrar demasiado), e as nossas variáveis categóricas foram transformadas em \textit{dummies}, de forma a tornar possível a sua análise.\\
+
+Para analisar e comparar modelos, vai ser usado \textit{in-sample} e analisado as estatísticas do coeficiente de determinação $R^2$, e o \textit{MAPE}. A estatística $F$ vai ser insignificante pare o nosso modelo, devido à grande quantidade de observações, levando a uma rejeição da hipótese nula constante. Para comparar modelos, vai ser observado o \textit{AIC} de cada, quando apropriado. Para verificar os pressupostos, vai ser analisado se a média dos resíduos padrozinados é praticamente zero, o teste de \textit{Breusch-Pagan} para verificar a homocedasticidade, o teste de \textit{Breusch-Godfrey} para verificar a autocorrelação, e o teste de \textit{Jarque-Bera} para verificar a normalidade dos resíduos. Em alguns modelos vai ser também analisado o gráficos de resíduos.\\
+
+Em cada um destes testes, se o valor $p$ for menor que $0.05$, então rejeitamos $H_0$. No teste \textit{Breusch-Pagan}, $H_0$ é que os resíduos são homocedásticos, e no teste \textit{Breusch-Godfrey}, $H_0$ é que os resíduos não são autocorrelacionados. No teste \textit{Jarque-Bera}, $H_0$ é que os resíduos são normais.\\
+
+O nosso primeiro modelo linear foi um modelo que diretamente relaciona as variáveis todas com o preço. \\
+<<chunk-fit0>>=
+@
+
+
 
 \bibliography{references}{}
 \bibliographystyle{plain}
