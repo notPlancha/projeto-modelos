@@ -2,6 +2,7 @@
 library(pacman)
 if(!p_isinstalled(MASS)) p_install(MASS)
 p_load(
+  MASS,
   here,
   rgdal,
   sf,
@@ -156,6 +157,8 @@ df %>% arrange(latitude)
 ggplot(data = df, aes(x=price, y= neighbourhood, fill=neighbourhood)) + geom_density_ridges() + theme_ridges() + theme(legend.position = "none") + xlim(0, 800)
 df %>% ggplot(aes(y=price, x = forcats::fct_reorder(neighbourhood, price, .fun=median))) + geom_boxplot() + coord_cartesian(ylim=c(0, 800)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
+
+
 ```{r}
 df %>% group_by(neighbourhood) %>% summarise(med = median(price))
 ```
@@ -364,6 +367,7 @@ testModel(fit3)
 testModel(fit6)
 AIC(fit3, fit6)
 ```
+
 ```{r}
 fit7 <- MASS::rlm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
 testModel(fit3)
@@ -380,18 +384,55 @@ AIC(fit3, fit8)
 #fit3 e fit8 são os melhores até agora
 ```
 
-```{r}
 
+```{r}
+#fit 0
+MAPE(fit0$fitted.values, dfAll$price) # in-sample
 ```
 
+```{r}
+#fit 1
+MAPE(fit1$fitted.values, dfAll$price) # in-sample
+```
 
 ```{r}
+#fit 2
+MAPE(fit2$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit3
 MAPE(1/fit3$fitted.values,dfAll$price) # in-sample
+
 fit3Training <- lm(1/price ~ ., dfTraining %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
 predict(fit3Training, dfTest %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3)) -> p 
 MLmetrics::MAPE(1/p, dfTest$price) #out of sample
+```
 
+```{r}
+#fit 4
+MAPE(fit4$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 5
+MAPE(fit5$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 6
+MAPE(fit6$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 7
+MAPE(fit7$fitted.values, dfAll$price) # in-sample
+```
+
+```{r}
+#fit 8
 MAPE(1/(fit8$fitted.values+ fit8$residuals), dfAll$price)# in-sample
+
 h <- 1/sqrt(fit3Training$residuals^2)
 fit8Training <-lm(1/price ~ .,dfTraining %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3), w = h)
 predict(fit8Training, dfTest %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3)) -> p 
@@ -435,7 +476,7 @@ bptest# p < 0.05 H0 (homoskedasticity) é rejeitado e assume-se heteroskedastici
 
 
 ```{r}
-shape_plot +
+shape_plot() +
   stat_summary_hex(data = df, aes(x=longitude, y=latitude, z= log(price)), alpha=0.8) +
   scale_fill_viridis_c() + 
 ```
