@@ -98,7 +98,7 @@
 
 A base de dados que nos foi disponibilizada vem do  projeto, fundado por Murray Cox com a missão de "[...] fornecer dados e defesa sobre o impacto do Airbnb em comunidades residenciais"\cite{InsideAirBnbAbt}.
 
-A base de dados contém 6629 entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licensa do alojamento.
+A base de dados contém 6629 entradas, e cada uma delas representa um registo de um anúncio para o aluguer de um alojamento disponível no Airbnb, em São Francisco, Califórnia. Cada alojamento contém informação sobre o seu preço, localização, hospedeiro, o tipo de alojamento, as \textit{reviews} do alojamento, e licença do alojamento.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -178,9 +178,9 @@ De forma a perceber melhor a base dados, o \textit{Airbnb} disponibiliza de um "
 \end{itemize}
 
 Para o nosso objetivo, algumas colunas não vão ser úteis, devido à sua naturaza. Estas são o id, name, as categorias que referem informações sobre o hóspede (estas colunas conseguem justificar valores atípicos, principalmente em termos de preço; e.g. Um preço extremamente alto pode acontecer devido a um hotel de luxo na cidade. Estes problemas vão ser discutidos mais à frente.), a disponibilidade do alojamento durante o ano, e a licença do alojamento. Como o nosso objetivo será prever o preço esperado baseado na localização do apartamento, não vamos também utilizar variáveis associadas aos hóspedes, como o número de \textit{reviews} e o número de alojamentos que o hóspede tem disponíveis em São Francisco. 
-Cada registo contém as coordenadas geográficas e se as representármos graficamente, podemos verificar que grande parte dos alojamentos se encontram concentrados a nordeste da cidade, principalmente em \textit{Downtown/Civic Center}. Apesar disso, também existem muitos alojamentos no resto da cidade.
+Cada registo contém as coordenadas geográficas e se as representarmos graficamente, podemos verificar que grande parte dos alojamentos se encontram concentrados a nordeste da cidade, principalmente em \textit{Downtown/Civic Center}. Apesar disso, também existem muitos alojamentos no resto da cidade.
 
-Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas julgamos que não vá interferir com as nossas análises, devido ao correto agrupamento (demonstrado mais à frente) e à proximidade da cidade. Embora a razão nos seja desconhecida, acreditamos que o próprio Airbnb agrupa desta forma esses locais devido à sua proximidade com a cidade. \\
+Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas julgamos que não vá interferir com as nossas análises, devido ao correto agrupamento (demonstrado mais à frente) e à proximidade da cidade. Embora a razão nos seja desconhecida, acreditamos que o próprio Airbnb agrupa desta forma esses locais devido à sua proximidade à cidade. \\
 A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -502,13 +502,13 @@ O gráfico de correlações não mostra também nenhuma correlação significant
 \hline
 isHotel & isPrivateRoom & isSharedRoom & n & freq & averagePrice\\
 \hline
-\cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{4242} & \cellcolor{gray!6}{0.4439096} & \cellcolor{gray!6}{277.7650}\\
+\cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{4242} & \cellcolor{gray!6}{0.4439096} & \cellcolor{gray!6}{267.4215}\\
 \hline
-0 & 0 & 1 & 1539 & 0.1610506 & 228.2131\\
+0 & 0 & 1 & 1539 & 0.1610506 & 249.3223\\
 \hline
-\cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{2236} & \cellcolor{gray!6}{0.2339891} & \cellcolor{gray!6}{397.6476}\\
+\cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{2236} & \cellcolor{gray!6}{0.2339891} & \cellcolor{gray!6}{327.2849}\\
 \hline
-1 & 0 & 0 & 1539 & 0.1610506 & 273.0500\\
+1 & 0 & 0 & 1539 & 0.1610506 & 271.0097\\
 \hline
 \end{tabular}
 \endgroup{}
@@ -561,17 +561,17 @@ O nosso primeiro modelo linear foi um modelo que diretamente relaciona as variá
 \hline
 Model & fit0(price \textasciitilde{} .)\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0426}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0412}\\
 \hline
-AIC & 1.62e+05\\
+AIC & 1.6e+05\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{1.82}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{1.72}\\
 \hline
-rRMSE & 0.0392\\
+rRMSE & 0.0376\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 3.14e-49}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 9.03e-38}\\
 \hline
-Breusch-Godfrey & p > 0.05\\
+Breusch-Godfrey & p = 0.00189\\
 \hline
 \cellcolor{gray!6}{Jarque-Bera} & \cellcolor{gray!6}{p < 0.05}\\
 \hline
@@ -617,17 +617,17 @@ O primeiro modelo notavelmente não é apropriado, devido ao valor gigante de \t
 \hline
 Model & cube & squared & root & log & invSqrt & inv & invSqdr & invCube\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0339} & \cellcolor{gray!6}{0.0353} & \cellcolor{gray!6}{0.121} & \cellcolor{gray!6}{0.358} & \cellcolor{gray!6}{0.507} & \cellcolor{gray!6}{0.569} & \cellcolor{gray!6}{0.576} & \cellcolor{gray!6}{0.534}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0266} & \cellcolor{gray!6}{0.0294} & \cellcolor{gray!6}{0.131} & \cellcolor{gray!6}{0.38} & \cellcolor{gray!6}{0.532} & \cellcolor{gray!6}{0.595} & \cellcolor{gray!6}{0.604} & \cellcolor{gray!6}{0.563}\\
 \hline
-AIC & 5.41e+05 & 3.5e+05 & 6.99e+04 & 2e+04 & -4.39e+04 & -7.53e+04 & -1.41e+05 & -2.06e+05\\
+AIC & 5.39e+05 & 3.48e+05 & 6.86e+04 & 1.94e+04 & -4.43e+04 & -7.55e+04 & -1.41e+05 & -2.06e+05\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{127921} & \cellcolor{gray!6}{322} & \cellcolor{gray!6}{0.294} & \cellcolor{gray!6}{0.0922} & \cellcolor{gray!6}{0.31} & \cellcolor{gray!6}{1.58} & \cellcolor{gray!6}{210} & \cellcolor{gray!6}{63140}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{108297} & \cellcolor{gray!6}{292} & \cellcolor{gray!6}{0.282} & \cellcolor{gray!6}{0.0891} & \cellcolor{gray!6}{0.296} & \cellcolor{gray!6}{1.49} & \cellcolor{gray!6}{199} & \cellcolor{gray!6}{57299}\\
 \hline
-rRMSE & 0.201 & 0.156 & 0.0068 & 0.00138 & 0.00286 & 0.00556 & 0.0121 & 0.0196\\
+rRMSE & 0.221 & 0.167 & 0.00647 & 0.00135 & 0.00278 & 0.00537 & 0.0117 & 0.0188\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 4.2e-42} & \cellcolor{gray!6}{p = 7.99e-45} & \cellcolor{gray!6}{p = 1.14e-56} & \cellcolor{gray!6}{p = 3.09e-112} & \cellcolor{gray!6}{p = 1.19e-252} & \cellcolor{gray!6}{p = 0} & \cellcolor{gray!6}{p = 0} & \cellcolor{gray!6}{p = 0}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 1.47e-27} & \cellcolor{gray!6}{p = 1.33e-30} & \cellcolor{gray!6}{p = 7.32e-54} & \cellcolor{gray!6}{p = 1.88e-116} & \cellcolor{gray!6}{p = 6.12e-229} & \cellcolor{gray!6}{p = 1.5e-298} & \cellcolor{gray!6}{p = 0} & \cellcolor{gray!6}{p = 3.79e-272}\\
 \hline
-Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
+Breusch-Godfrey & p = 0.00341 & p = 0.000314 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
 \cellcolor{gray!6}{Jarque-Bera} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05}\\
 \hline
@@ -670,15 +670,15 @@ O conjunto de treino usou o mesmo método de \textit{oversampling} usado anterio
 \hline
 Model & log & invSqrt & logOut & invSqrtOut\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.358} & \cellcolor{gray!6}{0.507} & \cellcolor{gray!6}{0.408} & \cellcolor{gray!6}{0.536}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.38} & \cellcolor{gray!6}{0.532} & \cellcolor{gray!6}{0.387} & \cellcolor{gray!6}{0.514}\\
 \hline
-AIC & 2e+04 & -4.39e+04 & 1.57e+04 & -3.85e+04\\
+AIC & 1.94e+04 & -4.43e+04 & 1.61e+04 & -3.84e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0922} & \cellcolor{gray!6}{0.31} & \cellcolor{gray!6}{0.0915} & \cellcolor{gray!6}{0.29}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0891} & \cellcolor{gray!6}{0.296} & \cellcolor{gray!6}{0.0932} & \cellcolor{gray!6}{0.288}\\
 \hline
-rRMSE & 0.00138 & 0.00286 & 0.0035 & 0.00754\\
+rRMSE & 0.00135 & 0.00278 & 0.00353 & 0.00761\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 3.09e-112} & \cellcolor{gray!6}{p = 1.19e-252} & \cellcolor{gray!6}{p = 2.28e-101} & \cellcolor{gray!6}{p = 6.66e-251}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 1.88e-116} & \cellcolor{gray!6}{p = 6.12e-229} & \cellcolor{gray!6}{p = 3.63e-111} & \cellcolor{gray!6}{p = 1.28e-256}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -731,15 +731,15 @@ Ao analisar os gráficos, apenas o gráfico dos resíduos parcial da variável \
 \hline
 Model & noMN & withMN & MNsq\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.34} & \cellcolor{gray!6}{0.358} & \cellcolor{gray!6}{0.4}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.359} & \cellcolor{gray!6}{0.38} & \cellcolor{gray!6}{0.412}\\
 \hline
-AIC & 2.02e+04 & 2e+04 & 1.93e+04\\
+AIC & 1.97e+04 & 1.94e+04 & 1.89e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0947} & \cellcolor{gray!6}{0.0922} & \cellcolor{gray!6}{0.0869}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0916} & \cellcolor{gray!6}{0.0891} & \cellcolor{gray!6}{0.085}\\
 \hline
-rRMSE & 0.0014 & 0.00138 & 0.00134\\
+rRMSE & 0.00137 & 0.00135 & 0.00131\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.29e-119} & \cellcolor{gray!6}{p = 3.09e-112} & \cellcolor{gray!6}{p = 2.46e-112}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 8.32e-122} & \cellcolor{gray!6}{p = 1.88e-116} & \cellcolor{gray!6}{p = 6.11e-124}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -779,15 +779,15 @@ De forma a resolver a heterocedasticidade, vamos usar o método de \textit{weigh
 \hline
 Model & noW & sqdrN & rootN & rootPred & sqdrPred\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.4} & \cellcolor{gray!6}{0.881} & \cellcolor{gray!6}{0.352} & \cellcolor{gray!6}{0.408} & \cellcolor{gray!6}{0.431}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.412} & \cellcolor{gray!6}{0.929} & \cellcolor{gray!6}{0.374} & \cellcolor{gray!6}{0.421} & \cellcolor{gray!6}{0.449}\\
 \hline
-AIC & 1.93e+04 & 5.84e+04 & 2.01e+04 & 1.94e+04 & 1.97e+04\\
+AIC & 1.89e+04 & 5.98e+04 & 1.99e+04 & 1.9e+04 & 1.93e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0869} & \cellcolor{gray!6}{0.128} & \cellcolor{gray!6}{0.0884} & \cellcolor{gray!6}{0.0869} & \cellcolor{gray!6}{0.0875}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.085} & \cellcolor{gray!6}{0.129} & \cellcolor{gray!6}{0.0869} & \cellcolor{gray!6}{0.085} & \cellcolor{gray!6}{0.0854}\\
 \hline
-rRMSE & 0.00134 & 0.00176 & 0.00135 & 0.00134 & 0.00134\\
+rRMSE & 0.00131 & 0.00176 & 0.00133 & 0.00131 & 0.00132\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.46e-112} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p = 4.8e-58} & \cellcolor{gray!6}{p > 0.05}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 6.11e-124} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p = 1.12e-63} & \cellcolor{gray!6}{p = 0.0488}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -843,15 +843,15 @@ O gráfico de resíduos não mostra tendência, nem heterocedasticidade evidente
 \hline
 Model & sqdrN & sqdrNOut & rootN & rootNOut & sqdrPred & sqdrPredOut\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.881} & \cellcolor{gray!6}{0.62} & \cellcolor{gray!6}{0.352} & \cellcolor{gray!6}{0.386} & \cellcolor{gray!6}{0.431} & \cellcolor{gray!6}{0.492}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.929} & \cellcolor{gray!6}{0.973} & \cellcolor{gray!6}{0.374} & \cellcolor{gray!6}{0.378} & \cellcolor{gray!6}{0.449} & \cellcolor{gray!6}{0.468}\\
 \hline
-AIC & 5.84e+04 & 5.36e+04 & 2.01e+04 & 1.61e+04 & 1.97e+04 & 1.52e+04\\
+AIC & 5.98e+04 & 5.15e+04 & 1.99e+04 & 1.65e+04 & 1.93e+04 & 1.56e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.128} & \cellcolor{gray!6}{0.127} & \cellcolor{gray!6}{0.0884} & \cellcolor{gray!6}{0.0838} & \cellcolor{gray!6}{0.0875} & \cellcolor{gray!6}{0.0855}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.129} & \cellcolor{gray!6}{0.109} & \cellcolor{gray!6}{0.0869} & \cellcolor{gray!6}{0.0854} & \cellcolor{gray!6}{0.0854} & \cellcolor{gray!6}{0.0875}\\
 \hline
-rRMSE & 0.00176 & 0.00464 & 0.00135 & 0.0033 & 0.00134 & 0.00335\\
+rRMSE & 0.00176 & 0.00402 & 0.00133 & 0.00332 & 0.00132 & 0.00339\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p = 0.0488} & \cellcolor{gray!6}{p > 0.05}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -883,97 +883,97 @@ Os coeficientes do modelo são apresentados na tabela seguinte.\\
 \hline
 term & estimate & std.error & statistic & p.value\\
 \hline
-\cellcolor{gray!6}{(Intercept)} & \cellcolor{gray!6}{2.14e+02} & \cellcolor{gray!6}{142.737} & \cellcolor{gray!6}{1.499} & \cellcolor{gray!6}{1.34e-01}\\
+\cellcolor{gray!6}{(Intercept)} & \cellcolor{gray!6}{8.77e+01} & \cellcolor{gray!6}{134.462} & \cellcolor{gray!6}{0.653} & \cellcolor{gray!6}{5.14e-01}\\
 \hline
-latitude & 8.21e+00 & 1.335 & 6.148 & 8.17e-10\\
+latitude & 1.08e+01 & 1.328 & 8.161 & 3.74e-16\\
 \hline
-\cellcolor{gray!6}{longitude} & \cellcolor{gray!6}{4.23e+00} & \cellcolor{gray!6}{1.013} & \cellcolor{gray!6}{4.181} & \cellcolor{gray!6}{2.93e-05}\\
+\cellcolor{gray!6}{longitude} & \cellcolor{gray!6}{4.01e+00} & \cellcolor{gray!6}{0.959} & \cellcolor{gray!6}{4.184} & \cellcolor{gray!6}{2.88e-05}\\
 \hline
-minimum\_nights & -1.87e-02 & 0.001 & -33.488 & 1.58e-232\\
+minimum\_nights & -1.63e-02 & 0.001 & -30.711 & 1.45e-197\\
 \hline
-\cellcolor{gray!6}{number\_of\_reviews} & \cellcolor{gray!6}{-1.30e-03} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-16.817} & \cellcolor{gray!6}{1.45e-62}\\
+\cellcolor{gray!6}{number\_of\_reviews} & \cellcolor{gray!6}{-1.30e-03} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-16.993} & \cellcolor{gray!6}{8.12e-64}\\
 \hline
-calculated\_host\_listings\_count & -2.88e-03 & 0.000 & -12.824 & 2.44e-37\\
+calculated\_host\_listings\_count & -3.14e-03 & 0.000 & -14.160 & 4.67e-45\\
 \hline
-\cellcolor{gray!6}{availability\_365} & \cellcolor{gray!6}{-2.64e-06} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-0.050} & \cellcolor{gray!6}{9.60e-01}\\
+\cellcolor{gray!6}{availability\_365} & \cellcolor{gray!6}{-2.36e-04} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-4.498} & \cellcolor{gray!6}{6.96e-06}\\
 \hline
-neighbourhood\_Bernal.Heights & 3.44e-01 & 0.067 & 5.130 & 2.96e-07\\
+neighbourhood\_Bernal.Heights & 4.15e-02 & 0.061 & 0.677 & 4.99e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Castro.Upper.Market} & \cellcolor{gray!6}{5.52e-01} & \cellcolor{gray!6}{0.090} & \cellcolor{gray!6}{6.170} & \cellcolor{gray!6}{7.10e-10}\\
+\cellcolor{gray!6}{neighbourhood\_Castro.Upper.Market} & \cellcolor{gray!6}{1.55e-01} & \cellcolor{gray!6}{0.087} & \cellcolor{gray!6}{1.781} & \cellcolor{gray!6}{7.50e-02}\\
 \hline
-neighbourhood\_Chinatown & -4.21e-02 & 0.112 & -0.375 & 7.07e-01\\
+neighbourhood\_Chinatown & -6.38e-01 & 0.111 & -5.748 & 9.31e-09\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Crocker.Amazon} & \cellcolor{gray!6}{4.23e-01} & \cellcolor{gray!6}{0.107} & \cellcolor{gray!6}{3.948} & \cellcolor{gray!6}{7.95e-05}\\
+\cellcolor{gray!6}{neighbourhood\_Crocker.Amazon} & \cellcolor{gray!6}{2.45e-01} & \cellcolor{gray!6}{0.101} & \cellcolor{gray!6}{2.433} & \cellcolor{gray!6}{1.50e-02}\\
 \hline
-neighbourhood\_Diamond.Heights & 9.57e-01 & 0.202 & 4.726 & 2.32e-06\\
+neighbourhood\_Diamond.Heights & 3.00e-01 & 0.156 & 1.929 & 5.38e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Downtown.Civic.Center} & \cellcolor{gray!6}{-9.57e-02} & \cellcolor{gray!6}{0.097} & \cellcolor{gray!6}{-0.984} & \cellcolor{gray!6}{3.25e-01}\\
+\cellcolor{gray!6}{neighbourhood\_Downtown.Civic.Center} & \cellcolor{gray!6}{-4.94e-01} & \cellcolor{gray!6}{0.094} & \cellcolor{gray!6}{-5.245} & \cellcolor{gray!6}{1.59e-07}\\
 \hline
-neighbourhood\_Excelsior & 1.74e-01 & 0.077 & 2.250 & 2.44e-02\\
+neighbourhood\_Excelsior & 2.12e-02 & 0.072 & 0.293 & 7.69e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Financial.District} & \cellcolor{gray!6}{2.87e-01} & \cellcolor{gray!6}{0.104} & \cellcolor{gray!6}{2.758} & \cellcolor{gray!6}{5.83e-03}\\
+\cellcolor{gray!6}{neighbourhood\_Financial.District} & \cellcolor{gray!6}{-1.04e-01} & \cellcolor{gray!6}{0.102} & \cellcolor{gray!6}{-1.021} & \cellcolor{gray!6}{3.07e-01}\\
 \hline
-neighbourhood\_Glen.Park & 4.66e-01 & 0.115 & 4.053 & 5.10e-05\\
+neighbourhood\_Glen.Park & 3.23e-01 & 0.093 & 3.457 & 5.49e-04\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Haight.Ashbury} & \cellcolor{gray!6}{4.72e-01} & \cellcolor{gray!6}{0.101} & \cellcolor{gray!6}{4.669} & \cellcolor{gray!6}{3.07e-06}\\
+\cellcolor{gray!6}{neighbourhood\_Haight.Ashbury} & \cellcolor{gray!6}{3.51e-02} & \cellcolor{gray!6}{0.099} & \cellcolor{gray!6}{0.355} & \cellcolor{gray!6}{7.23e-01}\\
 \hline
-neighbourhood\_Inner.Richmond & 2.40e-01 & 0.129 & 1.867 & 6.20e-02\\
+neighbourhood\_Inner.Richmond & -1.47e-01 & 0.125 & -1.173 & 2.41e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Inner.Sunset} & \cellcolor{gray!6}{3.46e-01} & \cellcolor{gray!6}{0.116} & \cellcolor{gray!6}{2.975} & \cellcolor{gray!6}{2.94e-03}\\
+\cellcolor{gray!6}{neighbourhood\_Inner.Sunset} & \cellcolor{gray!6}{-1.81e-01} & \cellcolor{gray!6}{0.112} & \cellcolor{gray!6}{-1.619} & \cellcolor{gray!6}{1.05e-01}\\
 \hline
-neighbourhood\_Lakeshore & 5.48e-01 & 0.116 & 4.726 & 2.33e-06\\
+neighbourhood\_Lakeshore & 2.53e-01 & 0.112 & 2.250 & 2.45e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Marina} & \cellcolor{gray!6}{2.46e-01} & \cellcolor{gray!6}{0.128} & \cellcolor{gray!6}{1.921} & \cellcolor{gray!6}{5.47e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Marina} & \cellcolor{gray!6}{-2.04e-01} & \cellcolor{gray!6}{0.125} & \cellcolor{gray!6}{-1.625} & \cellcolor{gray!6}{1.04e-01}\\
 \hline
-neighbourhood\_Mission & 1.95e-01 & 0.074 & 2.637 & 8.38e-03\\
+neighbourhood\_Mission & -1.64e-01 & 0.072 & -2.285 & 2.23e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Nob.Hill} & \cellcolor{gray!6}{2.44e-01} & \cellcolor{gray!6}{0.106} & \cellcolor{gray!6}{2.306} & \cellcolor{gray!6}{2.11e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Nob.Hill} & \cellcolor{gray!6}{-1.65e-01} & \cellcolor{gray!6}{0.103} & \cellcolor{gray!6}{-1.600} & \cellcolor{gray!6}{1.10e-01}\\
 \hline
-neighbourhood\_Noe.Valley & 4.60e-01 & 0.081 & 5.644 & 1.71e-08\\
+neighbourhood\_Noe.Valley & 1.35e-01 & 0.078 & 1.730 & 8.36e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_North.Beach} & \cellcolor{gray!6}{2.54e-01} & \cellcolor{gray!6}{0.121} & \cellcolor{gray!6}{2.105} & \cellcolor{gray!6}{3.53e-02}\\
+\cellcolor{gray!6}{neighbourhood\_North.Beach} & \cellcolor{gray!6}{1.12e-01} & \cellcolor{gray!6}{0.118} & \cellcolor{gray!6}{0.951} & \cellcolor{gray!6}{3.42e-01}\\
 \hline
-neighbourhood\_Ocean.View & 3.93e-01 & 0.094 & 4.178 & 2.96e-05\\
+neighbourhood\_Ocean.View & 1.77e-01 & 0.092 & 1.929 & 5.38e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Outer.Mission} & \cellcolor{gray!6}{3.36e-01} & \cellcolor{gray!6}{0.086} & \cellcolor{gray!6}{3.924} & \cellcolor{gray!6}{8.78e-05}\\
+\cellcolor{gray!6}{neighbourhood\_Outer.Mission} & \cellcolor{gray!6}{-6.96e-02} & \cellcolor{gray!6}{0.084} & \cellcolor{gray!6}{-0.833} & \cellcolor{gray!6}{4.05e-01}\\
 \hline
-neighbourhood\_Outer.Richmond & 3.27e-01 & 0.149 & 2.191 & 2.84e-02\\
+neighbourhood\_Outer.Richmond & -9.23e-02 & 0.142 & -0.649 & 5.16e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Outer.Sunset} & \cellcolor{gray!6}{3.18e-01} & \cellcolor{gray!6}{0.129} & \cellcolor{gray!6}{2.468} & \cellcolor{gray!6}{1.36e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Outer.Sunset} & \cellcolor{gray!6}{-2.96e-02} & \cellcolor{gray!6}{0.127} & \cellcolor{gray!6}{-0.233} & \cellcolor{gray!6}{8.16e-01}\\
 \hline
-neighbourhood\_Pacific.Heights & 2.52e-01 & 0.119 & 2.113 & 3.47e-02\\
+neighbourhood\_Pacific.Heights & -1.57e-01 & 0.116 & -1.354 & 1.76e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Parkside} & \cellcolor{gray!6}{3.06e-01} & \cellcolor{gray!6}{0.122} & \cellcolor{gray!6}{2.507} & \cellcolor{gray!6}{1.22e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Parkside} & \cellcolor{gray!6}{1.06e-01} & \cellcolor{gray!6}{0.119} & \cellcolor{gray!6}{0.894} & \cellcolor{gray!6}{3.72e-01}\\
 \hline
-neighbourhood\_Potrero.Hill & 4.06e-01 & 0.078 & 5.197 & 2.07e-07\\
+neighbourhood\_Potrero.Hill & -5.64e-02 & 0.075 & -0.756 & 4.50e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Presidio} & \cellcolor{gray!6}{5.77e-01} & \cellcolor{gray!6}{0.290} & \cellcolor{gray!6}{1.989} & \cellcolor{gray!6}{4.67e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Presidio} & \cellcolor{gray!6}{-1.45e-01} & \cellcolor{gray!6}{0.303} & \cellcolor{gray!6}{-0.477} & \cellcolor{gray!6}{6.33e-01}\\
 \hline
-neighbourhood\_Presidio.Heights & 1.08e-01 & 0.158 & 0.682 & 4.95e-01\\
+neighbourhood\_Presidio.Heights & -1.34e-01 & 0.145 & -0.925 & 3.55e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Russian.Hill} & \cellcolor{gray!6}{3.23e-01} & \cellcolor{gray!6}{0.122} & \cellcolor{gray!6}{2.644} & \cellcolor{gray!6}{8.21e-03}\\
+\cellcolor{gray!6}{neighbourhood\_Russian.Hill} & \cellcolor{gray!6}{-2.91e-01} & \cellcolor{gray!6}{0.121} & \cellcolor{gray!6}{-2.411} & \cellcolor{gray!6}{1.59e-02}\\
 \hline
-neighbourhood\_Seacliff & 6.03e-01 & 0.406 & 1.485 & 1.38e-01\\
+neighbourhood\_Seacliff & 1.31e-01 & 0.275 & 0.476 & 6.34e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_South.of.Market} & \cellcolor{gray!6}{2.07e-01} & \cellcolor{gray!6}{0.087} & \cellcolor{gray!6}{2.385} & \cellcolor{gray!6}{1.71e-02}\\
+\cellcolor{gray!6}{neighbourhood\_South.of.Market} & \cellcolor{gray!6}{-2.59e-01} & \cellcolor{gray!6}{0.084} & \cellcolor{gray!6}{-3.068} & \cellcolor{gray!6}{2.16e-03}\\
 \hline
-neighbourhood\_Twin.Peaks & 8.96e-01 & 0.122 & 7.376 & 1.77e-13\\
+neighbourhood\_Twin.Peaks & 4.05e-01 & 0.105 & 3.859 & 1.15e-04\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Visitacion.Valley} & \cellcolor{gray!6}{2.08e-01} & \cellcolor{gray!6}{0.080} & \cellcolor{gray!6}{2.598} & \cellcolor{gray!6}{9.38e-03}\\
+\cellcolor{gray!6}{neighbourhood\_Visitacion.Valley} & \cellcolor{gray!6}{2.58e-02} & \cellcolor{gray!6}{0.087} & \cellcolor{gray!6}{0.295} & \cellcolor{gray!6}{7.68e-01}\\
 \hline
-neighbourhood\_West.of.Twin.Peaks & 4.91e-01 & 0.107 & 4.605 & 4.18e-06\\
+neighbourhood\_West.of.Twin.Peaks & 8.95e-02 & 0.103 & 0.872 & 3.83e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Western.Addition} & \cellcolor{gray!6}{3.41e-01} & \cellcolor{gray!6}{0.100} & \cellcolor{gray!6}{3.401} & \cellcolor{gray!6}{6.75e-04}\\
+\cellcolor{gray!6}{neighbourhood\_Western.Addition} & \cellcolor{gray!6}{-9.34e-02} & \cellcolor{gray!6}{0.098} & \cellcolor{gray!6}{-0.956} & \cellcolor{gray!6}{3.39e-01}\\
 \hline
-room\_type\_Hotel.room & -2.77e-01 & 0.025 & -11.004 & 5.38e-28\\
+room\_type\_Hotel.room & -2.47e-01 & 0.025 & -9.919 & 4.44e-23\\
 \hline
-\cellcolor{gray!6}{room\_type\_Private.room} & \cellcolor{gray!6}{-5.40e-01} & \cellcolor{gray!6}{0.020} & \cellcolor{gray!6}{-27.434} & \cellcolor{gray!6}{1.55e-159}\\
+\cellcolor{gray!6}{room\_type\_Private.room} & \cellcolor{gray!6}{-5.86e-01} & \cellcolor{gray!6}{0.019} & \cellcolor{gray!6}{-30.317} & \cellcolor{gray!6}{8.36e-193}\\
 \hline
-room\_type\_Shared.room & -1.13e+00 & 0.027 & -42.592 & 0.00e+00\\
+room\_type\_Shared.room & -1.13e+00 & 0.027 & -42.194 & 0.00e+00\\
 \hline
-\cellcolor{gray!6}{mnsqd} & \cellcolor{gray!6}{6.47e-05} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{29.183} & \cellcolor{gray!6}{2.18e-179}\\
+\cellcolor{gray!6}{mnsqd} & \cellcolor{gray!6}{5.29e-05} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{26.108} & \cellcolor{gray!6}{3.52e-145}\\
 \hline
-mncube & -4.73e-08 & 0.000 & -26.389 & 3.60e-148\\
+mncube & -3.54e-08 & 0.000 & -23.277 & 1.32e-116\\
 \hline
 \end{tabular}
 \endgroup{}

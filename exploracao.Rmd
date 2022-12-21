@@ -466,12 +466,11 @@ bptest# p < 0.05 H0 (homoskedasticity) é rejeitado e assume-se heteroskedastici
 
 ```
 
-
 ```{r}
-shape_plot() +
-  stat_summary_hex(data = df, aes(x=longitude, y=latitude, z= log(price)), alpha=0.8) +
-  scale_fill_viridis_c() + 
+saveRDS(dfAllMN, here("final.RDS"))
+readRDS(here("final.RDS"))
 ```
+
 
 
 
