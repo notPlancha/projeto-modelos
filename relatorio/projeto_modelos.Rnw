@@ -7,9 +7,9 @@
 	\vspace{25pt} 
 	\rule{\linewidth}{0.5pt}\\
 	\vspace{20pt}
-	{\huge TODO Título}\\ 
+	{\huge Previsão dos preços de alojamentos airbnb de São Francisco}\\ 
   \vspace{12pt} 
-  {\large TODO Subtítulo}\\
+  {\large Trabalho realizado no âmbito da Unidade Curricular Introdução a Modelos Dinâmicosdo 2º ano da Licenciatura em Ciência de Dados do Instituto Universitário de Lisboa ISCTE. }\\
 	\vspace{12pt}
 	\rule{\linewidth}{2pt}\\
 	\vspace{12pt} 
@@ -164,7 +164,7 @@ O primeiro modelo notavelmente não é apropriado, devido ao valor gigante de \t
 
 <<chunk-fitTrans, tidy=FALSE>>=
 @
-Comparando as estatísticas das várias transformações do preço, podemos concluir que a transformação dos modelos $log(y)$ e $\sqrt{y^{-1}}$ são as mais apropriadas, a primeira com um valor de \textit{MAPE} e \text{rRMSE} mais baixo, e a segunda com um valor de $R^2$ mais alto. Nenhum desses modelos satifaz o pressuposto de homocedasticidade. Para continuar, vai ser revisto os valores dos modelos em \textit{out-of-sample}. Para isso a base de dados foi dividida em 80\% para treino e 20\% para teste.\\
+Comparando as estatísticas das várias transformações do preço, podemos concluir que a transformação dos modelos $log(y)$ e $\sqrt{y^{-1}}$ são as mais apropriadas, a primeira com um valor de \textit{MAPE} e \text{rRMSE} mais baixo, e a segunda com um valor de $R^2$ mais alto. Nenhum desses modelos satifaz o pressuposto de homocedasticidade. Para continuará vai ser revisto os valores dos modelos em \textit{out-of-sample}. Para isso a base de dados foi dividida em 80\% para treino e 20\% para teste.\\
 <<chunk-splitDf>>=
 @
 O conjunto de treino usou o mesmo método de \textit{oversampling} usado anteriormente, mas o conjunto de teste não foi alterado.\\
@@ -185,7 +185,7 @@ Ao analisar os gráficos, apenas o gráfico dos resíduos parcial da variável \
 <<chunk-fitTransMN>>=
 @
 
-Ao retirar a variável, os pressupostos mantêm-se, e as estatísticas de comparação pioram, como esperado. Infelizmente, estes presupostos mantém-se também mesmo com as novas variáveis. Como o \textit{AIC} melhorou para o modelo "MNsq", este continuar a ser usado. \\
+Ao retirar a variável, os pressupostos mantêm-se, e as estatísticas de comparação pioram, como esperado. Infelizmente, estes presupostos mantém-se também mesmo com as novas variáveis. Como o \textit{AIC} melhorou para o modelo "MNsq", este continuará a ser usado. \\
 
 De forma a resolver a heterocedasticidade, vamos usar o método de \textit{weighted least squares} (WLS), que é um método de regressão linear que usa pesos para cada observação, de forma a minimizar a soma dos quadrados dos resíduos.\\
 <<chunk-fitWLS, tidy=FALSE>>=
