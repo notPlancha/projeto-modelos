@@ -25,7 +25,7 @@
   <rfpcs1@iscte-iul.pt>
   \vspace{30pt}
 }
-\date{\Sexpr{format(Sys.Date(), format="%d/%m/%Y")} \\ Versão 1.0.0} % 
+\date{\Sexpr{format(Sys.Date(), format="%d/%m/%Y")} \\ Versão 1.0.1} % 
 
 
 \begin{document}
