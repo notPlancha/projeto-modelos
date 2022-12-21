@@ -502,13 +502,13 @@ O gráfico de correlações não mostra também nenhuma correlação significant
 \hline
 isHotel & isPrivateRoom & isSharedRoom & n & freq & averagePrice\\
 \hline
-\cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{4242} & \cellcolor{gray!6}{0.4439096} & \cellcolor{gray!6}{268.9505}\\
+\cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{4242} & \cellcolor{gray!6}{0.4439096} & \cellcolor{gray!6}{277.7650}\\
 \hline
-0 & 0 & 1 & 1539 & 0.1610506 & 210.5952\\
+0 & 0 & 1 & 1539 & 0.1610506 & 228.2131\\
 \hline
-\cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{2236} & \cellcolor{gray!6}{0.2339891} & \cellcolor{gray!6}{387.0130}\\
+\cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{2236} & \cellcolor{gray!6}{0.2339891} & \cellcolor{gray!6}{397.6476}\\
 \hline
-1 & 0 & 0 & 1539 & 0.1610506 & 275.7479\\
+1 & 0 & 0 & 1539 & 0.1610506 & 273.0500\\
 \hline
 \end{tabular}
 \endgroup{}
@@ -561,17 +561,17 @@ O nosso primeiro modelo linear foi um modelo que diretamente relaciona as variá
 \hline
 Model & fit0(price \textasciitilde{} .)\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0528}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0426}\\
 \hline
-AIC & 1.61e+05\\
+AIC & 1.62e+05\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{1.78}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{1.82}\\
 \hline
-rRMSE & 0.0397\\
+rRMSE & 0.0392\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 5.18e-68}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 3.14e-49}\\
 \hline
-Breusch-Godfrey & p = 0.0255\\
+Breusch-Godfrey & p > 0.05\\
 \hline
 \cellcolor{gray!6}{Jarque-Bera} & \cellcolor{gray!6}{p < 0.05}\\
 \hline
@@ -617,15 +617,15 @@ O primeiro modelo notavelmente não é apropriado, devido ao valor gigante de \t
 \hline
 Model & cube & squared & root & log & invSqrt & inv & invSqdr & invCube\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0417} & \cellcolor{gray!6}{0.0448} & \cellcolor{gray!6}{0.136} & \cellcolor{gray!6}{0.382} & \cellcolor{gray!6}{0.53} & \cellcolor{gray!6}{0.592} & \cellcolor{gray!6}{0.6} & \cellcolor{gray!6}{0.559}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0339} & \cellcolor{gray!6}{0.0353} & \cellcolor{gray!6}{0.121} & \cellcolor{gray!6}{0.358} & \cellcolor{gray!6}{0.507} & \cellcolor{gray!6}{0.569} & \cellcolor{gray!6}{0.576} & \cellcolor{gray!6}{0.534}\\
 \hline
-AIC & 5.39e+05 & 3.49e+05 & 6.93e+04 & 1.93e+04 & -4.45e+04 & -7.58e+04 & -1.42e+05 & -2.06e+05\\
+AIC & 5.41e+05 & 3.5e+05 & 6.99e+04 & 2e+04 & -4.39e+04 & -7.53e+04 & -1.41e+05 & -2.06e+05\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{143041} & \cellcolor{gray!6}{349} & \cellcolor{gray!6}{0.283} & \cellcolor{gray!6}{0.0886} & \cellcolor{gray!6}{0.293} & \cellcolor{gray!6}{1.47} & \cellcolor{gray!6}{200} & \cellcolor{gray!6}{64201}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{127921} & \cellcolor{gray!6}{322} & \cellcolor{gray!6}{0.294} & \cellcolor{gray!6}{0.0922} & \cellcolor{gray!6}{0.31} & \cellcolor{gray!6}{1.58} & \cellcolor{gray!6}{210} & \cellcolor{gray!6}{63140}\\
 \hline
-rRMSE & 0.185 & 0.153 & 0.00665 & 0.00134 & 0.00277 & 0.00538 & 0.0119 & 0.0194\\
+rRMSE & 0.201 & 0.156 & 0.0068 & 0.00138 & 0.00286 & 0.00556 & 0.0121 & 0.0196\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 8.28e-36} & \cellcolor{gray!6}{p = 4.2e-53} & \cellcolor{gray!6}{p = 1.87e-74} & \cellcolor{gray!6}{p = 2.28e-110} & \cellcolor{gray!6}{p = 4.52e-221} & \cellcolor{gray!6}{p = 4.05e-292} & \cellcolor{gray!6}{p = 0} & \cellcolor{gray!6}{p = 0}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 4.2e-42} & \cellcolor{gray!6}{p = 7.99e-45} & \cellcolor{gray!6}{p = 1.14e-56} & \cellcolor{gray!6}{p = 3.09e-112} & \cellcolor{gray!6}{p = 1.19e-252} & \cellcolor{gray!6}{p = 0} & \cellcolor{gray!6}{p = 0} & \cellcolor{gray!6}{p = 0}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -670,17 +670,17 @@ O conjunto de treino usou o mesmo método de \textit{oversampling} usado anterio
 \hline
 Model & log & invSqrt & logOut & invSqrtOut\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.382} & \cellcolor{gray!6}{0.53} & \cellcolor{gray!6}{0.421} & \cellcolor{gray!6}{0.536}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.358} & \cellcolor{gray!6}{0.507} & \cellcolor{gray!6}{0.408} & \cellcolor{gray!6}{0.536}\\
 \hline
-AIC & 1.93e+04 & -4.45e+04 & 1.52e+04 & -3.86e+04\\
+AIC & 2e+04 & -4.39e+04 & 1.57e+04 & -3.85e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0886} & \cellcolor{gray!6}{0.293} & \cellcolor{gray!6}{0.0912} & \cellcolor{gray!6}{0.29}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0922} & \cellcolor{gray!6}{0.31} & \cellcolor{gray!6}{0.0915} & \cellcolor{gray!6}{0.29}\\
 \hline
-rRMSE & 0.00134 & 0.00277 & 0.00349 & 0.00757\\
+rRMSE & 0.00138 & 0.00286 & 0.0035 & 0.00754\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.28e-110} & \cellcolor{gray!6}{p = 4.52e-221} & \cellcolor{gray!6}{p = 1.12e-89} & \cellcolor{gray!6}{p = 2.19e-223}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 3.09e-112} & \cellcolor{gray!6}{p = 1.19e-252} & \cellcolor{gray!6}{p = 2.28e-101} & \cellcolor{gray!6}{p = 6.66e-251}\\
 \hline
-Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p = 0.0204\\
+Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
 \cellcolor{gray!6}{Jarque-Bera} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05}\\
 \hline
@@ -731,15 +731,15 @@ Ao analisar os gráficos, apenas o gráfico dos resíduos parcial da variável \
 \hline
 Model & noMN & withMN & MNsq\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.359} & \cellcolor{gray!6}{0.382} & \cellcolor{gray!6}{0.421}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.34} & \cellcolor{gray!6}{0.358} & \cellcolor{gray!6}{0.4}\\
 \hline
-AIC & 1.96e+04 & 1.93e+04 & 1.86e+04\\
+AIC & 2.02e+04 & 2e+04 & 1.93e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0913} & \cellcolor{gray!6}{0.0886} & \cellcolor{gray!6}{0.0841}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0947} & \cellcolor{gray!6}{0.0922} & \cellcolor{gray!6}{0.0869}\\
 \hline
-rRMSE & 0.00136 & 0.00134 & 0.00129\\
+rRMSE & 0.0014 & 0.00138 & 0.00134\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 1.97e-123} & \cellcolor{gray!6}{p = 2.28e-110} & \cellcolor{gray!6}{p = 2.82e-112}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.29e-119} & \cellcolor{gray!6}{p = 3.09e-112} & \cellcolor{gray!6}{p = 2.46e-112}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -779,15 +779,15 @@ De forma a resolver a heterocedasticidade, vamos usar o método de \textit{weigh
 \hline
 Model & noW & sqdrN & rootN & rootPred & sqdrPred\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.421} & \cellcolor{gray!6}{0.824} & \cellcolor{gray!6}{0.363} & \cellcolor{gray!6}{0.43} & \cellcolor{gray!6}{0.457}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.4} & \cellcolor{gray!6}{0.881} & \cellcolor{gray!6}{0.352} & \cellcolor{gray!6}{0.408} & \cellcolor{gray!6}{0.431}\\
 \hline
-AIC & 1.86e+04 & 6.08e+04 & 1.95e+04 & 1.87e+04 & 1.89e+04\\
+AIC & 1.93e+04 & 5.84e+04 & 2.01e+04 & 1.94e+04 & 1.97e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0841} & \cellcolor{gray!6}{0.128} & \cellcolor{gray!6}{0.0863} & \cellcolor{gray!6}{0.084} & \cellcolor{gray!6}{0.0843}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0869} & \cellcolor{gray!6}{0.128} & \cellcolor{gray!6}{0.0884} & \cellcolor{gray!6}{0.0869} & \cellcolor{gray!6}{0.0875}\\
 \hline
-rRMSE & 0.00129 & 0.00197 & 0.00131 & 0.00129 & 0.0013\\
+rRMSE & 0.00134 & 0.00176 & 0.00135 & 0.00134 & 0.00134\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.82e-112} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p = 1.51e-56} & \cellcolor{gray!6}{p > 0.05}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.46e-112} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p = 4.8e-58} & \cellcolor{gray!6}{p > 0.05}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -843,13 +843,13 @@ O gráfico de resíduos não mostra tendência, nem heterocedasticidade evidente
 \hline
 Model & sqdrN & sqdrNOut & rootN & rootNOut & sqdrPred & sqdrPredOut\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.824} & \cellcolor{gray!6}{0.803} & \cellcolor{gray!6}{0.363} & \cellcolor{gray!6}{0.419} & \cellcolor{gray!6}{0.457} & \cellcolor{gray!6}{0.511}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.881} & \cellcolor{gray!6}{0.62} & \cellcolor{gray!6}{0.352} & \cellcolor{gray!6}{0.386} & \cellcolor{gray!6}{0.431} & \cellcolor{gray!6}{0.492}\\
 \hline
-AIC & 6.08e+04 & 5.49e+04 & 1.95e+04 & 1.58e+04 & 1.89e+04 & 1.46e+04\\
+AIC & 5.84e+04 & 5.36e+04 & 2.01e+04 & 1.61e+04 & 1.97e+04 & 1.52e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.128} & \cellcolor{gray!6}{0.0986} & \cellcolor{gray!6}{0.0863} & \cellcolor{gray!6}{0.0836} & \cellcolor{gray!6}{0.0843} & \cellcolor{gray!6}{0.0855}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.128} & \cellcolor{gray!6}{0.127} & \cellcolor{gray!6}{0.0884} & \cellcolor{gray!6}{0.0838} & \cellcolor{gray!6}{0.0875} & \cellcolor{gray!6}{0.0855}\\
 \hline
-rRMSE & 0.00197 & 0.0038 & 0.00131 & 0.00328 & 0.0013 & 0.00335\\
+rRMSE & 0.00176 & 0.00464 & 0.00135 & 0.0033 & 0.00134 & 0.00335\\
 \hline
 \cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05}\\
 \hline
@@ -883,97 +883,97 @@ Os coeficientes do modelo são apresentados na tabela seguinte.\\
 \hline
 term & estimate & std.error & statistic & p.value\\
 \hline
-\cellcolor{gray!6}{(Intercept)} & \cellcolor{gray!6}{1.42e+02} & \cellcolor{gray!6}{137.990} & \cellcolor{gray!6}{1.027} & \cellcolor{gray!6}{3.05e-01}\\
+\cellcolor{gray!6}{(Intercept)} & \cellcolor{gray!6}{2.14e+02} & \cellcolor{gray!6}{142.737} & \cellcolor{gray!6}{1.499} & \cellcolor{gray!6}{1.34e-01}\\
 \hline
-latitude & 1.28e+01 & 1.349 & 9.464 & 3.67e-21\\
+latitude & 8.21e+00 & 1.335 & 6.148 & 8.17e-10\\
 \hline
-\cellcolor{gray!6}{longitude} & \cellcolor{gray!6}{5.05e+00} & \cellcolor{gray!6}{0.972} & \cellcolor{gray!6}{5.190} & \cellcolor{gray!6}{2.14e-07}\\
+\cellcolor{gray!6}{longitude} & \cellcolor{gray!6}{4.23e+00} & \cellcolor{gray!6}{1.013} & \cellcolor{gray!6}{4.181} & \cellcolor{gray!6}{2.93e-05}\\
 \hline
-minimum\_nights & -1.70e-02 & 0.001 & -33.051 & 7.40e-227\\
+minimum\_nights & -1.87e-02 & 0.001 & -33.488 & 1.58e-232\\
 \hline
-\cellcolor{gray!6}{number\_of\_reviews} & \cellcolor{gray!6}{-1.25e-03} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-16.457} & \cellcolor{gray!6}{5.00e-60}\\
+\cellcolor{gray!6}{number\_of\_reviews} & \cellcolor{gray!6}{-1.30e-03} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-16.817} & \cellcolor{gray!6}{1.45e-62}\\
 \hline
-calculated\_host\_listings\_count & -2.75e-03 & 0.000 & -12.353 & 8.71e-35\\
+calculated\_host\_listings\_count & -2.88e-03 & 0.000 & -12.824 & 2.44e-37\\
 \hline
-\cellcolor{gray!6}{availability\_365} & \cellcolor{gray!6}{-2.09e-04} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-4.093} & \cellcolor{gray!6}{4.29e-05}\\
+\cellcolor{gray!6}{availability\_365} & \cellcolor{gray!6}{-2.64e-06} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-0.050} & \cellcolor{gray!6}{9.60e-01}\\
 \hline
-neighbourhood\_Bernal.Heights & 1.42e-01 & 0.066 & 2.147 & 3.18e-02\\
+neighbourhood\_Bernal.Heights & 3.44e-01 & 0.067 & 5.130 & 2.96e-07\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Castro.Upper.Market} & \cellcolor{gray!6}{2.54e-01} & \cellcolor{gray!6}{0.087} & \cellcolor{gray!6}{2.911} & \cellcolor{gray!6}{3.61e-03}\\
+\cellcolor{gray!6}{neighbourhood\_Castro.Upper.Market} & \cellcolor{gray!6}{5.52e-01} & \cellcolor{gray!6}{0.090} & \cellcolor{gray!6}{6.170} & \cellcolor{gray!6}{7.10e-10}\\
 \hline
-neighbourhood\_Chinatown & -6.21e-01 & 0.110 & -5.621 & 1.95e-08\\
+neighbourhood\_Chinatown & -4.21e-02 & 0.112 & -0.375 & 7.07e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Crocker.Amazon} & \cellcolor{gray!6}{2.93e-01} & \cellcolor{gray!6}{0.094} & \cellcolor{gray!6}{3.114} & \cellcolor{gray!6}{1.85e-03}\\
+\cellcolor{gray!6}{neighbourhood\_Crocker.Amazon} & \cellcolor{gray!6}{4.23e-01} & \cellcolor{gray!6}{0.107} & \cellcolor{gray!6}{3.948} & \cellcolor{gray!6}{7.95e-05}\\
 \hline
-neighbourhood\_Diamond.Heights & 6.69e-01 & 0.182 & 3.680 & 2.35e-04\\
+neighbourhood\_Diamond.Heights & 9.57e-01 & 0.202 & 4.726 & 2.32e-06\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Downtown.Civic.Center} & \cellcolor{gray!6}{-4.87e-01} & \cellcolor{gray!6}{0.096} & \cellcolor{gray!6}{-5.097} & \cellcolor{gray!6}{3.53e-07}\\
+\cellcolor{gray!6}{neighbourhood\_Downtown.Civic.Center} & \cellcolor{gray!6}{-9.57e-02} & \cellcolor{gray!6}{0.097} & \cellcolor{gray!6}{-0.984} & \cellcolor{gray!6}{3.25e-01}\\
 \hline
-neighbourhood\_Excelsior & 9.97e-02 & 0.077 & 1.295 & 1.96e-01\\
+neighbourhood\_Excelsior & 1.74e-01 & 0.077 & 2.250 & 2.44e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Financial.District} & \cellcolor{gray!6}{-1.75e-01} & \cellcolor{gray!6}{0.103} & \cellcolor{gray!6}{-1.706} & \cellcolor{gray!6}{8.81e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Financial.District} & \cellcolor{gray!6}{2.87e-01} & \cellcolor{gray!6}{0.104} & \cellcolor{gray!6}{2.758} & \cellcolor{gray!6}{5.83e-03}\\
 \hline
-neighbourhood\_Glen.Park & 3.82e-01 & 0.090 & 4.260 & 2.07e-05\\
+neighbourhood\_Glen.Park & 4.66e-01 & 0.115 & 4.053 & 5.10e-05\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Haight.Ashbury} & \cellcolor{gray!6}{1.03e-01} & \cellcolor{gray!6}{0.099} & \cellcolor{gray!6}{1.040} & \cellcolor{gray!6}{2.98e-01}\\
+\cellcolor{gray!6}{neighbourhood\_Haight.Ashbury} & \cellcolor{gray!6}{4.72e-01} & \cellcolor{gray!6}{0.101} & \cellcolor{gray!6}{4.669} & \cellcolor{gray!6}{3.07e-06}\\
 \hline
-neighbourhood\_Inner.Richmond & 1.59e-02 & 0.125 & 0.128 & 8.99e-01\\
+neighbourhood\_Inner.Richmond & 2.40e-01 & 0.129 & 1.867 & 6.20e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Inner.Sunset} & \cellcolor{gray!6}{2.56e-01} & \cellcolor{gray!6}{0.110} & \cellcolor{gray!6}{2.339} & \cellcolor{gray!6}{1.93e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Inner.Sunset} & \cellcolor{gray!6}{3.46e-01} & \cellcolor{gray!6}{0.116} & \cellcolor{gray!6}{2.975} & \cellcolor{gray!6}{2.94e-03}\\
 \hline
-neighbourhood\_Lakeshore & 6.04e-01 & 0.115 & 5.267 & 1.41e-07\\
+neighbourhood\_Lakeshore & 5.48e-01 & 0.116 & 4.726 & 2.33e-06\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Marina} & \cellcolor{gray!6}{-2.61e-01} & \cellcolor{gray!6}{0.126} & \cellcolor{gray!6}{-2.074} & \cellcolor{gray!6}{3.81e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Marina} & \cellcolor{gray!6}{2.46e-01} & \cellcolor{gray!6}{0.128} & \cellcolor{gray!6}{1.921} & \cellcolor{gray!6}{5.47e-02}\\
 \hline
-neighbourhood\_Mission & -8.14e-02 & 0.073 & -1.110 & 2.67e-01\\
+neighbourhood\_Mission & 1.95e-01 & 0.074 & 2.637 & 8.38e-03\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Nob.Hill} & \cellcolor{gray!6}{-1.40e-01} & \cellcolor{gray!6}{0.104} & \cellcolor{gray!6}{-1.343} & \cellcolor{gray!6}{1.79e-01}\\
+\cellcolor{gray!6}{neighbourhood\_Nob.Hill} & \cellcolor{gray!6}{2.44e-01} & \cellcolor{gray!6}{0.106} & \cellcolor{gray!6}{2.306} & \cellcolor{gray!6}{2.11e-02}\\
 \hline
-neighbourhood\_Noe.Valley & 2.45e-01 & 0.079 & 3.121 & 1.81e-03\\
+neighbourhood\_Noe.Valley & 4.60e-01 & 0.081 & 5.644 & 1.71e-08\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_North.Beach} & \cellcolor{gray!6}{-2.92e-01} & \cellcolor{gray!6}{0.119} & \cellcolor{gray!6}{-2.455} & \cellcolor{gray!6}{1.41e-02}\\
+\cellcolor{gray!6}{neighbourhood\_North.Beach} & \cellcolor{gray!6}{2.54e-01} & \cellcolor{gray!6}{0.121} & \cellcolor{gray!6}{2.105} & \cellcolor{gray!6}{3.53e-02}\\
 \hline
-neighbourhood\_Ocean.View & 4.21e-01 & 0.093 & 4.511 & 6.54e-06\\
+neighbourhood\_Ocean.View & 3.93e-01 & 0.094 & 4.178 & 2.96e-05\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Outer.Mission} & \cellcolor{gray!6}{1.57e-01} & \cellcolor{gray!6}{0.085} & \cellcolor{gray!6}{1.856} & \cellcolor{gray!6}{6.36e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Outer.Mission} & \cellcolor{gray!6}{3.36e-01} & \cellcolor{gray!6}{0.086} & \cellcolor{gray!6}{3.924} & \cellcolor{gray!6}{8.78e-05}\\
 \hline
-neighbourhood\_Outer.Richmond & 2.86e-02 & 0.144 & 0.198 & 8.43e-01\\
+neighbourhood\_Outer.Richmond & 3.27e-01 & 0.149 & 2.191 & 2.84e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Outer.Sunset} & \cellcolor{gray!6}{1.17e-01} & \cellcolor{gray!6}{0.125} & \cellcolor{gray!6}{0.939} & \cellcolor{gray!6}{3.48e-01}\\
+\cellcolor{gray!6}{neighbourhood\_Outer.Sunset} & \cellcolor{gray!6}{3.18e-01} & \cellcolor{gray!6}{0.129} & \cellcolor{gray!6}{2.468} & \cellcolor{gray!6}{1.36e-02}\\
 \hline
-neighbourhood\_Pacific.Heights & -2.30e-01 & 0.117 & -1.967 & 4.92e-02\\
+neighbourhood\_Pacific.Heights & 2.52e-01 & 0.119 & 2.113 & 3.47e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Parkside} & \cellcolor{gray!6}{2.25e-01} & \cellcolor{gray!6}{0.119} & \cellcolor{gray!6}{1.885} & \cellcolor{gray!6}{5.95e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Parkside} & \cellcolor{gray!6}{3.06e-01} & \cellcolor{gray!6}{0.122} & \cellcolor{gray!6}{2.507} & \cellcolor{gray!6}{1.22e-02}\\
 \hline
-neighbourhood\_Potrero.Hill & 4.01e-02 & 0.079 & 0.507 & 6.12e-01\\
+neighbourhood\_Potrero.Hill & 4.06e-01 & 0.078 & 5.197 & 2.07e-07\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Presidio} & \cellcolor{gray!6}{2.02e-01} & \cellcolor{gray!6}{0.203} & \cellcolor{gray!6}{0.994} & \cellcolor{gray!6}{3.20e-01}\\
+\cellcolor{gray!6}{neighbourhood\_Presidio} & \cellcolor{gray!6}{5.77e-01} & \cellcolor{gray!6}{0.290} & \cellcolor{gray!6}{1.989} & \cellcolor{gray!6}{4.67e-02}\\
 \hline
-neighbourhood\_Presidio.Heights & -1.58e-01 & 0.163 & -0.966 & 3.34e-01\\
+neighbourhood\_Presidio.Heights & 1.08e-01 & 0.158 & 0.682 & 4.95e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Russian.Hill} & \cellcolor{gray!6}{-2.84e-01} & \cellcolor{gray!6}{0.122} & \cellcolor{gray!6}{-2.336} & \cellcolor{gray!6}{1.95e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Russian.Hill} & \cellcolor{gray!6}{3.23e-01} & \cellcolor{gray!6}{0.122} & \cellcolor{gray!6}{2.644} & \cellcolor{gray!6}{8.21e-03}\\
 \hline
-neighbourhood\_Seacliff & 1.81e-01 & 0.269 & 0.674 & 5.01e-01\\
+neighbourhood\_Seacliff & 6.03e-01 & 0.406 & 1.485 & 1.38e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_South.of.Market} & \cellcolor{gray!6}{-2.32e-01} & \cellcolor{gray!6}{0.086} & \cellcolor{gray!6}{-2.698} & \cellcolor{gray!6}{6.99e-03}\\
+\cellcolor{gray!6}{neighbourhood\_South.of.Market} & \cellcolor{gray!6}{2.07e-01} & \cellcolor{gray!6}{0.087} & \cellcolor{gray!6}{2.385} & \cellcolor{gray!6}{1.71e-02}\\
 \hline
-neighbourhood\_Twin.Peaks & 4.33e-01 & 0.112 & 3.848 & 1.20e-04\\
+neighbourhood\_Twin.Peaks & 8.96e-01 & 0.122 & 7.376 & 1.77e-13\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Visitacion.Valley} & \cellcolor{gray!6}{2.98e-01} & \cellcolor{gray!6}{0.083} & \cellcolor{gray!6}{3.609} & \cellcolor{gray!6}{3.09e-04}\\
+\cellcolor{gray!6}{neighbourhood\_Visitacion.Valley} & \cellcolor{gray!6}{2.08e-01} & \cellcolor{gray!6}{0.080} & \cellcolor{gray!6}{2.598} & \cellcolor{gray!6}{9.38e-03}\\
 \hline
-neighbourhood\_West.of.Twin.Peaks & 2.58e-01 & 0.098 & 2.647 & 8.14e-03\\
+neighbourhood\_West.of.Twin.Peaks & 4.91e-01 & 0.107 & 4.605 & 4.18e-06\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Western.Addition} & \cellcolor{gray!6}{-7.18e-02} & \cellcolor{gray!6}{0.098} & \cellcolor{gray!6}{-0.732} & \cellcolor{gray!6}{4.64e-01}\\
+\cellcolor{gray!6}{neighbourhood\_Western.Addition} & \cellcolor{gray!6}{3.41e-01} & \cellcolor{gray!6}{0.100} & \cellcolor{gray!6}{3.401} & \cellcolor{gray!6}{6.75e-04}\\
 \hline
-room\_type\_Hotel.room & -2.48e-01 & 0.024 & -10.192 & 2.88e-24\\
+room\_type\_Hotel.room & -2.77e-01 & 0.025 & -11.004 & 5.38e-28\\
 \hline
-\cellcolor{gray!6}{room\_type\_Private.room} & \cellcolor{gray!6}{-5.69e-01} & \cellcolor{gray!6}{0.019} & \cellcolor{gray!6}{-29.739} & \cellcolor{gray!6}{6.48e-186}\\
+\cellcolor{gray!6}{room\_type\_Private.room} & \cellcolor{gray!6}{-5.40e-01} & \cellcolor{gray!6}{0.020} & \cellcolor{gray!6}{-27.434} & \cellcolor{gray!6}{1.55e-159}\\
 \hline
-room\_type\_Shared.room & -1.12e+00 & 0.026 & -43.101 & 0.00e+00\\
+room\_type\_Shared.room & -1.13e+00 & 0.027 & -42.592 & 0.00e+00\\
 \hline
-\cellcolor{gray!6}{mnsqd} & \cellcolor{gray!6}{5.49e-05} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{27.952} & \cellcolor{gray!6}{2.64e-165}\\
+\cellcolor{gray!6}{mnsqd} & \cellcolor{gray!6}{6.47e-05} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{29.183} & \cellcolor{gray!6}{2.18e-179}\\
 \hline
-mncube & -3.71e-08 & 0.000 & -24.266 & 2.90e-126\\
+mncube & -4.73e-08 & 0.000 & -26.389 & 3.60e-148\\
 \hline
 \end{tabular}
 \endgroup{}
