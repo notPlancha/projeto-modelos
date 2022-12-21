@@ -40,7 +40,7 @@ knitr::opts_chunk$set(
   tidy = TRUE,
   fig.cap = "",
   fig.height= 3.5,
-  tidy.opts = list(width.cutoff = 40)
+  tidy.opts = list(width.cutoff = 40, indent=2, comment=FALSE)
 )
 @
 <<chunk-setup, echo=FALSE, warning=FALSE, message=FALSE>>=
@@ -84,7 +84,6 @@ Cada registo contém as coordenadas geográficas e se as representármos grafica
 Inesperadamente, o mapa mostra alguns pontos de alojamento fora da cidade, mas julgamos que não vá interferir com as nossas análises, devido ao correto agrupamento (demonstrado mais à frente) e à proximidade da cidade. Embora a razão nos seja desconhecida, acreditamos que o próprio Airbnb agrupa desta forma esses locais devido à sua proximidade com a cidade. \\
 A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 <<chunk-rasterPlaces, fig.height = 5>>= 
-
 @
 O mapa claramente demonstra a concentração de alojamentos na zona clara, mas também consegue-se observar uma grande quantidade, embora mais dispersos, na zona central. Este gráfico demonstra uma possibilidade de agrupar os alojamentos nestas zonas.
 <<chunk-freqTableNeighbs>>=
@@ -99,6 +98,7 @@ Esta figura demonstra que os bairros estão em conformidade com a definição do
 @
 Neste \textit{boxplot} do preço conseguimos notar imediatamente a existência de muitos valores atípicos, que equivalem a preços muito altos tendo em conta a média de preços dos registos que é de \Sexpr{round(mean(df$price), 3)} USD. Estes preços vão sem dúvida interferir com as nossas análises. \\
 Estes preços conseguem ser explicados quando analisamos a sua fonte.
+
 <<chunk-priceHead>>=
 @
 
@@ -144,19 +144,68 @@ O diagrama apresentado demonstra as distribuições dos preços por tipo de aloj
 O gráfico de correlações não mostra também nenhuma correlação significante entre o preço e as outras variáveis numéricas analisaveis. Mostra também uma pouca correlação entre as variáveis independentes.\\
 
 
-<<chunk-readyDf, message = FALSE>>=
+<<chunk-readyDf, message=FALSE>>=
 @
+Os nossos preços nulos foram retirados pois são aparentes erros devido à natureza da variável, e os nossos registos do \textit{Golden Gate Park} foram retirados pois são apenas 3, e não é possível fazer uma análise significativa com tão poucos registos.\\
 A quantidade de hotéis e alojoamentos partilhados foram aumentada para \Sexpr{dfAll %>% filter(room_type_Hotel.room == 1) %>% nrow()} (ainda inclui desequilíbrio, mas devido à realmente pequena quantidade destes decidimos não equilibrar demasiado), e as nossas variáveis categóricas foram transformadas em \textit{dummies}, de forma a tornar possível a sua análise.\\
 
-Para analisar e comparar modelos, vai ser usado \textit{in-sample} e analisado as estatísticas do coeficiente de determinação $R^2$, e o \textit{MAPE}. A estatística $F$ vai ser insignificante pare o nosso modelo, devido à grande quantidade de observações, levando a uma rejeição da hipótese nula constante. Para comparar modelos, vai ser observado o \textit{AIC} de cada, quando apropriado. Para verificar os pressupostos, vai ser analisado se a média dos resíduos padrozinados é praticamente zero, o teste de \textit{Breusch-Pagan} para verificar a homocedasticidade, o teste de \textit{Breusch-Godfrey} para verificar a autocorrelação, e o teste de \textit{Jarque-Bera} para verificar a normalidade dos resíduos. Em alguns modelos vai ser também analisado o gráficos de resíduos.\\
+Para analisar e comparar modelos, vai ser usado \textit{in-sample} e analisado as estatísticas do coeficiente de determinação $R^2$, o \textit{MAPE}, e o \textit{rRMSE}. A estatística $F$ vai ser insignificante pare o nosso modelo, devido à grande quantidade de observações, levando a uma rejeição da hipótese nula constante. Para comparar modelos, vai ser observado o \textit{AIC} de cada, quando apropriado. Para verificar os pressupostos, vai ser analisado se a média dos resíduos padrozinados é praticamente zero, o teste de \textit{Breusch-Pagan} para verificar a homocedasticidade, o teste de \textit{Breusch-Godfrey} para verificar a autocorrelação, e o teste de \textit{Jarque-Bera} para verificar a normalidade dos resíduos. Em alguns modelos vai ser também analisado o gráficos de resíduos.\\
 
 Em cada um destes testes, se o valor $p$ for menor que $0.05$, então rejeitamos $H_0$. No teste \textit{Breusch-Pagan}, $H_0$ é que os resíduos são homocedásticos, e no teste \textit{Breusch-Godfrey}, $H_0$ é que os resíduos não são autocorrelacionados. No teste \textit{Jarque-Bera}, $H_0$ é que os resíduos são normais.\\
+
+<<chunk-testModel, tidy=FALSE>>=
+@
 
 O nosso primeiro modelo linear foi um modelo que diretamente relaciona as variáveis todas com o preço. \\
 <<chunk-fit0>>=
 @
 
+O primeiro modelo notavelmente não é apropriado, devido ao valor gigante de \textit{MAPE} e ao pequeno valor de $R^2$. Ao observar o gráfico, e com a rejeição da hipótese de homocedasticidade, podemos concluir que uma transformação será necessária.
 
+<<chunk-fitTrans, tidy=FALSE>>=
+@
+Comparando as estatísticas das várias transformações do preço, podemos concluir que a transformação dos modelos $log(y)$ e $\sqrt{y^{-1}}$ são as mais apropriadas, a primeira com um valor de \textit{MAPE} e \text{rRMSE} mais baixo, e a segunda com um valor de $R^2$ mais alto. Nenhum desses modelos satifaz o pressuposto de homocedasticidade. Para continuar, vai ser revisto os valores dos modelos em \textit{out-of-sample}. Para isso a base de dados foi dividida em 80\% para treino e 20\% para teste.\\
+<<chunk-splitDf>>=
+@
+O conjunto de treino usou o mesmo método de \textit{oversampling} usado anteriormente, mas o conjunto de teste não foi alterado.\\
+<<chunk-fitTransOut, tidy=FALSE>>=
+@
+
+Após análise destes novos modelos, como o \textit{MAPE} e o \textit{rRMSE} do modelo com a transformação logarítmica é menor em ambos os conjuntos, considerámos esse modelo como melhor.
+
+Como o pressuposto de homocedasticidade ainda não se verifica, fomos analisar os gráficos de resíduos parcial, de forma a verificar alguma não-linearidade nos dados.\\
+
+<<chunk-crPlots>>=
+@
+\begin{figure}
+  \includegraphics[width=\maxwidth]{figure/manual-chunk-crPlots}
+\end{figure}
+Ao analisar os gráficos, apenas o gráfico dos resíduos parcial da variável \textit{minimum\_nights} mostra uma não linearidade. Como a variável mostra alguma significância no nosso modelo ($p < 0.05$ do teste $t$), vamos transformar essa variável e analisar e comparar o modelo resultado dessa.
+
+<<chunk-fitTransMN>>=
+@
+
+Ao retirar a variável, os pressupostos mantêm-se, e as estatísticas de comparação pioram, como esperado. Infelizmente, estes presupostos mantém-se também mesmo com as novas variáveis. Como o \textit{AIC} melhorou para o modelo "MNsq", este continuar a ser usado. \\
+
+De forma a resolver a heterocedasticidade, vamos usar o método de \textit{weighted least squares} (WLS), que é um método de regressão linear que usa pesos para cada observação, de forma a minimizar a soma dos quadrados dos resíduos.\\
+<<chunk-fitWLS, tidy=FALSE>>=
+@
+
+Os modelos apresentados conseguiram não rejeitar a hipótese de homocedasticidade, embora as estatísticas de \textit{MAPE} e \textit{rRMSE} tenham aumentado levemente. Contudo, iremos usar um dos modelos com pesos pois estes assumem todos os pressupostos analisados. Baseado no \textit{AIC}, o modelo "sqdrPred" é o melhor.\\
+
+De forma a confirmar a nossa escolha, vamos analisar os resíduos do modelo.\\
+<<chunk-residPlot>>=
+@
+O gráfico de resíduos não mostra tendência, nem heterocedasticidade evidente, logo podemos concluir que o modelo pode ser adequado para prever o preço. De forma a assegurar a afirmação, vai ser feita também o teste \textit{out-of-sample} com estes últimos modelos.
+
+<<chunk-fitWLSOut, tidy=FALSE>>=
+@
+Como previsto, os modelos mantém aproximadamente as suas estatísticas de \textit{MAPE} e \textit{rRMSE}, mas estas aumentam. O modelo "sqdrPred" mantém se como o melhor modelo estiamdo.
+Os coeficientes do modelo são apresentados na tabela seguinte.\\
+\footnotesize
+<<chunk-coefTable>>=
+@
+\normalsize
 
 \bibliography{references}{}
 \bibliographystyle{plain}

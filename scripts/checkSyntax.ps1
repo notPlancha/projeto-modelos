@@ -1,0 +1,1 @@
+R.exe -e "lintr::lint(here::here('relatorio', 'chunks.R'))" > .\scripts\temp.md

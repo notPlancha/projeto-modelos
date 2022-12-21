@@ -30,10 +30,20 @@ p_load(
   olsrr,
   textrecipes,
   stopwords,
-  tseries
+  tseries,
+  lintr,
+  conflicted
 )
+conflict_prefer("here", "here")
+conflict_prefer("select", "dplyr")
+conflict_prefer("filter", "dplyr")
+conflict_prefer("mutate", "dplyr")
+conflict_prefer("summarise", "dplyr")
+conflict_prefer("arrange", "dplyr")
 df <- read.csv(here("data", "listings.csv"))
 ```
+
+
 
 ```{r}
 shape <- st_read(here("data", "SF Planning Neighborhood Groups Map"))
@@ -233,7 +243,7 @@ df %>%
 
 
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 corrplot(df %>% select_if(is.numeric) %>% cor(), method="pie")
 mean(df$price)
 cor(df %>%
@@ -245,21 +255,12 @@ df %>% filter(is.na(reviews_per_month))
 corrplot(df %>% select_if(is.numeric) %>% cor(method= 'kendall'), method="pie")
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 df2 <- df %>% select(price, minimum_nights, number_of_reviews, reviews_per_month, calculated_host_listings_count, number_of_reviews_ltm)
 df %>% select(price)
 
 scatterplotMatrix(df2, smooth = FALSE, main="Scatter Plot Matrix")
 
-```
-
-
-
-```{r}
-df %>% count(minimum_nights)
-df %>% select(price, neighbourhood, latitude, longitude, room_type) %>%
-  mutate(isLuxuary = price > quantile(df$price, 0.975) + 20, logPrice = log(price), )
-df %>% arrange(-price) %>% select(name, price, host_name)
 ```
 
 
@@ -316,7 +317,7 @@ testModel <- function (model){
   print(summary(model)$r.squared)
   print(bptest(model))
   print("standart residuals mean")
-  print(mean(?rstandard(model)))
+  print(mean(rstandard(model)))
   plot(model, 1)
   jarque.bera.test(model$residuals)
 }
@@ -338,10 +339,14 @@ testModel(fit2)
 
 ```{r}
 fit3 <- lm(1/price ~ ., dfAll %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
+MAPE(1/fit2$fitted.values, dfAll$price)
+MAPE(1/predict(fit2, dfAll), dfAll$price)
 testModel(fit2)
 testModel(fit3)
 AIC(fit2, fit3)
 vif(fit3)
+?Metrics::rse
+?crPlots
 ```
 
 ```{r}
@@ -391,8 +396,14 @@ MAPE(fit0$fitted.values, dfAll$price) # in-sample
 ```
 
 ```{r}
+function(x) x -> temp
+(\(x) x) -> temp
+temp(3)
+temp
 #fit 1
-MAPE(fit1$fitted.values, dfAll$price) # in-sample
+MAPE(fit1$fitted.values, dfAll$price)
+MAPE(fit2$fitted.values, dfAll$price)
+MAPE(1/fit3$fitted.values, dfAll$price)
 ```
 
 ```{r}
@@ -402,31 +413,12 @@ MAPE(fit2$fitted.values, dfAll$price) # in-sample
 
 ```{r}
 #fit3
-MAPE(1/fit3$fitted.values,dfAll$price) # in-sample
+MAPE(fit0$fitted.values, dfAll$price)
+MAPE(fit3$fitted.values,dfAll$price) # in-sample
 
 fit3Training <- lm(1/price ~ ., dfTraining %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3))
 predict(fit3Training, dfTest %>% mutate(minNightsSquared = minimum_nights^2, minNightsCube = minimum_nights^3)) -> p 
 MLmetrics::MAPE(1/p, dfTest$price) #out of sample
-```
-
-```{r}
-#fit 4
-MAPE(fit4$fitted.values, dfAll$price) # in-sample
-```
-
-```{r}
-#fit 5
-MAPE(fit5$fitted.values, dfAll$price) # in-sample
-```
-
-```{r}
-#fit 6
-MAPE(fit6$fitted.values, dfAll$price) # in-sample
-```
-
-```{r}
-#fit 7
-MAPE(fit7$fitted.values, dfAll$price) # in-sample
 ```
 
 ```{r}
