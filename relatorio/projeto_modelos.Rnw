@@ -3,11 +3,11 @@
 \input{structure.tex}
 \title{	
 	\normalfont\normalsize
-	\textsc{ISCTE-IUL \\ Licenciatura de Ciência de Dados}\\
+	\textsc{ISCTE-IUL \\ Licenciatura em Ciência de Dados}\\
 	\vspace{20pt} 
 	\rule{\linewidth}{0.5pt}\\
 	\vspace{20pt}
-	{\huge Previsão dos preços de alojamentos airbnb de São Francisco}\\ 
+	{\huge Previsão dos preços de alojamentos Airbnb de São Francisco}\\ 
   \vspace{16pt} 
   {\large Trabalho realizado no âmbito da Unidade Curricular Introdução a Modelos Dinâmicos do 2º ano em 2022/2023 da Licenciatura em Ciência de Dados}\\
 	\vspace{12pt}
@@ -29,6 +29,7 @@
 
 
 \begin{document}
+\thispagestyle{empty}
 \maketitle
 \pagebreak
 <<getChunk, echo=FALSE, warning=FALSE, message=FALSE>>=
@@ -210,5 +211,5 @@ Os coeficientes do modelo são apresentados na tabela seguinte.\\
 \normalsize
 
 \bibliography{references}{}
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \end{document}

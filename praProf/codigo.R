@@ -1,5 +1,5 @@
 ## ---- chunk-setup ----
-here::i_am("README.md")
+here::i_am("codigo.R")
 if (!require("pacman")) install.packages("pacman", repos = "https://cran.radicaldevelop.com/")
 pacman::p_load(
   here,
