@@ -4,15 +4,15 @@
 \title{	
 	\normalfont\normalsize
 	\textsc{ISCTE-IUL \\ Licenciatura de Ciência de Dados}\\
-	\vspace{25pt} 
+	\vspace{20pt} 
 	\rule{\linewidth}{0.5pt}\\
 	\vspace{20pt}
 	{\huge Previsão dos preços de alojamentos airbnb de São Francisco}\\ 
-  \vspace{12pt} 
-  {\large Trabalho realizado no âmbito da Unidade Curricular Introdução a Modelos Dinâmicosdo 2º ano da Licenciatura em Ciência de Dados do Instituto Universitário de Lisboa ISCTE. }\\
+  \vspace{16pt} 
+  {\large Trabalho realizado no âmbito da Unidade Curricular Introdução a Modelos Dinâmicos do 2º ano em 2022/2023 da Licenciatura em Ciência de Dados}\\
 	\vspace{12pt}
 	\rule{\linewidth}{2pt}\\
-	\vspace{12pt} 
+	\vspace{20pt} 
 }
 \author{
   André Plancha, 105289 \\
@@ -23,12 +23,14 @@
   <agsos@iscte-iul.pt> \\
   Rui Chaves, 104914 \\
   <rfpcs1@iscte-iul.pt>
+  \vspace{30pt}
 }
-\date{\Sexpr{format(Sys.Date(), format="%d/%m/%Y")} \\ Versão 0.0.2} % 
+\date{\Sexpr{format(Sys.Date(), format="%d/%m/%Y")} \\ Versão 1.0.0} % 
 
 
 \begin{document}
 \maketitle
+\pagebreak
 <<getChunk, echo=FALSE, warning=FALSE, message=FALSE>>=
 if (!require("knitr")) install.packages("knitr", repos = "https://cran.radicaldevelop.com/")
 library(knitr)
@@ -164,7 +166,7 @@ O primeiro modelo notavelmente não é apropriado, devido ao valor gigante de \t
 
 <<chunk-fitTrans, tidy=FALSE>>=
 @
-Comparando as estatísticas das várias transformações do preço, podemos concluir que a transformação dos modelos $log(y)$ e $\sqrt{y^{-1}}$ são as mais apropriadas, a primeira com um valor de \textit{MAPE} e \text{rRMSE} mais baixo, e a segunda com um valor de $R^2$ mais alto. Nenhum desses modelos satifaz o pressuposto de homocedasticidade. Para continuará vai ser revisto os valores dos modelos em \textit{out-of-sample}. Para isso a base de dados foi dividida em 80\% para treino e 20\% para teste.\\
+Comparando as estatísticas das várias transformações do preço, podemos concluir que a transformação dos modelos $log(y)$ e $\sqrt{y^{-1}}$ são as mais apropriadas, a primeira com um valor de \textit{MAPE} e \text{rRMSE} mais baixo, e a segunda com um valor de $R^2$ mais alto. Nenhum desses modelos satifaz o pressuposto de homocedasticidade. Para continuar vai ser revisto os valores dos modelos em \textit{out-of-sample}. Para isso a base de dados foi dividida em 80\% para treino e 20\% para teste.\\
 <<chunk-splitDf>>=
 @
 O conjunto de treino usou o mesmo método de \textit{oversampling} usado anteriormente, mas o conjunto de teste não foi alterado.\\

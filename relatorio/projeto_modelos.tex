@@ -54,15 +54,15 @@
 \title{	
 	\normalfont\normalsize
 	\textsc{ISCTE-IUL \\ Licenciatura de Ciência de Dados}\\
-	\vspace{25pt} 
+	\vspace{20pt} 
 	\rule{\linewidth}{0.5pt}\\
 	\vspace{20pt}
 	{\huge Previsão dos preços de alojamentos airbnb de São Francisco}\\ 
-  \vspace{12pt} 
-  {\large }\\
+  \vspace{16pt} 
+  {\large Trabalho realizado no âmbito da Unidade Curricular Introdução a Modelos Dinâmicosdo 2º ano da Licenciatura em Ciência de Dados do Instituto Universitário de Lisboa ISCTE. }\\
 	\vspace{12pt}
 	\rule{\linewidth}{2pt}\\
-	\vspace{12pt} 
+	\vspace{20pt} 
 }
 \author{
   André Plancha, 105289 \\
@@ -73,11 +73,13 @@
   <agsos@iscte-iul.pt> \\
   Rui Chaves, 104914 \\
   <rfpcs1@iscte-iul.pt>
+  \vspace{20pt}
 }
 \date{21/12/2022 \\ Versão 0.0.2} % 
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \maketitle
+\pagebreak
 
 
 % TODO introducao
@@ -87,7 +89,8 @@
 \hlstd{df} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"listings.csv"}\hlstd{))}
 \hlstd{shape} \hlkwb{<-} \hlkwd{st_read}\hlstd{(}\hlkwd{here}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"SF Planning Neighborhood Groups Map"}\hlstd{))}
 \hlkwd{tmap_mode}\hlstd{(}\hlstr{"plot"}\hlstd{)}
-\hlstd{shape_plot} \hlkwb{<-} \hlstd{shape} \hlopt{%>%} \hlkwd{ggplot}\hlstd{()}\hlopt{+} \hlkwd{geom_sf}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"bottom"}\hlstd{)}
+\hlstd{shape_plot} \hlkwb{<-} \hlstd{shape} \hlopt{%>%}
+  \hlkwd{ggplot}\hlstd{()} \hlopt{+} \hlkwd{geom_sf}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"bottom"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -99,10 +102,9 @@ A base de dados contém 6629 entradas, e cada uma delas representa um registo de
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{data.frame}\hlstd{(}
-  \hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(df),}
-  \hlstr{"type"} \hlstd{=} \hlkwd{sapply}\hlstd{(df, class)}
-\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+\hlkwd{data.frame}\hlstd{(}\hlkwc{row.names} \hlstd{=} \hlkwd{colnames}\hlstd{(df),} \hlkwc{type} \hlstd{=} \hlkwd{sapply}\hlstd{(df,}
+  \hlstd{class))} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
@@ -182,13 +184,9 @@ A concentração torna-se mais óbvia quando visualizamos o mapa de calor.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{rast} \hlkwb{<-} \hlstd{(shape_plot} \hlopt{+}
-  \hlkwd{stat_bin2d}\hlstd{(}
-    \hlkwc{data}\hlstd{=df,}
-    \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=longitude,} \hlkwc{y}\hlstd{=latitude),}
-    \hlkwc{alpha}\hlstd{=}\hlnum{0.7}\hlstd{,} \hlkwc{bins} \hlstd{=} \hlnum{30}\hlstd{,} \hlkwc{linejoin}\hlstd{=}\hlstr{"round"}
-  \hlstd{)} \hlopt{+}
-  \hlkwd{scale_fill_viridis_c}\hlstd{(}\hlkwc{option}\hlstd{=}\hlstr{"C"}\hlstd{))}
+\hlstd{rast} \hlkwb{<-} \hlstd{(shape_plot} \hlopt{+} \hlkwd{stat_bin2d}\hlstd{(}\hlkwc{data} \hlstd{= df,}
+  \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= longitude,} \hlkwc{y} \hlstd{= latitude),} \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{,}
+  \hlkwc{bins} \hlstd{=} \hlnum{30}\hlstd{,} \hlkwc{linejoin} \hlstd{=} \hlstr{"round"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_viridis_c}\hlstd{(}\hlkwc{option} \hlstd{=} \hlstr{"C"}\hlstd{))}
 \hlstd{rast}
 \end{alltt}
 \end{kframe}\begin{figure}
@@ -199,8 +197,12 @@ O mapa claramente demonstra a concentração de alojamentos na zona clara, mas t
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlopt{%>%} \hlkwd{group_by}\hlstd{(neighbourhood)} \hlopt{%>%} \hlkwd{summarise}\hlstd{(}\hlkwc{n}\hlstd{=}\hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{= n}\hlopt{/}\hlkwd{nrow}\hlstd{(df))} \hlopt{%>%}
-  \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{n)} \hlopt{%>%} \hlkwd{head}\hlstd{(}\hlnum{8}\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+\hlstd{df} \hlopt{%>%}
+  \hlkwd{group_by}\hlstd{(neighbourhood)} \hlopt{%>%}
+  \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{= n}\hlopt{/}\hlkwd{nrow}\hlstd{(df))} \hlopt{%>%}
+  \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{n)} \hlopt{%>%}
+  \hlkwd{head}\hlstd{(}\hlnum{8}\hlstd{)} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
@@ -235,12 +237,12 @@ A tabela mostra que grande parte dos alojamentos listados estão localizados no 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{shape_plot} \hlopt{+}
-  \hlkwd{geom_point}\hlstd{(}\hlkwc{data}\hlstd{=df,} \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=latitude,} \hlkwc{x}\hlstd{=longitude,} \hlkwc{color}\hlstd{=neighbourhood),} \hlkwc{alpha}\hlstd{=}\hlnum{0.5}\hlstd{,} \hlkwc{size}\hlstd{=}\hlnum{0.1}\hlstd{)} \hlopt{+}
-  \hlkwd{geom_point}\hlstd{(}
-    \hlkwc{data}\hlstd{=(df} \hlopt{%>%} \hlkwd{filter}\hlstd{(neighbourhood} \hlopt{==} \hlstr{"Downtown/Civic Center"}\hlstd{)),}
-  \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=latitude,} \hlkwc{x}\hlstd{=longitude),} \hlkwc{color}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{alpha}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{size}\hlstd{=}\hlnum{0.1}\hlstd{)} \hlopt{+}
-  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
+\hlstd{shape_plot} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,}
+  \hlkwc{x} \hlstd{= longitude,} \hlkwc{color} \hlstd{= neighbourhood),}
+  \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{data} \hlstd{= (df} \hlopt{%>%}
+  \hlkwd{filter}\hlstd{(neighbourhood} \hlopt{==} \hlstr{"Downtown/Civic Center"}\hlstd{)),}
+  \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= latitude,} \hlkwc{x} \hlstd{= longitude),} \hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{,}
+  \hlkwc{alpha} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{0.1}\hlstd{)} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/chunk-plotNeighbs-1} \end{figure}
@@ -251,8 +253,7 @@ Esta figura demonstra que os bairros estão em conformidade com a definição do
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggplot}\hlstd{(}\hlkwc{data}\hlstd{=df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+}
-  \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
   \hlkwd{coord_flip}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{figure}
@@ -265,7 +266,11 @@ Estes preços conseguem ser explicados quando analisamos a sua fonte.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlopt{%>%} \hlkwd{select}\hlstd{(name, price)} \hlopt{%>%} \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{price)} \hlopt{%>%} \hlkwd{head}\hlstd{(}\hlnum{7}\hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{(}\hlnum{TRUE}\hlstd{)}
+\hlstd{df} \hlopt{%>%}
+  \hlkwd{select}\hlstd{(name, price)} \hlopt{%>%}
+  \hlkwd{arrange}\hlstd{(}\hlopt{-}\hlstd{price)} \hlopt{%>%}
+  \hlkwd{head}\hlstd{(}\hlnum{7}\hlstd{)} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{(}\hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}\begingroup\fontsize{10}{12}\selectfont
 
@@ -299,11 +304,10 @@ Como tentativa de mitigar estes valores muito altos (\textit{outliers}), provave
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{upper_limit} \hlkwb{<-} \hlkwd{quantile}\hlstd{(df}\hlopt{$}\hlstd{price,} \hlnum{0.975}\hlstd{)} \hlopt{+} \hlnum{20}
-\hlkwd{ggplot}\hlstd{(}\hlkwc{data}\hlstd{=df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+}
-  \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
-  \hlkwd{coord_flip}\hlstd{()} \hlopt{+}
-  \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{,upper_limit)}
+\hlstd{upper_limit} \hlkwb{<-} \hlkwd{quantile}\hlstd{(df}\hlopt{$}\hlstd{price,} \hlnum{0.975}\hlstd{)} \hlopt{+}
+  \hlnum{20}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
+  \hlkwd{coord_flip}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
 \end{alltt}
 
 
@@ -317,9 +321,8 @@ O gráfico mostra também que há muitos alojamentos fora destes limites, podend
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggplot}\hlstd{(}\hlkwc{data}\hlstd{=df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+}
-  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{binwidth}\hlstd{=}\hlnum{25}\hlstd{,} \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= ..density..))} \hlopt{+}
-  \hlkwd{geom_density}\hlstd{(}\hlkwc{color}\hlstd{=}\hlstr{"red"}\hlstd{)} \hlopt{+}
+\hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(price))} \hlopt{+} \hlkwd{geom_histogram}\hlstd{(}\hlkwc{binwidth} \hlstd{=} \hlnum{25}\hlstd{,}
+  \hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= ..density..))} \hlopt{+} \hlkwd{geom_density}\hlstd{(}\hlkwc{color} \hlstd{=} \hlstr{"red"}\hlstd{)} \hlopt{+}
   \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)}
 \end{alltt}
 \end{kframe}\begin{figure}
@@ -331,7 +334,12 @@ A distribuição de preços apresentada demonstra que a maioria dos alojamentos 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlopt{%>%} \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=price,} \hlkwc{x} \hlstd{= forcats}\hlopt{::}\hlkwd{fct_reorder}\hlstd{(neighbourhood, price,} \hlkwc{.fun}\hlstd{=median)))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{, upper_limit))} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{angle} \hlstd{=} \hlnum{90}\hlstd{,} \hlkwc{vjust} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{hjust}\hlstd{=}\hlnum{1}\hlstd{))} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{x} \hlstd{=} \hlstr{""}\hlstd{)}
+\hlstd{df} \hlopt{%>%}
+  \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= price,} \hlkwc{x} \hlstd{= forcats}\hlopt{::}\hlkwd{fct_reorder}\hlstd{(neighbourhood,}
+    \hlstd{price,} \hlkwc{.fun} \hlstd{= median)))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+}
+  \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{, upper_limit))} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{angle} \hlstd{=} \hlnum{90}\hlstd{,}
+    \hlkwc{vjust} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{hjust} \hlstd{=} \hlnum{1}\hlstd{))} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{x} \hlstd{=} \hlstr{""}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/chunk-boxPriceNeighs-1} \end{figure}
@@ -342,16 +350,14 @@ Os \textit{boxplots} mostram que os preços dos alojamentos não variam bastante
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{shape_plot} \hlopt{+}
-  \hlkwd{stat_summary_hex}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=longitude,} \hlkwc{y}\hlstd{=latitude,} \hlkwc{z}\hlstd{=} \hlkwd{log}\hlstd{(price)),} \hlkwc{alpha}\hlstd{=}\hlnum{0.8}\hlstd{)} \hlopt{+}
-  \hlkwd{scale_fill_viridis_c}\hlstd{()} \hlopt{+}
+\hlstd{shape_plot} \hlopt{+} \hlkwd{stat_summary_hex}\hlstd{(}\hlkwc{data} \hlstd{= df,}
+  \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= longitude,} \hlkwc{y} \hlstd{= latitude,} \hlkwc{z} \hlstd{=} \hlkwd{log}\hlstd{(price)),}
+  \hlkwc{alpha} \hlstd{=} \hlnum{0.8}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_viridis_c}\hlstd{()} \hlopt{+}
   \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"right"}\hlstd{)}
 \end{alltt}
 
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 3 rows containing non-finite values (`stat\_summary\_hex()`).}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Computation failed in `stat\_summary\_hex()`\\\#\# Caused by error in `compute\_group()`:\\\#\# ! The package `hexbin` is required for `stat\_summary\_hex()`}}\end{kframe}\begin{figure}
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 3 rows containing non-finite values (`stat\_summary\_hex()`).}}\end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/chunk-priceHexes-1} \end{figure}
 
 \end{knitrout}
@@ -363,14 +369,10 @@ Este gráfico demonstra a variariadade presente nos vários distritos, e da mesm
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
   \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
-  \hlkwd{summarise}\hlstd{(}
-    \hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),}
-    \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
-    \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price),}
-    \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(price),}
-    \hlkwc{min} \hlstd{=} \hlkwd{min}\hlstd{(price),}
-    \hlkwc{max} \hlstd{=} \hlkwd{max}\hlstd{(price)}
-  \hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+  \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
+    \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price),} \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(price),}
+    \hlkwc{min} \hlstd{=} \hlkwd{min}\hlstd{(price),} \hlkwc{max} \hlstd{=} \hlkwd{max}\hlstd{(price))} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
@@ -401,14 +403,10 @@ A tabela também expõe que os quartos privados são os mais caros em média, en
 \hlstd{df} \hlopt{%>%}
   \hlkwd{group_by}\hlstd{(room_type)} \hlopt{%>%}
   \hlkwd{filter}\hlstd{(price} \hlopt{<} \hlstd{upper_limit, price} \hlopt{>} \hlnum{0}\hlstd{)} \hlopt{%>%}
-  \hlkwd{summarise}\hlstd{(}
-    \hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),}
-    \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
-    \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price),}
-    \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(price),}
-    \hlkwc{min} \hlstd{=} \hlkwd{min}\hlstd{(price),}
-    \hlkwc{max} \hlstd{=} \hlkwd{max}\hlstd{(price)}
-  \hlstd{)} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+  \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{=} \hlkwd{n}\hlstd{()}\hlopt{/}\hlkwd{nrow}\hlstd{(.),}
+    \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price),} \hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(price),}
+    \hlkwc{min} \hlstd{=} \hlkwd{min}\hlstd{(price),} \hlkwc{max} \hlstd{=} \hlkwd{max}\hlstd{(price))} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
@@ -436,9 +434,10 @@ Se excluirmos os apartamentos de luxo, conseguimos observar valores mais esperad
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggplot}\hlstd{(df,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=price,} \hlkwc{y}\hlstd{=room_type,} \hlkwc{fill}\hlstd{=room_type))} \hlopt{+}
-  \hlkwd{geom_density_ridges}\hlstd{()} \hlopt{+} \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)} \hlopt{+}
-  \hlkwd{theme_ridges}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
+\hlkwd{ggplot}\hlstd{(df,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= price,} \hlkwc{y} \hlstd{= room_type,}
+  \hlkwc{fill} \hlstd{= room_type))} \hlopt{+} \hlkwd{geom_density_ridges}\hlstd{()} \hlopt{+}
+  \hlkwd{xlim}\hlstd{(}\hlnum{0}\hlstd{, upper_limit)} \hlopt{+} \hlkwd{theme_ridges}\hlstd{()} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)}
 \end{alltt}
 
 
@@ -453,9 +452,11 @@ O diagrama apresentado demonstra as distribuições dos preços por tipo de aloj
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{df} \hlopt{%>%}
-\hlkwd{select}\hlstd{(price, latitude, longitude,minimum_nights, number_of_reviews, calculated_host_listings_count, availability_365)} \hlopt{%>%}
-\hlkwd{cor}\hlstd{(}\hlkwc{use} \hlstd{=} \hlstr{"complete.obs"}\hlstd{)} \hlopt{%>%}
-\hlkwd{ggcorrplot}\hlstd{(}\hlkwc{lab} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"lower"}\hlstd{)}
+  \hlkwd{select}\hlstd{(price, latitude, longitude, minimum_nights,}
+    \hlstd{number_of_reviews, calculated_host_listings_count,}
+    \hlstd{availability_365)} \hlopt{%>%}
+  \hlkwd{cor}\hlstd{(}\hlkwc{use} \hlstd{=} \hlstr{"complete.obs"}\hlstd{)} \hlopt{%>%}
+  \hlkwd{ggcorrplot}\hlstd{(}\hlkwc{lab} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"lower"}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/chunk-CorrPlot-1} \end{figure}
@@ -467,15 +468,31 @@ O gráfico de correlações não mostra também nenhuma correlação significant
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{recipeUpSample} \hlkwb{<-} \hlkwd{recipe}\hlstd{(price} \hlopt{~} \hlstd{neighbourhood} \hlopt{+} \hlstd{latitude} \hlopt{+} \hlstd{longitude} \hlopt{+} \hlstd{room_type} \hlopt{+} \hlstd{minimum_nights} \hlopt{+} \hlstd{number_of_reviews} \hlopt{+} \hlstd{calculated_host_listings_count} \hlopt{+} \hlstd{availability_365,} \hlkwc{data}\hlstd{=df} \hlopt{%>%} \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{, neighbourhood} \hlopt{!=} \hlstr{"Golden Gate Park"}\hlstd{))} \hlopt{%>%}
-  \hlkwd{step_upsample}\hlstd{(room_type,} \hlkwc{skip}\hlstd{=}\hlnum{FALSE}\hlstd{,} \hlkwc{over_ratio} \hlstd{=} \hlnum{0.363}\hlstd{)} \hlopt{%>%}
+\hlstd{recipeUpSample} \hlkwb{<-} \hlkwd{recipe}\hlstd{(price} \hlopt{~} \hlstd{neighbourhood} \hlopt{+}
+  \hlstd{latitude} \hlopt{+} \hlstd{longitude} \hlopt{+} \hlstd{room_type} \hlopt{+} \hlstd{minimum_nights} \hlopt{+}
+  \hlstd{number_of_reviews} \hlopt{+} \hlstd{calculated_host_listings_count} \hlopt{+}
+  \hlstd{availability_365,} \hlkwc{data} \hlstd{= df} \hlopt{%>%}
+  \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{, neighbourhood} \hlopt{!=} \hlstr{"Golden Gate Park"}\hlstd{))} \hlopt{%>%}
+  \hlkwd{step_upsample}\hlstd{(room_type,} \hlkwc{skip} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+    \hlkwc{over_ratio} \hlstd{=} \hlnum{0.363}\hlstd{)} \hlopt{%>%}
   \hlkwd{step_dummy}\hlstd{(neighbourhood, room_type)} \hlopt{%>%}
   \hlkwd{prep}\hlstd{()}
-\hlstd{recipeNoUpSample} \hlkwb{<-} \hlkwd{recipe}\hlstd{(price} \hlopt{~} \hlstd{neighbourhood} \hlopt{+} \hlstd{latitude} \hlopt{+} \hlstd{longitude} \hlopt{+} \hlstd{room_type} \hlopt{+} \hlstd{minimum_nights} \hlopt{+} \hlstd{number_of_reviews} \hlopt{+} \hlstd{calculated_host_listings_count} \hlopt{+} \hlstd{availability_365,} \hlkwc{data}\hlstd{=df} \hlopt{%>%} \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{, neighbourhood} \hlopt{!=} \hlstr{"Golden Gate Park"}\hlstd{))} \hlopt{%>%}
-\hlkwd{step_dummy}\hlstd{(neighbourhood, room_type)} \hlopt{%>%}
-\hlkwd{prep}\hlstd{()}
-\hlstd{dfAll} \hlkwb{<-} \hlkwd{bake}\hlstd{(recipeUpSample, df} \hlopt{%>%} \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{, neighbourhood} \hlopt{!=} \hlstr{"Golden Gate Park"}\hlstd{))}
-\hlstd{dfAll} \hlopt{%>%} \hlkwd{group_by}\hlstd{(}\hlkwc{isHotel} \hlstd{= room_type_Hotel.room,} \hlkwc{isPrivateRoom} \hlstd{= room_type_Private.room,} \hlkwc{isSharedRoom} \hlstd{= room_type_Shared.room)} \hlopt{%>%} \hlkwd{summarise}\hlstd{(}\hlkwc{n}\hlstd{=}\hlkwd{n}\hlstd{(),} \hlkwc{freq}\hlstd{=n}\hlopt{/}\hlkwd{nrow}\hlstd{(dfAll),} \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+\hlstd{recipeNoUpSample} \hlkwb{<-} \hlkwd{recipe}\hlstd{(price} \hlopt{~} \hlstd{neighbourhood} \hlopt{+}
+  \hlstd{latitude} \hlopt{+} \hlstd{longitude} \hlopt{+} \hlstd{room_type} \hlopt{+} \hlstd{minimum_nights} \hlopt{+}
+  \hlstd{number_of_reviews} \hlopt{+} \hlstd{calculated_host_listings_count} \hlopt{+}
+  \hlstd{availability_365,} \hlkwc{data} \hlstd{= df} \hlopt{%>%}
+  \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{, neighbourhood} \hlopt{!=} \hlstr{"Golden Gate Park"}\hlstd{))} \hlopt{%>%}
+  \hlkwd{step_dummy}\hlstd{(neighbourhood, room_type)} \hlopt{%>%}
+  \hlkwd{prep}\hlstd{()}
+\hlstd{dfAll} \hlkwb{<-} \hlkwd{bake}\hlstd{(recipeUpSample, df} \hlopt{%>%}
+  \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{, neighbourhood} \hlopt{!=} \hlstr{"Golden Gate Park"}\hlstd{))}
+\hlstd{dfAll} \hlopt{%>%}
+  \hlkwd{group_by}\hlstd{(}\hlkwc{isHotel} \hlstd{= room_type_Hotel.room,}
+    \hlkwc{isPrivateRoom} \hlstd{= room_type_Private.room,}
+    \hlkwc{isSharedRoom} \hlstd{= room_type_Shared.room)} \hlopt{%>%}
+  \hlkwd{summarise}\hlstd{(}\hlkwc{n} \hlstd{=} \hlkwd{n}\hlstd{(),} \hlkwc{freq} \hlstd{= n}\hlopt{/}\hlkwd{nrow}\hlstd{(dfAll),}
+    \hlkwc{averagePrice} \hlstd{=} \hlkwd{mean}\hlstd{(price))} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
@@ -484,13 +501,13 @@ O gráfico de correlações não mostra também nenhuma correlação significant
 \hline
 isHotel & isPrivateRoom & isSharedRoom & n & freq & averagePrice\\
 \hline
-\cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{4242} & \cellcolor{gray!6}{0.4439096} & \cellcolor{gray!6}{282.2812}\\
+\cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{4242} & \cellcolor{gray!6}{0.4439096} & \cellcolor{gray!6}{283.3628}\\
 \hline
-0 & 0 & 1 & 1539 & 0.1610506 & 248.6706\\
+0 & 0 & 1 & 1539 & 0.1610506 & 236.9493\\
 \hline
-\cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{2236} & \cellcolor{gray!6}{0.2339891} & \cellcolor{gray!6}{406.3493}\\
+\cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{2236} & \cellcolor{gray!6}{0.2339891} & \cellcolor{gray!6}{367.8690}\\
 \hline
-1 & 0 & 0 & 1539 & 0.1610506 & 271.6595\\
+1 & 0 & 0 & 1539 & 0.1610506 & 274.2014\\
 \hline
 \end{tabular}
 \endgroup{}
@@ -532,7 +549,9 @@ O nosso primeiro modelo linear foi um modelo que diretamente relaciona as variá
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{fit0} \hlkwb{<-} \hlkwd{lm}\hlstd{(price} \hlopt{~} \hlstd{., dfAll)}
-\hlkwd{testModel}\hlstd{(fit0, dfAll,} \hlstr{"fit0(price ~ .)"}\hlstd{)} \hlopt{%>%} \hlkwd{t}\hlstd{()} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+\hlkwd{testModel}\hlstd{(fit0, dfAll,} \hlstr{"fit0(price ~ .)"}\hlstd{)} \hlopt{%>%}
+  \hlkwd{t}\hlstd{()} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
@@ -541,15 +560,15 @@ O nosso primeiro modelo linear foi um modelo que diretamente relaciona as variá
 \hline
 Model & fit0(price \textasciitilde{} .)\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0481}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0432}\\
 \hline
-AIC & 1.62e+05\\
+AIC & 1.61e+05\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{1.9}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{1.8}\\
 \hline
-rRMSE & 0.0395\\
+rRMSE & 0.039\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 4.05e-56}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.81e-46}\\
 \hline
 Breusch-Godfrey & p > 0.05\\
 \hline
@@ -597,17 +616,17 @@ O primeiro modelo notavelmente não é apropriado, devido ao valor gigante de \t
 \hline
 Model & cube & squared & root & log & invSqrt & inv & invSqdr & invCube\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.0364} & \cellcolor{gray!6}{0.0388} & \cellcolor{gray!6}{0.126} & \cellcolor{gray!6}{0.362} & \cellcolor{gray!6}{0.509} & \cellcolor{gray!6}{0.569} & \cellcolor{gray!6}{0.576} & \cellcolor{gray!6}{0.536}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.031} & \cellcolor{gray!6}{0.0338} & \cellcolor{gray!6}{0.126} & \cellcolor{gray!6}{0.372} & \cellcolor{gray!6}{0.524} & \cellcolor{gray!6}{0.585} & \cellcolor{gray!6}{0.59} & \cellcolor{gray!6}{0.548}\\
 \hline
-AIC & 5.42e+05 & 3.51e+05 & 7.03e+04 & 1.99e+04 & -4.42e+04 & -7.56e+04 & -1.41e+05 & -2.06e+05\\
+AIC & 5.4e+05 & 3.49e+05 & 6.98e+04 & 1.98e+04 & -4.42e+04 & -7.54e+04 & -1.41e+05 & -2.06e+05\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{133956} & \cellcolor{gray!6}{345} & \cellcolor{gray!6}{0.295} & \cellcolor{gray!6}{0.0908} & \cellcolor{gray!6}{0.307} & \cellcolor{gray!6}{1.59} & \cellcolor{gray!6}{212} & \cellcolor{gray!6}{62466}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{127032} & \cellcolor{gray!6}{320} & \cellcolor{gray!6}{0.289} & \cellcolor{gray!6}{0.0905} & \cellcolor{gray!6}{0.304} & \cellcolor{gray!6}{1.56} & \cellcolor{gray!6}{213} & \cellcolor{gray!6}{67374}\\
 \hline
-rRMSE & 0.191 & 0.151 & 0.00689 & 0.00138 & 0.00284 & 0.00553 & 0.0123 & 0.0202\\
+rRMSE & 0.196 & 0.153 & 0.00679 & 0.00137 & 0.00281 & 0.00544 & 0.0119 & 0.019\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 6.93e-45} & \cellcolor{gray!6}{p = 9.47e-49} & \cellcolor{gray!6}{p = 2.42e-66} & \cellcolor{gray!6}{p = 7.37e-115} & \cellcolor{gray!6}{p = 8.09e-230} & \cellcolor{gray!6}{p = 3.46e-323} & \cellcolor{gray!6}{p = 0} & \cellcolor{gray!6}{p = 0}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.35e-28} & \cellcolor{gray!6}{p = 5.42e-36} & \cellcolor{gray!6}{p = 8.46e-57} & \cellcolor{gray!6}{p = 9.54e-116} & \cellcolor{gray!6}{p = 4.08e-242} & \cellcolor{gray!6}{p = 9.43e-296} & \cellcolor{gray!6}{p = 0} & \cellcolor{gray!6}{p = 0}\\
 \hline
-Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p = 0.0162 & p = 0.021\\
+Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
 \cellcolor{gray!6}{Jarque-Bera} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05} & \cellcolor{gray!6}{p < 0.05}\\
 \hline
@@ -615,14 +634,18 @@ Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.0
 \endgroup{}
 
 \end{knitrout}
-Comparando as estatísticas das várias transformações do preço, podemos concluir que a transformação dos modelos $log(y)$ e $\sqrt{y^{-1}}$ são as mais apropriadas, a primeira com um valor de \textit{MAPE} e \text{rRMSE} mais baixo, e a segunda com um valor de $R^2$ mais alto. Nenhum desses modelos satifaz o pressuposto de homocedasticidade. Para continuará vai ser revisto os valores dos modelos em \textit{out-of-sample}. Para isso a base de dados foi dividida em 80\% para treino e 20\% para teste.\\
+Comparando as estatísticas das várias transformações do preço, podemos concluir que a transformação dos modelos $log(y)$ e $\sqrt{y^{-1}}$ são as mais apropriadas, a primeira com um valor de \textit{MAPE} e \text{rRMSE} mais baixo, e a segunda com um valor de $R^2$ mais alto. Nenhum desses modelos satifaz o pressuposto de homocedasticidade. Para continuar vai ser revisto os valores dos modelos em \textit{out-of-sample}. Para isso a base de dados foi dividida em 80\% para treino e 20\% para teste.\\
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{set.seed}\hlstd{(}\hlnum{123}\hlstd{)}
-\hlstd{dfSplit} \hlkwb{<-} \hlkwd{initial_split}\hlstd{(df} \hlopt{%>%} \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{, neighbourhood} \hlopt{!=} \hlstr{"Golden Gate Park"}\hlstd{),} \hlkwc{prop} \hlstd{=} \hlnum{0.8}\hlstd{,} \hlkwc{strata} \hlstd{= room_type)}
-\hlstd{dfTrain} \hlkwb{<-} \hlkwd{training}\hlstd{(dfSplit)} \hlopt{%>%} \hlkwd{bake}\hlstd{(recipeUpSample, .)}
-\hlstd{dfTest} \hlkwb{<-} \hlkwd{testing}\hlstd{(dfSplit)} \hlopt{%>%} \hlkwd{bake}\hlstd{(recipeNoUpSample, .)}
+\hlstd{dfSplit} \hlkwb{<-} \hlkwd{initial_split}\hlstd{(df} \hlopt{%>%}
+  \hlkwd{filter}\hlstd{(price} \hlopt{>} \hlnum{0}\hlstd{, neighbourhood} \hlopt{!=} \hlstr{"Golden Gate Park"}\hlstd{),}
+  \hlkwc{prop} \hlstd{=} \hlnum{0.8}\hlstd{,} \hlkwc{strata} \hlstd{= room_type)}
+\hlstd{dfTrain} \hlkwb{<-} \hlkwd{training}\hlstd{(dfSplit)} \hlopt{%>%}
+  \hlkwd{bake}\hlstd{(recipeUpSample, .)}
+\hlstd{dfTest} \hlkwb{<-} \hlkwd{testing}\hlstd{(dfSplit)} \hlopt{%>%}
+  \hlkwd{bake}\hlstd{(recipeNoUpSample, .)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -646,15 +669,15 @@ O conjunto de treino usou o mesmo método de \textit{oversampling} usado anterio
 \hline
 Model & log & invSqrt & logOut & invSqrtOut\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.362} & \cellcolor{gray!6}{0.509} & \cellcolor{gray!6}{0.392} & \cellcolor{gray!6}{0.514}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.372} & \cellcolor{gray!6}{0.524} & \cellcolor{gray!6}{0.413} & \cellcolor{gray!6}{0.533}\\
 \hline
-AIC & 1.99e+04 & -4.42e+04 & 1.62e+04 & -3.83e+04\\
+AIC & 1.98e+04 & -4.42e+04 & 1.55e+04 & -3.84e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0908} & \cellcolor{gray!6}{0.307} & \cellcolor{gray!6}{0.093} & \cellcolor{gray!6}{0.289}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0905} & \cellcolor{gray!6}{0.304} & \cellcolor{gray!6}{0.0917} & \cellcolor{gray!6}{0.293}\\
 \hline
-rRMSE & 0.00138 & 0.00284 & 0.00352 & 0.00764\\
+rRMSE & 0.00137 & 0.00281 & 0.00352 & 0.00765\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 7.37e-115} & \cellcolor{gray!6}{p = 8.09e-230} & \cellcolor{gray!6}{p = 1.6e-104} & \cellcolor{gray!6}{p = 1.44e-245}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 9.54e-116} & \cellcolor{gray!6}{p = 4.08e-242} & \cellcolor{gray!6}{p = 3.41e-90} & \cellcolor{gray!6}{p = 2.05e-230}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -673,7 +696,7 @@ Como o pressuposto de homocedasticidade ainda não se verifica, fomos analisar o
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwa{if}\hlstd{(}\hlnum{FALSE}\hlstd{)\{}
+\hlkwa{if} \hlstd{(}\hlnum{FALSE}\hlstd{) \{}
   \hlkwd{crPlots}\hlstd{(fit0.log)}
 \hlstd{\}}
 \end{alltt}
@@ -687,14 +710,18 @@ Ao analisar os gráficos, apenas o gráfico dos resíduos parcial da variável \
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{fit1.noMN} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(price)} \hlopt{~} \hlstd{.} \hlopt{-} \hlstd{minimum_nights, dfAll)}
+\hlstd{fit1.noMN} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(price)} \hlopt{~} \hlstd{.} \hlopt{-} \hlstd{minimum_nights,}
+  \hlstd{dfAll)}
 \hlstd{fit1} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(price)} \hlopt{~} \hlstd{., dfAll)}
-\hlstd{fit1.MNsq} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(price)} \hlopt{~} \hlstd{., dfAll} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{mnsqd} \hlstd{= minimum_nights}\hlopt{^}\hlnum{2}\hlstd{,} \hlkwc{mncube} \hlstd{= minimum_nights}\hlopt{^}\hlnum{3}\hlstd{))}
-\hlkwd{rbind}\hlstd{(}
-  \hlkwd{testModel}\hlstd{(fit1.noMN, dfAll,} \hlstr{"noMN"}\hlstd{, log),}
-  \hlkwd{testModel}\hlstd{(fit1, dfAll,} \hlstr{"withMN"}\hlstd{, log),}
-  \hlkwd{testModel}\hlstd{(fit1.MNsq, dfAll} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{mnsqd} \hlstd{= minimum_nights}\hlopt{^}\hlnum{2}\hlstd{,} \hlkwc{mncube} \hlstd{= minimum_nights}\hlopt{^}\hlnum{3}\hlstd{),} \hlstr{"MNsq"}\hlstd{, log)}
-\hlstd{)} \hlopt{%>%} \hlkwd{t}\hlstd{()} \hlopt{%>%} \hlkwd{showT}\hlstd{(F)}
+\hlstd{fit1.MNsq} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(price)} \hlopt{~} \hlstd{., dfAll} \hlopt{%>%}
+  \hlkwd{mutate}\hlstd{(}\hlkwc{mnsqd} \hlstd{= minimum_nights}\hlopt{^}\hlnum{2}\hlstd{,} \hlkwc{mncube} \hlstd{= minimum_nights}\hlopt{^}\hlnum{3}\hlstd{))}
+\hlkwd{rbind}\hlstd{(}\hlkwd{testModel}\hlstd{(fit1.noMN, dfAll,} \hlstr{"noMN"}\hlstd{,}
+  \hlstd{log),} \hlkwd{testModel}\hlstd{(fit1, dfAll,} \hlstr{"withMN"}\hlstd{,}
+  \hlstd{log),} \hlkwd{testModel}\hlstd{(fit1.MNsq, dfAll} \hlopt{%>%}
+  \hlkwd{mutate}\hlstd{(}\hlkwc{mnsqd} \hlstd{= minimum_nights}\hlopt{^}\hlnum{2}\hlstd{,} \hlkwc{mncube} \hlstd{= minimum_nights}\hlopt{^}\hlnum{3}\hlstd{),}
+  \hlstr{"MNsq"}\hlstd{, log))} \hlopt{%>%}
+  \hlkwd{t}\hlstd{()} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{(F)}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
@@ -703,15 +730,15 @@ Ao analisar os gráficos, apenas o gráfico dos resíduos parcial da variável \
 \hline
 Model & noMN & withMN & MNsq\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.338} & \cellcolor{gray!6}{0.362} & \cellcolor{gray!6}{0.402}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.353} & \cellcolor{gray!6}{0.372} & \cellcolor{gray!6}{0.412}\\
 \hline
-AIC & 2.03e+04 & 1.99e+04 & 1.93e+04\\
+AIC & 2.01e+04 & 1.98e+04 & 1.92e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0939} & \cellcolor{gray!6}{0.0908} & \cellcolor{gray!6}{0.0858}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0931} & \cellcolor{gray!6}{0.0905} & \cellcolor{gray!6}{0.0859}\\
 \hline
-rRMSE & 0.0014 & 0.00138 & 0.00133\\
+rRMSE & 0.00139 & 0.00137 & 0.00133\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 1.6e-123} & \cellcolor{gray!6}{p = 7.37e-115} & \cellcolor{gray!6}{p = 3.1e-121}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.21e-120} & \cellcolor{gray!6}{p = 9.54e-116} & \cellcolor{gray!6}{p = 2.01e-117}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -751,15 +778,15 @@ De forma a resolver a heterocedasticidade, vamos usar o método de \textit{weigh
 \hline
 Model & noW & sqdrN & rootN & rootPred & sqdrPred\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.402} & \cellcolor{gray!6}{0.954} & \cellcolor{gray!6}{0.361} & \cellcolor{gray!6}{0.409} & \cellcolor{gray!6}{0.43}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.412} & \cellcolor{gray!6}{0.976} & \cellcolor{gray!6}{0.371} & \cellcolor{gray!6}{0.419} & \cellcolor{gray!6}{0.444}\\
 \hline
-AIC & 1.93e+04 & 6.08e+04 & 2.03e+04 & 1.94e+04 & 1.97e+04\\
+AIC & 1.92e+04 & 6.03e+04 & 2.01e+04 & 1.92e+04 & 1.95e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0858} & \cellcolor{gray!6}{0.129} & \cellcolor{gray!6}{0.0882} & \cellcolor{gray!6}{0.0859} & \cellcolor{gray!6}{0.0863}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.0859} & \cellcolor{gray!6}{0.137} & \cellcolor{gray!6}{0.0879} & \cellcolor{gray!6}{0.0859} & \cellcolor{gray!6}{0.0863}\\
 \hline
-rRMSE & 0.00133 & 0.00184 & 0.00135 & 0.00133 & 0.00134\\
+rRMSE & 0.00133 & 0.00194 & 0.00134 & 0.00133 & 0.00133\\
 \hline
-\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 3.1e-121} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p = 1.09e-61} & \cellcolor{gray!6}{p > 0.05}\\
+\cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p = 2.01e-117} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p = 5.11e-60} & \cellcolor{gray!6}{p > 0.05}\\
 \hline
 Breusch-Godfrey & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05 & p > 0.05\\
 \hline
@@ -815,13 +842,13 @@ O gráfico de resíduos não mostra tendência, nem heterocedasticidade evidente
 \hline
 Model & sqdrN & sqdrNOut & rootN & rootNOut & sqdrPred & sqdrPredOut\\
 \hline
-\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.954} & \cellcolor{gray!6}{0.939} & \cellcolor{gray!6}{0.361} & \cellcolor{gray!6}{0.383} & \cellcolor{gray!6}{0.43} & \cellcolor{gray!6}{0.469}\\
+\cellcolor{gray!6}{R2} & \cellcolor{gray!6}{0.976} & \cellcolor{gray!6}{0.964} & \cellcolor{gray!6}{0.371} & \cellcolor{gray!6}{0.408} & \cellcolor{gray!6}{0.444} & \cellcolor{gray!6}{0.511}\\
 \hline
-AIC & 6.08e+04 & 5.32e+04 & 2.03e+04 & 1.69e+04 & 1.97e+04 & 1.56e+04\\
+AIC & 6.03e+04 & 4.65e+04 & 2.01e+04 & 1.59e+04 & 1.95e+04 & 1.48e+04\\
 \hline
-\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.129} & \cellcolor{gray!6}{0.122} & \cellcolor{gray!6}{0.0882} & \cellcolor{gray!6}{0.0853} & \cellcolor{gray!6}{0.0863} & \cellcolor{gray!6}{0.0872}\\
+\cellcolor{gray!6}{MAPE} & \cellcolor{gray!6}{0.137} & \cellcolor{gray!6}{0.112} & \cellcolor{gray!6}{0.0879} & \cellcolor{gray!6}{0.0839} & \cellcolor{gray!6}{0.0863} & \cellcolor{gray!6}{0.0858}\\
 \hline
-rRMSE & 0.00184 & 0.00459 & 0.00135 & 0.0033 & 0.00134 & 0.00338\\
+rRMSE & 0.00194 & 0.00411 & 0.00134 & 0.0033 & 0.00133 & 0.00337\\
 \hline
 \cellcolor{gray!6}{Breusch-Pagan} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05} & \cellcolor{gray!6}{p > 0.05}\\
 \hline
@@ -840,9 +867,13 @@ Os coeficientes do modelo são apresentados na tabela seguinte.\\
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{options}\hlstd{(}\hlkwc{digits}\hlstd{=}\hlnum{3}\hlstd{)}
-\hlstd{fit}\hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(price)} \hlopt{~} \hlstd{., dfAllMN,} \hlkwc{weights}\hlstd{=}\hlnum{1}\hlopt{/}\hlstd{((}\hlnum{1}\hlopt{:}\hlkwd{nrow}\hlstd{(dfAll))}\hlopt{^}\hlnum{0.5}\hlstd{))}
-\hlstd{fit} \hlopt{%>%} \hlkwd{tidy}\hlstd{()} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{estimate} \hlstd{=} \hlkwd{format}\hlstd{(estimate,} \hlkwc{scientific}\hlstd{=T),} \hlkwc{p.value} \hlstd{=} \hlkwd{format}\hlstd{(p.value,} \hlkwc{scientific}\hlstd{=T))} \hlopt{%>%} \hlkwd{showT}\hlstd{()}
+\hlkwd{options}\hlstd{(}\hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{)}
+\hlstd{fit} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(price)} \hlopt{~} \hlstd{., dfAllMN,} \hlkwc{weights} \hlstd{=} \hlnum{1}\hlopt{/}\hlstd{((}\hlnum{1}\hlopt{:}\hlkwd{nrow}\hlstd{(dfAll))}\hlopt{^}\hlnum{0.5}\hlstd{))}
+\hlstd{fit} \hlopt{%>%}
+  \hlkwd{tidy}\hlstd{()} \hlopt{%>%}
+  \hlkwd{mutate}\hlstd{(}\hlkwc{estimate} \hlstd{=} \hlkwd{format}\hlstd{(estimate,} \hlkwc{scientific} \hlstd{= T),}
+    \hlkwc{p.value} \hlstd{=} \hlkwd{format}\hlstd{(p.value,} \hlkwc{scientific} \hlstd{= T))} \hlopt{%>%}
+  \hlkwd{showT}\hlstd{()}
 \end{alltt}
 \end{kframe}\begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
@@ -851,97 +882,97 @@ Os coeficientes do modelo são apresentados na tabela seguinte.\\
 \hline
 term & estimate & std.error & statistic & p.value\\
 \hline
-\cellcolor{gray!6}{(Intercept)} & \cellcolor{gray!6}{2.55e+02} & \cellcolor{gray!6}{142.613} & \cellcolor{gray!6}{1.791} & \cellcolor{gray!6}{7.33e-02}\\
+\cellcolor{gray!6}{(Intercept)} & \cellcolor{gray!6}{4.01e+02} & \cellcolor{gray!6}{144.057} & \cellcolor{gray!6}{2.782} & \cellcolor{gray!6}{5.42e-03}\\
 \hline
-latitude & 6.24e+00 & 1.366 & 4.567 & 5.01e-06\\
+latitude & 1.21e+01 & 1.370 & 8.812 & 1.45e-18\\
 \hline
-\cellcolor{gray!6}{longitude} & \cellcolor{gray!6}{3.97e+00} & \cellcolor{gray!6}{1.017} & \cellcolor{gray!6}{3.900} & \cellcolor{gray!6}{9.70e-05}\\
+\cellcolor{gray!6}{longitude} & \cellcolor{gray!6}{6.95e+00} & \cellcolor{gray!6}{1.017} & \cellcolor{gray!6}{6.833} & \cellcolor{gray!6}{8.81e-12}\\
 \hline
-minimum\_nights & -1.83e-02 & 0.001 & -33.711 & 1.96e-235\\
+minimum\_nights & -1.87e-02 & 0.001 & -35.046 & 3.55e-253\\
 \hline
-\cellcolor{gray!6}{number\_of\_reviews} & \cellcolor{gray!6}{-1.35e-03} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-17.150} & \cellcolor{gray!6}{5.88e-65}\\
+\cellcolor{gray!6}{number\_of\_reviews} & \cellcolor{gray!6}{-1.26e-03} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-16.234} & \cellcolor{gray!6}{1.77e-58}\\
 \hline
-calculated\_host\_listings\_count & -3.31e-03 & 0.000 & -14.418 & 1.24e-46\\
+calculated\_host\_listings\_count & -3.71e-03 & 0.000 & -16.089 & 1.75e-57\\
 \hline
-\cellcolor{gray!6}{availability\_365} & \cellcolor{gray!6}{-2.28e-04} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-4.340} & \cellcolor{gray!6}{1.44e-05}\\
+\cellcolor{gray!6}{availability\_365} & \cellcolor{gray!6}{-9.99e-05} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{-1.904} & \cellcolor{gray!6}{5.69e-02}\\
 \hline
-neighbourhood\_Bernal.Heights & 4.41e-01 & 0.064 & 6.846 & 8.08e-12\\
+neighbourhood\_Bernal.Heights & 3.45e-01 & 0.066 & 5.232 & 1.72e-07\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Castro.Upper.Market} & \cellcolor{gray!6}{5.58e-01} & \cellcolor{gray!6}{0.087} & \cellcolor{gray!6}{6.394} & \cellcolor{gray!6}{1.69e-10}\\
+\cellcolor{gray!6}{neighbourhood\_Castro.Upper.Market} & \cellcolor{gray!6}{5.02e-01} & \cellcolor{gray!6}{0.091} & \cellcolor{gray!6}{5.540} & \cellcolor{gray!6}{3.11e-08}\\
 \hline
-neighbourhood\_Chinatown & 5.64e-02 & 0.109 & 0.518 & 6.04e-01\\
+neighbourhood\_Chinatown & -3.32e-01 & 0.111 & -2.979 & 2.90e-03\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Crocker.Amazon} & \cellcolor{gray!6}{3.69e-01} & \cellcolor{gray!6}{0.090} & \cellcolor{gray!6}{4.106} & \cellcolor{gray!6}{4.06e-05}\\
+\cellcolor{gray!6}{neighbourhood\_Crocker.Amazon} & \cellcolor{gray!6}{5.77e-01} & \cellcolor{gray!6}{0.099} & \cellcolor{gray!6}{5.809} & \cellcolor{gray!6}{6.48e-09}\\
 \hline
-neighbourhood\_Diamond.Heights & 8.26e-01 & 0.201 & 4.098 & 4.20e-05\\
+neighbourhood\_Diamond.Heights & 8.49e-01 & 0.223 & 3.815 & 1.37e-04\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Downtown.Civic.Center} & \cellcolor{gray!6}{9.89e-02} & \cellcolor{gray!6}{0.096} & \cellcolor{gray!6}{1.036} & \cellcolor{gray!6}{3.00e-01}\\
+\cellcolor{gray!6}{neighbourhood\_Downtown.Civic.Center} & \cellcolor{gray!6}{-1.78e-01} & \cellcolor{gray!6}{0.097} & \cellcolor{gray!6}{-1.823} & \cellcolor{gray!6}{6.84e-02}\\
 \hline
-neighbourhood\_Excelsior & 2.23e-01 & 0.077 & 2.903 & 3.70e-03\\
+neighbourhood\_Excelsior & 2.78e-01 & 0.077 & 3.616 & 3.00e-04\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Financial.District} & \cellcolor{gray!6}{5.99e-01} & \cellcolor{gray!6}{0.104} & \cellcolor{gray!6}{5.744} & \cellcolor{gray!6}{9.52e-09}\\
+\cellcolor{gray!6}{neighbourhood\_Financial.District} & \cellcolor{gray!6}{7.43e-03} & \cellcolor{gray!6}{0.104} & \cellcolor{gray!6}{0.071} & \cellcolor{gray!6}{9.43e-01}\\
 \hline
-neighbourhood\_Glen.Park & 4.61e-01 & 0.108 & 4.251 & 2.15e-05\\
+neighbourhood\_Glen.Park & 3.59e-01 & 0.102 & 3.507 & 4.55e-04\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Haight.Ashbury} & \cellcolor{gray!6}{5.43e-01} & \cellcolor{gray!6}{0.099} & \cellcolor{gray!6}{5.464} & \cellcolor{gray!6}{4.77e-08}\\
+\cellcolor{gray!6}{neighbourhood\_Haight.Ashbury} & \cellcolor{gray!6}{4.48e-01} & \cellcolor{gray!6}{0.102} & \cellcolor{gray!6}{4.391} & \cellcolor{gray!6}{1.14e-05}\\
 \hline
-neighbourhood\_Inner.Richmond & 3.50e-01 & 0.128 & 2.738 & 6.20e-03\\
+neighbourhood\_Inner.Richmond & 4.26e-01 & 0.131 & 3.247 & 1.17e-03\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Inner.Sunset} & \cellcolor{gray!6}{4.94e-01} & \cellcolor{gray!6}{0.111} & \cellcolor{gray!6}{4.448} & \cellcolor{gray!6}{8.76e-06}\\
+\cellcolor{gray!6}{neighbourhood\_Inner.Sunset} & \cellcolor{gray!6}{5.98e-01} & \cellcolor{gray!6}{0.115} & \cellcolor{gray!6}{5.178} & \cellcolor{gray!6}{2.29e-07}\\
 \hline
-neighbourhood\_Lakeshore & 5.47e-01 & 0.115 & 4.776 & 1.82e-06\\
+neighbourhood\_Lakeshore & 8.95e-01 & 0.119 & 7.502 & 6.85e-14\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Marina} & \cellcolor{gray!6}{4.38e-01} & \cellcolor{gray!6}{0.127} & \cellcolor{gray!6}{3.442} & \cellcolor{gray!6}{5.80e-04}\\
+\cellcolor{gray!6}{neighbourhood\_Marina} & \cellcolor{gray!6}{1.23e-02} & \cellcolor{gray!6}{0.129} & \cellcolor{gray!6}{0.095} & \cellcolor{gray!6}{9.24e-01}\\
 \hline
-neighbourhood\_Mission & 3.06e-01 & 0.072 & 4.266 & 2.01e-05\\
+neighbourhood\_Mission & 2.32e-01 & 0.075 & 3.110 & 1.88e-03\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Nob.Hill} & \cellcolor{gray!6}{4.58e-01} & \cellcolor{gray!6}{0.104} & \cellcolor{gray!6}{4.414} & \cellcolor{gray!6}{1.03e-05}\\
+\cellcolor{gray!6}{neighbourhood\_Nob.Hill} & \cellcolor{gray!6}{1.37e-01} & \cellcolor{gray!6}{0.107} & \cellcolor{gray!6}{1.287} & \cellcolor{gray!6}{1.98e-01}\\
 \hline
-neighbourhood\_Noe.Valley & 5.15e-01 & 0.079 & 6.553 & 5.95e-11\\
+neighbourhood\_Noe.Valley & 5.26e-01 & 0.082 & 6.396 & 1.67e-10\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_North.Beach} & \cellcolor{gray!6}{6.16e-01} & \cellcolor{gray!6}{0.118} & \cellcolor{gray!6}{5.213} & \cellcolor{gray!6}{1.90e-07}\\
+\cellcolor{gray!6}{neighbourhood\_North.Beach} & \cellcolor{gray!6}{1.34e-02} & \cellcolor{gray!6}{0.121} & \cellcolor{gray!6}{0.111} & \cellcolor{gray!6}{9.12e-01}\\
 \hline
-neighbourhood\_Ocean.View & 4.61e-01 & 0.095 & 4.858 & 1.20e-06\\
+neighbourhood\_Ocean.View & 7.03e-01 & 0.096 & 7.300 & 3.10e-13\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Outer.Mission} & \cellcolor{gray!6}{2.62e-01} & \cellcolor{gray!6}{0.085} & \cellcolor{gray!6}{3.080} & \cellcolor{gray!6}{2.07e-03}\\
+\cellcolor{gray!6}{neighbourhood\_Outer.Mission} & \cellcolor{gray!6}{5.47e-01} & \cellcolor{gray!6}{0.089} & \cellcolor{gray!6}{6.180} & \cellcolor{gray!6}{6.67e-10}\\
 \hline
-neighbourhood\_Outer.Richmond & 4.41e-01 & 0.146 & 3.023 & 2.51e-03\\
+neighbourhood\_Outer.Richmond & 4.22e-01 & 0.149 & 2.825 & 4.74e-03\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Outer.Sunset} & \cellcolor{gray!6}{4.52e-01} & \cellcolor{gray!6}{0.127} & \cellcolor{gray!6}{3.551} & \cellcolor{gray!6}{3.85e-04}\\
+\cellcolor{gray!6}{neighbourhood\_Outer.Sunset} & \cellcolor{gray!6}{5.47e-01} & \cellcolor{gray!6}{0.132} & \cellcolor{gray!6}{4.152} & \cellcolor{gray!6}{3.33e-05}\\
 \hline
-neighbourhood\_Pacific.Heights & 5.24e-01 & 0.119 & 4.409 & 1.05e-05\\
+neighbourhood\_Pacific.Heights & 2.59e-01 & 0.120 & 2.147 & 3.18e-02\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Parkside} & \cellcolor{gray!6}{4.39e-01} & \cellcolor{gray!6}{0.121} & \cellcolor{gray!6}{3.619} & \cellcolor{gray!6}{2.97e-04}\\
+\cellcolor{gray!6}{neighbourhood\_Parkside} & \cellcolor{gray!6}{5.72e-01} & \cellcolor{gray!6}{0.124} & \cellcolor{gray!6}{4.614} & \cellcolor{gray!6}{4.00e-06}\\
 \hline
-neighbourhood\_Potrero.Hill & 4.76e-01 & 0.078 & 6.094 & 1.15e-09\\
+neighbourhood\_Potrero.Hill & 2.81e-01 & 0.079 & 3.545 & 3.95e-04\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Presidio} & \cellcolor{gray!6}{4.95e-01} & \cellcolor{gray!6}{0.290} & \cellcolor{gray!6}{1.707} & \cellcolor{gray!6}{8.79e-02}\\
+\cellcolor{gray!6}{neighbourhood\_Presidio} & \cellcolor{gray!6}{6.02e-01} & \cellcolor{gray!6}{0.245} & \cellcolor{gray!6}{2.455} & \cellcolor{gray!6}{1.41e-02}\\
 \hline
-neighbourhood\_Presidio.Heights & 3.77e-01 & 0.151 & 2.495 & 1.26e-02\\
+neighbourhood\_Presidio.Heights & 5.27e-02 & 0.154 & 0.342 & 7.32e-01\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Russian.Hill} & \cellcolor{gray!6}{4.83e-01} & \cellcolor{gray!6}{0.122} & \cellcolor{gray!6}{3.967} & \cellcolor{gray!6}{7.33e-05}\\
+\cellcolor{gray!6}{neighbourhood\_Russian.Hill} & \cellcolor{gray!6}{-5.77e-02} & \cellcolor{gray!6}{0.124} & \cellcolor{gray!6}{-0.464} & \cellcolor{gray!6}{6.43e-01}\\
 \hline
-neighbourhood\_Seacliff & 8.42e-01 & 0.359 & 2.345 & 1.91e-02\\
+neighbourhood\_Seacliff & 7.58e-01 & 0.234 & 3.244 & 1.18e-03\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_South.of.Market} & \cellcolor{gray!6}{3.36e-01} & \cellcolor{gray!6}{0.086} & \cellcolor{gray!6}{3.926} & \cellcolor{gray!6}{8.69e-05}\\
+\cellcolor{gray!6}{neighbourhood\_South.of.Market} & \cellcolor{gray!6}{8.24e-02} & \cellcolor{gray!6}{0.087} & \cellcolor{gray!6}{0.944} & \cellcolor{gray!6}{3.45e-01}\\
 \hline
-neighbourhood\_Twin.Peaks & 8.46e-01 & 0.107 & 7.872 & 3.87e-15\\
+neighbourhood\_Twin.Peaks & 8.00e-01 & 0.127 & 6.277 & 3.61e-10\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Visitacion.Valley} & \cellcolor{gray!6}{2.63e-01} & \cellcolor{gray!6}{0.092} & \cellcolor{gray!6}{2.877} & \cellcolor{gray!6}{4.03e-03}\\
+\cellcolor{gray!6}{neighbourhood\_Visitacion.Valley} & \cellcolor{gray!6}{4.22e-01} & \cellcolor{gray!6}{0.097} & \cellcolor{gray!6}{4.350} & \cellcolor{gray!6}{1.38e-05}\\
 \hline
-neighbourhood\_West.of.Twin.Peaks & 3.32e-01 & 0.107 & 3.104 & 1.92e-03\\
+neighbourhood\_West.of.Twin.Peaks & 5.38e-01 & 0.105 & 5.118 & 3.15e-07\\
 \hline
-\cellcolor{gray!6}{neighbourhood\_Western.Addition} & \cellcolor{gray!6}{4.15e-01} & \cellcolor{gray!6}{0.097} & \cellcolor{gray!6}{4.254} & \cellcolor{gray!6}{2.12e-05}\\
+\cellcolor{gray!6}{neighbourhood\_Western.Addition} & \cellcolor{gray!6}{3.11e-01} & \cellcolor{gray!6}{0.102} & \cellcolor{gray!6}{3.054} & \cellcolor{gray!6}{2.26e-03}\\
 \hline
-room\_type\_Hotel.room & -3.31e-01 & 0.025 & -12.996 & 2.74e-38\\
+room\_type\_Hotel.room & -3.04e-01 & 0.025 & -12.271 & 2.34e-34\\
 \hline
-\cellcolor{gray!6}{room\_type\_Private.room} & \cellcolor{gray!6}{-5.90e-01} & \cellcolor{gray!6}{0.020} & \cellcolor{gray!6}{-29.583} & \cellcolor{gray!6}{4.50e-184}\\
+\cellcolor{gray!6}{room\_type\_Private.room} & \cellcolor{gray!6}{-6.03e-01} & \cellcolor{gray!6}{0.020} & \cellcolor{gray!6}{-30.578} & \cellcolor{gray!6}{5.93e-196}\\
 \hline
-room\_type\_Shared.room & -1.14e+00 & 0.027 & -41.636 & 0.00e+00\\
+room\_type\_Shared.room & -1.14e+00 & 0.027 & -42.913 & 0.00e+00\\
 \hline
-\cellcolor{gray!6}{mnsqd} & \cellcolor{gray!6}{6.00e-05} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{29.849} & \cellcolor{gray!6}{3.24e-187}\\
+\cellcolor{gray!6}{mnsqd} & \cellcolor{gray!6}{6.55e-05} & \cellcolor{gray!6}{0.000} & \cellcolor{gray!6}{30.597} & \cellcolor{gray!6}{3.46e-196}\\
 \hline
-mncube & -3.93e-08 & 0.000 & -25.798 & 6.53e-142\\
+mncube & -4.84e-08 & 0.000 & -27.526 & 1.52e-160\\
 \hline
 \end{tabular}
 \endgroup{}
